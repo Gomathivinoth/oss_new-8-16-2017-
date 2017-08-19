@@ -3,15 +3,23 @@ mongoose.Promise = global.Promise;
 
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
-    name : {type:String , required:true},
+const userSchema = new Schema({    
+    hospitalId:{type:String},
+    branchId: {type:String},
+    surgeonId:{type:String},
+    name : {type: String },   
+    gender:{type: String},
+    email:{type: String},
+    phoneno:{type: Number},
+    technicalno:{type: Number},
     username : {type:String , required:true , unique:true},
     password: {type:String , required:true},
-    hospitalName : {type:String},
-    hospitalId:{type:String},
-    branchName: {type:String},
-    branchId:{type:String},
-    userType: {type:String}
+    usertype: {type:String},
+    regno : {type : String},
+    city : {type :String},
+    country : {type :String },
+    active:{type:Boolean , default:false},
+    statusText:{type:String , default:'Activate'}
 },{collection:'user'});
 
 module.exports = mongoose.model('user' , userSchema);

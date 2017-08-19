@@ -28,7 +28,8 @@ export class LoginComponent implements OnInit {
         this.message = data.message;
       }
       else {  
-        this.hospitalService.storeUserData(data.token , data.user); //Stores user data in local storage
+        this.hospitalService.storeUserData(data.token , data.user); 
+       // console.log(data.message.usertype);//Stores user data in local storage
         if(data.message.usertype === 'superadmin'){
           this.router.navigate(['superadmin/dashboard']);
         } else if(data.message.usertype === 'hospitaladmin'){

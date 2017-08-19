@@ -12,6 +12,11 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AddHospitalComponent } from './components/hospital/add-hospital/add-hospital.component';
 import { AddBranchComponent } from './components/hospital/add-branch/add-branch.component';
 
+import { AddHospitalAdminComponent } from './components/user/add-hospital-admin/add-hospital-admin.component';
+import { AddBranchAdminComponent } from './components/user/add-branch-admin/add-branch-admin.component';
+import { AddSurgeonComponent } from './components/user/add-surgeon/add-surgeon.component';
+import { AddSupportStaffComponent } from './components/user/add-support-staff/add-support-staff.component';
+
 import { AddCompanyComponent } from './components/prosthesis/add-company/add-company.component';
 import { AddDesignComponent } from './components/prosthesis/add-design/add-design.component';
 
@@ -41,7 +46,25 @@ const appRoutes: Routes = [
       },
       {
         path:'user',
-        component:UserComponent
+        component:UserComponent,
+         children:[
+          {
+            path:'add-hospital-admin',
+            component:AddHospitalAdminComponent
+          },
+          {
+            path:'add-branch-admin',
+            component:AddBranchAdminComponent
+          },
+          {
+            path:'add-surgeon',
+            component:AddSurgeonComponent
+          },
+          {
+            path:'add-support-staff',
+            component:AddSupportStaffComponent
+          }
+        ]
       },
       {
         path:'prosthesis',

@@ -14,6 +14,11 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AddCompanyComponent } from './components/prosthesis/add-company/add-company.component';
 import { AddDesignComponent } from './components/prosthesis/add-design/add-design.component';
+import { AddHospitalAdminComponent } from './components/user/add-hospital-admin/add-hospital-admin.component';
+import { AddBranchAdminComponent } from './components/user/add-branch-admin/add-branch-admin.component';
+import { AddSurgeonComponent } from './components/user/add-surgeon/add-surgeon.component';
+import { AddSupportStaffComponent } from './components/user/add-support-staff/add-support-staff.component';
+
 
 @NgModule({
   declarations: [
@@ -27,7 +32,11 @@ import { AddDesignComponent } from './components/prosthesis/add-design/add-desig
     AddHospitalComponent,
     AddBranchComponent,
     AddCompanyComponent,
-    AddDesignComponent 
+    AddDesignComponent,
+    AddHospitalAdminComponent,
+    AddBranchAdminComponent,
+    AddSurgeonComponent,
+    AddSupportStaffComponent 
   ],
   imports: [
     AppRoutingModule,

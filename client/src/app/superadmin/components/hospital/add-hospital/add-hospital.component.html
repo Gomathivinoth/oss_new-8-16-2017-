@@ -1,63 +1,228 @@
-<div class="col-md-offset-4 col-md-4" *ngIf="showForm">
-  <form>
-    <div class="form-group">
-      <input type="text" class="form-control" placeholder="*Hospital Name" name="hospital.hospitalName" [(ngModel)]="hospital.hospitalName">
+<div class="row" *ngIf="showForm">
+  <form #hospitalForm="ngForm" (ngSubmit)="addHospital(hospital)" novalidate>
+    <div class="col-md-2"></div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <input type="text" #refhospitalname="ngModel" required class="form-control" placeholder="*Hospital Name" name="hospital.hospitalName"
+          [(ngModel)]="hospital.hospitalName">
+        <div *ngIf="hos_name">
+          <div *ngIf="refhospitalname.errors && (refhospitalname.dirty || refhospitalname.touched)" class="alert alert-danger">
+            <div [hidden]="!refhospitalname.errors.required">
+              Please enter a Hospital name
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <input type="text" #refalias="ngModel" maxlength="4" required class="form-control" placeholder="*Hospital Alias" name="hospital.hospitalAlias"
+          [(ngModel)]="hospital.hospitalAlias">
+        <div *ngIf="hos_alias">
+          <div *ngIf="refalias.errors && (refalias.dirty || refalias.touched)" class="alert alert-danger">
+            <div [hidden]="!refalias.errors.required">
+              Please enter a Alias in 4 character
+            </div>
+            <div [hidden]="!refalias.errors.maxlength">
+              Please enter a Alias in 4 character
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <input type="text" #refhospitaltype="ngModel" required class="form-control" placeholder="*Hospital Type" name="hospital.hospitalType"
+          [(ngModel)]="hospital.hospitalType">
+        <div *ngIf="hos_type">
+          <div *ngIf="refhospitaltype.errors && (refhospitaltype.dirty || refhospitaltype.touched)" class="alert alert-danger">
+            <div [hidden]="!refhospitaltype.errors.required">
+              Please enter a Hospital type
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <textarea #refaddress="ngModel" required class="form-control" placeholder="*Hospital Address" name="hospital.hospitalAddress"
+          [(ngModel)]="hospital.hospitalAddress"></textarea>
+        <div *ngIf="hos_address">
+          <div *ngIf="refaddress.errors && (refaddress.dirty || refaddress.touched)" class="alert alert-danger">
+            <div [hidden]="!refaddress.errors.required">
+              Please enter a Hospital address
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <input type="text" #refmobileno="ngModel" pattern="[789][0-9]{9}" required class="form-control" placeholder="*Hospital PhoneNo"
+          name="hospital.hospitalPhoneno" [(ngModel)]="hospital.hospitalPhoneno">
+        <div *ngIf="hos_phoneno">
+          <div *ngIf="refmobileno.errors && (refmobileno.dirty || refmobileno.touched)" class="alert alert-danger">
+            <div [hidden]="!refmobileno.errors.required">
+              Please enter a Mobileno
+            </div>
+            <div [hidden]="!refmobileno.errors.pattern">
+              Please enter 10 digits
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <input type="text" #refemail="ngModel" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" class="form-control" placeholder="*Hospital Email"
+          name="hospital.hospitalEmail" [(ngModel)]="hospital.hospitalEmail">
+        <div *ngIf="hos_email">
+          <div *ngIf="refemail.errors && (refemail.dirty || refemail.touched)" class="alert alert-danger">
+            <div [hidden]="!refemail.errors.required">
+              Please enter a Email
+            </div>
+            <div [hidden]="!refemail.errors.pattern">
+              Please enter valid emailid
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="form-group">
-      <input type="text" class="form-control" placeholder="*Hospital Email" name="hospital.hospitalEmail" [(ngModel)]="hospital.hospitalEmail">
-    </div>
-    <div class="text-center">
-      <button type="button" class="btn btn-primary" (click)="addHospital(hospital)">Add Hospital</button>
+    <div class="col-md-4">
+      <div class="form-group">
+        <input type="text" #refwebsite="ngModel" pattern="https?://.+" required class="form-control" placeholder="*Hospital Website"
+          name="hospital.hospitalWebsite" [(ngModel)]="hospital.hospitalWebsite">
+        <div *ngIf="hos_website">
+          <div *ngIf="refwebsite.errors && (refwebsite.dirty || refwebsite.touched)" class="alert alert-danger">
+            <div [hidden]="!refwebsite.errors.required">
+              Please enter a Website
+            </div>
+            <div [hidden]="!refwebsite.errors.pattern">
+              Please enter valid website
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <select class="form-control" #refSurgeon="ngModel" required name="hospital.noOfSurgeons" [(ngModel)]="hospital.noOfSurgeons">
+            <option value="">--select Suregon--</option>
+             <ng-template ngFor let-item [ngForOf]="createRange(5)" let-currentElementIndex="index+1">
+               <option  [ngValue]="currentElementIndex">{{currentElementIndex}}</option>
+           </ng-template>           
+          </select>
+        <div *ngIf="hos_surgeon">
+          <div *ngIf="refSurgeon.errors && (refSurgeon.dirty || refSurgeon.touched)" class="alert alert-danger">
+            <div [hidden]="!refSurgeon.errors.required">
+              Select No of surgeon
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <select class="form-control" #refSupport="ngModel" required name="hospital.noOfSupportStaffs" [(ngModel)]="hospital.noOfSupportStaffs">
+            <option value="">--select Support staff--</option>
+            <ng-template ngFor let-item [ngForOf]="createRange(5)" let-currentElementIndex="index+1">
+               <option  [ngValue]="">{{currentElementIndex}}</option>
+           </ng-template>
+          </select>
+        <div *ngIf="hos_support">
+          <div *ngIf="refSupport.errors && (refSupport.dirty || refSupport.touched)" class="alert alert-danger">
+            <div [hidden]="!refSupport.errors.required">
+              Select No of support staff
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="form-group">
+        <label class="checkbox-inline"><input type="checkbox" value="">Knee</label>
+        <label class="checkbox-inline"><input type="checkbox" value="">Hip</label>
+        <label class="checkbox-inline"><input type="checkbox" value="">ACL</label>
+        <label class="checkbox-inline"><input type="checkbox" value="">PCL</label>
+        <label class="checkbox-inline"><input type="checkbox" value="">Spine</label>
+        <label class="checkbox-inline"><input type="checkbox" value="">All</label> 
+      </div>  -->
+
+      <div>
+        <button type="submit" [disabled]="!hospitalForm.form.valid" class="btn btn-primary" style="float:right;">Add Hospital</button>
+      </div>
     </div>
   </form>
 </div>
-
+<br><br><br>
 <div class="row" *ngIf="!showTable">
   <div class="col-md-offset-4 col-md-4">
     <h1 class="text-center">No Hospitals</h1>
   </div>
 </div>
 
-<div class="col-md-offset-2 col-md-8 col-md-offset-2" *ngIf="showForm && showTable">
+<div class="col-md-offset-1 col-md-10 col-md-offset-2" *ngIf="showForm && showTable">
   <table class="table">
-      <thead>
-        <tr>
-          <th>Hospital Name</th>
-          <th>Hospital Email</th>
-          <th>Branch</th>
-          <th>No of Branches</th>
-          <th>Edit</th>
-          <th>Delete</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let hospital of hospitalLists">
-          <td>{{hospital.hospitalName}}</td>
-          <td>{{hospital.hospitalEmail}}</td>
-          <td><button class="btn btn-warning btn-xs" (click)="manageBranch(hospital._id)">Manage</button>({{hospital.hasBranch}})</td>
-          <td>{{hospital.noOfBranches}}</td>
-          <td><button class="btn btn-primary btn-xs" (click)="editHospital(hospital._id)">Edit</button></td>
-          <td><button class="btn btn-danger btn-xs" (click)="deleteHospital(hospital._id)">Delete</button></td>
-        </tr>
-      </tbody>
+    <thead>
+      <tr>
+        <th>Hospital Name</th>
+        <th>Hospital Email</th>
+        <th>Branch</th>
+        <th>No of Branches</th>
+        <th>Alias</th>
+        <th>Edit</th>
+        <th>Delete</th>
+        <th>Deactive</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let hospital of hospitalLists">
+        <td>{{hospital.hospitalName}}</td>
+        <td>{{hospital.hospitalEmail}}</td>
+        <td><button class="btn btn-warning btn-xs" (click)="manageBranch(hospital._id)">Manage</button>({{hospital.hasBranch}})</td>
+        <td>{{hospital.noOfBranches}}</td>
+        <td>{{hospital.hospitalAlias}}</td>
+        <td><button class="btn btn-primary btn-xs" (click)="editHospital(hospital._id)">Edit</button></td>
+        <td><button class="btn btn-danger btn-xs" (click)="deleteHospital(hospital._id)">Delete</button></td>
+        <td><button type="button" class="btn btn-warning btn-xs" (click)="toggleStatus(hospital)">{{hospital.statusText}}</button> </td>
+      </tr>
+    </tbody>
   </table>
 </div>
 
 <!--Edit Hospital-->
-<div class="col-md-offset-4 col-md-4" *ngIf="!showForm">
+<div class="row" *ngIf="!showForm">
   <form>
-    <div class="form-group">
-      <input type="text" class="form-control" placeholder="*New Hospital Name" name="newHospital.newHospitalName" [(ngModel)]="newHospital.newHospitalName">
+    <div class="col-md-2"></div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="*New Hospital Name" name="newHospital.newHospitalName" [(ngModel)]="newHospital.newHospitalName">
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="*New Hospital Alias" name="newHospital.newHospitalAlias" [(ngModel)]="newHospital.newHospitalAlias">
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="*New Hospital Type" name="newHospital.newHospitalType" [(ngModel)]="newHospital.newHospitalType">
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="*New Hospital Address" name="newHospital.newHospitalAddress" [(ngModel)]="newHospital.newHospitalAddress">
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="*New Hospital Phone No" name="newHospital.newHospitalPhoneno" [(ngModel)]="newHospital.newHospitalPhoneno">
+      </div>
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="*New Hospital Email" name="newHospital.newHospitalEmail" [(ngModel)]="newHospital.newHospitalEmail">
+      </div>
     </div>
-    <div class="form-group">
-      <input type="text" class="form-control" placeholder="*New Hospital Email" name="newHospital.newHospitalEmail" [(ngModel)]="newHospital.newHospitalEmail">
-    </div>
-    <div class="form-group" class="hidden">
-      <input type="text" class="form-control" placeholder="*New Hospital Id" name="newHospital.newHospitalId" [(ngModel)]="newHospital.newHospitalId">
-    </div>
-    <div class="text-center">
-      <button type="button" class="btn btn-primary" (click)="updateHospital(newHospital)">Update</button>
-      <button type="button" class="btn btn-danger" (click)="goBack()">Back</button>
+    <div class="col-md-4">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="*New Hospital Website" name="newHospital.newHospitalWebsite" [(ngModel)]="newHospital.newHospitalWebsite">
+      </div>
+      <div class="form-group">
+        <select class="form-control" name="newHospital.newNoOfSurgeons" [(ngModel)]="newHospital.newNoOfSurgeons">
+            <option [ngValue]="1">1</option>
+           <option [ngValue]="2">2</option>            
+          </select>
+      </div>
+      <div class="form-group">
+        <select class="form-control" name="newHospital.newNoOfSupportStaffs" [(ngModel)]="newHospital.newNoOfSupportStaffs">
+            <option [ngValue]="1">1</option>
+           <option [ngValue]="2">2</option>            
+          </select>
+      </div>
+      <div class="form-group" class="hidden">
+        <input type="text" class="form-control" placeholder="*New Hospital Id" name="newHospital.newHospitalId" [(ngModel)]="newHospital.newHospitalId">
+      </div>
+
+      <div class="text-center">
+        <button type="button" class="btn btn-primary" (click)="updateHospital(newHospital)">Update</button>
+        <button type="button" class="btn btn-danger" (click)="goBack()">Back</button>
+      </div>
     </div>
   </form>
 </div>

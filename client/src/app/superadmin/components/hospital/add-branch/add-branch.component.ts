@@ -20,25 +20,59 @@ export class AddBranchComponent implements OnInit {
   editFromHospital = false;
   showTable = false;
   showAddBranchPage = false;
+  branch_hospital = true;
+  branch_alias = true;
+  branch_type = true;
+  branch_name = true;
+  branch_address = true;
+  branch_phoneno = true;
+  branch_email = true;
+  branch_website = true;
+  branch_surgeon = true;
+  branch_support = true;
+
+
+
 
   newBranch = {
-    hospitalId :'',
+     hospitalId :'',
     newBranchId:'',
+    newBranchAlias :'',
+    newBranchType:'',
     newBranchName:'',
-    newBranchEmail:''
+    newBranchAddress:'',
+    newBranchPhoneno:'',
+    newBranchEmail:'',
+    newBranchWebsite:'',
+    newNoOfSurgeons:'',
+    newNoOfSupportStaffs:''
   };
 
   branch = {
     hospitalId:'',
+    branchAlias:'',
+    branchType:'',
     branchName:'',
-    branchEmail:''
+    branchAddress:'',
+    branchPhoneno:'',
+    branchEmail:'',
+    branchWebsite:'',
+    noOfSurgeons:'',
+    noOfSupportStaffs:''
   };
 
   newBranchEdit = {
     hospitalId :'',
     newBranchId:'',
+    newBranchAlias :'',
+    newBranchType:'',
     newBranchName:'',
-    newBranchEmail:''
+    newBranchAddress:'',
+    newBranchPhoneno:'',
+    newBranchEmail:'',
+    newBranchWebsite:'',
+    newNoOfSurgeons:'',
+    newNoOfSupportStaffs:''
   }
 
   removeBranch = {
@@ -74,9 +108,25 @@ export class AddBranchComponent implements OnInit {
   addBranch(branch){
     console.log(branch);
     this.hospitalService.addBranch(branch).subscribe(data => {
-      console.log(data.message);
+      console.log(data.message);      
+      this.branch.branchAlias='';
+      this.branch.branchType = '';
       this.branch.branchName = '';
+      this.branch.branchAddress = '';
+      this.branch.branchPhoneno = '';
       this.branch.branchEmail = '';
+      this.branch.branchWebsite = '';
+      this.branch.noOfSurgeons = '';
+      this.branch.noOfSupportStaffs = '';
+      this.branch_alias = false;
+      this.branch_type = false;
+      this.branch_name = false;
+      this.branch_address = false;
+      this.branch_phoneno = false;
+      this.branch_email = false;
+      this.branch_website = false;
+      this.branch_surgeon = false;
+      this.branch_support = false;
       this.showAddBranchForm(branch.hospitalId);
     });
   }
@@ -89,9 +139,17 @@ export class AddBranchComponent implements OnInit {
       if(data.success){
         console.log(data.message);
         this.newBranch.newBranchId = data.message._id;
+        this.newBranch.newBranchAlias = data.message.branchAlias;
+        this.newBranch.newBranchType = data.message.branchType;
         this.newBranch.newBranchName = data.message.branchName;
+        this.newBranch.newBranchAddress = data.message.branchAddress;
+        this.newBranch.newBranchPhoneno = data.message.branchPhoneno;
         this.newBranch.newBranchEmail = data.message.branchEmail;
+        this.newBranch.newBranchWebsite = data.message.branchWebsite;
+        this.newBranch.newNoOfSurgeons = data.message.noOfSurgeons;
+        this.newBranch.newNoOfSupportStaffs = data.message.noOfSupportStaffs;
         this.newBranch.hospitalId = this.currentUrl.id;
+        console.log(data.message);
       }
     });
   }
@@ -127,8 +185,15 @@ export class AddBranchComponent implements OnInit {
       if(data.success){
         console.log(data.message);
         this.newBranchEdit.newBranchId = data.message._id;
+        this.newBranchEdit.newBranchAlias = data.message.branchAlias;
+        this.newBranchEdit.newBranchType = data.message.branchType;
         this.newBranchEdit.newBranchName = data.message.branchName;
+        this.newBranchEdit.newBranchAddress = data.message.branchAddress;
+        this.newBranchEdit.newBranchPhoneno = data.message.branchPhoneno;
         this.newBranchEdit.newBranchEmail = data.message.branchEmail;
+        this.newBranchEdit.newBranchWebsite = data.message.branchWebsite;
+        this.newBranchEdit.newNoOfSurgeons = data.message.noOfSurgeons;
+        this.newBranchEdit.newNoOfSupportStaffs = data.message.noOfSupportStaffs;
         this.newBranchEdit.hospitalId = hospitalId;
       }
     });
@@ -149,14 +214,16 @@ export class AddBranchComponent implements OnInit {
     });
   }
 
-  updateBranchEdit(newBranch){
-    this.hospitalService.updateBranch(newBranch).subscribe(data => {
+  updateBranchEdit(newBranchEdit){
+    console.log(newBranchEdit);
+    this.hospitalService.updateBranch(newBranchEdit).subscribe(data => {
+      console.log(data.message);
         if(data.success){
           this.editFromHospital = false;
-          this.hospitalService.getBranches(newBranch.hospitalId).subscribe(data => {
+          this.hospitalService.getBranches(newBranchEdit.hospitalId).subscribe(data => {
             this.branchLists = data.message;
             for(let i=0;i<this.branchLists.length;i++){
-                this.branchLists[i].hospitalId = newBranch.hospitalId;
+                this.branchLists[i].hospitalId = newBranchEdit.hospitalId;
             }
           });
         }

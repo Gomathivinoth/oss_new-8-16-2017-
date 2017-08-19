@@ -11,18 +11,43 @@ export class AddHospitalComponent implements OnInit {
 
   hospitalLists;
   hospitalToBeUpdated;
+  surgonNames;
+  refhospitalname;
+  hos_name = true;
+  hos_alias= true;
+  hos_type= true;
+  hos_address= true;
+  hos_phoneno= true;
+  hos_email= true;
+  hos_website= true;
+  hos_surgeon= true;
+  hos_support= true;
 
   showForm = true;
   showTable = false;
 
   hospital = {
     hospitalName:'',
-    hospitalEmail:''
+    hospitalAlias:'',
+    hospitalType:'',
+    hospitalAddress:'',
+    hospitalPhoneno:'',
+    hospitalEmail:'',
+    hospitalWebsite:'',
+    noOfSurgeons:'',
+    noOfSupportStaffs:''
   }
 
   newHospital = {
     newHospitalName:'',
+    newHospitalAlias: '',
+    newHospitalType : '',
+    newHospitalAddress:'',
+    newHospitalPhoneno:'',
     newHospitalEmail:'',
+    newHospitalWebsite:'',
+    newNoOfSurgeons:'',
+    newNoOfSupportStaffs:'',
     newHospitalId:''
   }
 
@@ -32,14 +57,28 @@ export class AddHospitalComponent implements OnInit {
   ) { }
 
   addHospital(hospital){
-    this.hospitalService.addHospital(hospital).subscribe(data => {
-        if(data.success){
-          this.getHospitals();
-          this.hospital = {
-              hospitalName:'',
-              hospitalEmail:''
-          }
-        }
+    console.log(hospital);
+    this.hospitalService.addHospital(hospital).subscribe(data => {       
+          this.getHospitals();   
+          this.hospital.hospitalName = '';
+          this.hospital.hospitalAlias = '';
+          this.hospital.hospitalType = '';
+          this.hospital.hospitalAddress ='';
+          this.hospital.hospitalPhoneno ='';
+          this.hospital.hospitalEmail = '';
+          this.hospital.hospitalWebsite = '';
+          this.hospital.noOfSurgeons = '';
+          this.hospital.noOfSupportStaffs = '';
+          this.hos_name = false;
+          this.hos_alias = false;
+          this.hos_type = false;
+          this.hos_address = false;
+          this.hos_phoneno = false;
+          this.hos_email = false;
+          this.hos_website = false;
+          this.hos_surgeon = false;
+          this.hos_support = false;
+       
     });
   }
 
@@ -53,12 +92,24 @@ export class AddHospitalComponent implements OnInit {
       }
     });
   }
+  //  getSurgeonName(){
+  //   this.hospitalService.getSurgeonName().subscribe(data => {
+  //     this.surgonNames = data.message;
+  //   });
+  // }
 
   editHospital(id){
     this.showForm = false;
     this.hospitalService.getSingleHospital(id).subscribe(data => {
       this.newHospital.newHospitalName = data.message.hospitalName;
+      this.newHospital.newHospitalAlias = data.message.hospitalAlias;
+      this.newHospital.newHospitalType = data.message.hospitalType;
+      this.newHospital.newHospitalAddress = data.message.hospitalAddress;
+      this.newHospital.newHospitalPhoneno = data.message.hospitalPhoneno;
       this.newHospital.newHospitalEmail = data.message.hospitalEmail;
+      this.newHospital.newHospitalWebsite = data.message.hospitalWebsite;
+      this.newHospital.newNoOfSurgeons = data.message.noOfSurgeons;
+      this.newHospital.newNoOfSupportStaffs = data.message.noOfSupportStaffs;
       this.newHospital.newHospitalId = data.message._id;
       //console.log(this.newHospital);
     });
@@ -85,8 +136,24 @@ export class AddHospitalComponent implements OnInit {
     this.router.navigate(['superadmin/hospital/add-branch/',id]);
   }
 
+   createRange(){
+    const items: number[] = [];
+    for(var i = 1; i <= 20; i++){
+       items.push(i);
+    }
+    return items;
+  }
+
+  toggleStatus(hospital){
+    console.log(hospital);
+    this.hospitalService.toggleHospitalStatus(hospital).subscribe(data => {
+      this.getHospitals();
+    });
+  }
   ngOnInit() {
     this.getHospitals();
+    this.createRange();
+     
   }
 
 }

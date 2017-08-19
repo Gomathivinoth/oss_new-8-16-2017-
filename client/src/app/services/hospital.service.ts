@@ -63,6 +63,11 @@ export class HospitalService {
     this.createAuthenticationHeaders(); // Create headers
     return this.http.get(this.domain + 'authentication/getHospitals',this.options).map(res => res.json());
   }
+
+  // getSurgeonName(){
+  //   this.createAuthenticationHeaders(); // Create headers
+  //   return this.http.get(this.domain + 'authentication/getSurgeonName',this.options).map(res => res.json());
+  // }
   
   getSingleHospital(id){
       this.createAuthenticationHeaders(); // Create headers
@@ -105,6 +110,91 @@ export class HospitalService {
   deleteBranch(id){
     this.createAuthenticationHeaders(); // Create headers
     return this.http.post(this.domain + 'authentication/deleteBranch/',id , this.options).map(res => res.json());
+  }
+
+   getUserDetails(id){
+    //console.log(id);
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.get(this.domain + 'authentication/getUserDetails/'+id , this.options).map(res => res.json());
+  }
+
+  addHospitalAdmin(hospitalAdmin){
+   // console.log(hospitalAdmin);
+  this.createAuthenticationHeaders(); // Create headers
+    return this.http.post(this.domain + 'authentication/addHospitalAdmin', hospitalAdmin, this.options).map(res => res.json());
+  }
+
+  deleteHospitalAdmin(id){
+      //console.log(id);
+      this.createAuthenticationHeaders(); // Create headers
+      return this.http.delete(this.domain + 'authentication/deleteHospitalAdmin/'+id , this.options).map(res => res.json());
+  }
+  
+   getSingleUser(id){
+    //console.log(id);
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.get(this.domain + 'authentication/getSingleUser/'+id , this.options).map(res => res.json());
+  }
+
+   updateHospitalAdmin(editAdmin){
+     // console.log(id);
+      this.createAuthenticationHeaders(); // Create headers
+      return this.http.put(this.domain + 'authentication/updateHospitalAdmin/' , editAdmin , this.options).map(res => res.json());
+  }
+
+getBranchUserDetails(id){
+    //console.log(id);
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.get(this.domain + 'authentication/getBranchUserDetails/'+id , this.options).map(res => res.json());
+  }
+
+  addBranchAdmin(branchAdmin){
+    //console.log(branchAdmin);
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.post(this.domain + 'authentication/addBranchAdmin', branchAdmin, this.options).map(res => res.json());
+  }
+  
+  addSurgeon(surgeon){
+   // console.log(surgeon);
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.post(this.domain + 'authentication/addSurgeon', surgeon, this.options).map(res => res.json());
+  }
+
+  getSurgeon(id){
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.get(this.domain + 'authentication/getSurgeon/'+id , this.options).map(res => res.json());
+  }
+
+  getBranchSurgeonDetails(id){
+    //console.log(id);
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.get(this.domain + 'authentication/getBranchSurgeonDetails/'+id , this.options).map(res => res.json());
+  }
+
+   addSupportStaff(supportStaff){
+   // console.log(surgeon);
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.post(this.domain + 'authentication/addSupportStaff', supportStaff, this.options).map(res => res.json());
+  }
+  getHospitalDetails(id){
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.get(this.domain + 'authentication/getHospitalDetails/'+id , this.options).map(res => res.json());
+  }
+  getHospitalBranchDetails(id){
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.get(this.domain + 'authentication/getHospitalBranchDetails/'+id , this.options).map(res => res.json());
+  }
+  
+   toggleHospitalStatus(hospital){
+    console.log(hospital);
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.put(this.domain + 'authentication/updateHospitalStatus/' , hospital , this.options).map(res => res.json());
+  }
+
+  toggleUserStatus(id){
+    console.log(id);
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.put(this.domain + 'authentication/toggleUserStatus/' , id , this.options).map(res => res.json());
   }
 
 }
