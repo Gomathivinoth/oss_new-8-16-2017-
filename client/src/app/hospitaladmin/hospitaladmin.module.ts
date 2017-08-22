@@ -1,4 +1,6 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import {AppRoutingModule} from './hospitaladmin.routing';
 import { HospitaladminComponent } from './hospitaladmin.component';
 import { HospitalComponent } from './components/hospital/hospital.component';
@@ -9,6 +11,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AddHospitalComponent } from './components/hospital/add-hospital/add-hospital.component';
 import { AddBranchComponent } from './components/hospital/add-branch/add-branch.component';
+import { AddSurgeonComponent } from './components/user/add-surgeon/add-surgeon.component';
+import { AddSupportStaffComponent } from './components/user/add-support-staff/add-support-staff.component';
 
 
 
@@ -22,10 +26,14 @@ import { AddBranchComponent } from './components/hospital/add-branch/add-branch.
     NavbarComponent,
     DashboardComponent,
     AddHospitalComponent,
-    AddBranchComponent 
+    AddBranchComponent,
+    AddSurgeonComponent,
+    AddSupportStaffComponent 
   ],
   imports: [
-    AppRoutingModule
+    AppRoutingModule,    
+    CommonModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [HospitaladminComponent]

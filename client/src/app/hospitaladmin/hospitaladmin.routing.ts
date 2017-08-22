@@ -11,50 +11,59 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 import { AddHospitalComponent } from './components/hospital/add-hospital/add-hospital.component';
 import { AddBranchComponent } from './components/hospital/add-branch/add-branch.component';
+import { AddSurgeonComponent } from './components/user/add-surgeon/add-surgeon.component';
+import { AddSupportStaffComponent } from './components/user/add-support-staff/add-support-staff.component';
 
 // Our Array of Angular 2 Routes
 const appRoutes: Routes = [
   {
     path: '',
-    component: HospitaladminComponent ,// Default Route
-    children:[
+    component: HospitaladminComponent,// Default Route
+    children: [
       {
-        path:'hospital',
-        component:HospitalComponent,
-        children:[
+        path: 'hospital',
+        component: HospitalComponent,
+        children: [
+
           {
-            path:'add-hospital',
-            component:AddHospitalComponent
-          },
-          {
-            path:'add-branch',
-            component:AddBranchComponent
+            path: 'add-branch',
+            component: AddBranchComponent
           }
         ]
       },
       {
-        path:'user',
-        component:UserComponent
+        path: 'user',
+        component: UserComponent,
+        children: [
+          {
+            path: 'add-support-staff',
+            component: AddSupportStaffComponent
+          },
+          {
+            path: 'add-surgeon',
+            component: AddSurgeonComponent
+          }
+        ]
       },
       {
-        path:'prosthesis',
-        component:ProsthesisComponent
+        path: 'prosthesis',
+        component: ProsthesisComponent
       },
       {
-        path:'options',
-        component:OptionsComponent
+        path: 'options',
+        component: OptionsComponent
       },
       {
-        path:'dashboard',
-        component:DashboardComponent
+        path: 'dashboard',
+        component: DashboardComponent
       }
     ]
   },
   {
-    path:'navbar',
-    component:NavbarComponent
+    path: 'navbar',
+    component: NavbarComponent
   }
-  
+
 ];
 
 @NgModule({

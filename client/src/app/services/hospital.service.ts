@@ -28,7 +28,7 @@ export class HospitalService {
 
   // Function to get token from client local storage
   loadToken() {
-    this.authToken = localStorage.getItem('token');; // Get token and asssign to variable to be used elsewhere
+    this.authToken = localStorage.getItem('token'); // Get token and asssign to variable to be used elsewhere
   }
 
   login(user){
@@ -42,9 +42,11 @@ export class HospitalService {
     localStorage.clear(); // Clear local storage
   }
 
-  storeUserData(token, user) {
+  storeUserData(token, user , hospitalId) {
+    console.log(hospitalId);
     localStorage.setItem('token', token); // Set token in local storage
     localStorage.setItem('user', JSON.stringify(user)); // Set user in local storage as string
+    localStorage.setItem('hospitalId',JSON.stringify(hospitalId));
     this.authToken = token; // Assign token to be used elsewhere
     this.user = user; // Set user to be used elsewhere
   }

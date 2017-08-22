@@ -44,6 +44,7 @@ module.exports = (router) => {
   ================================================ */
       router.use((req, res, next) => {
         const token = req.headers['authorization']; // Create token found in headers
+        //console.log(token);
         // Check if token was found in headers
         if (!token) {
           res.json({ success: false, message: 'No token provided' }); // Return error
@@ -587,8 +588,8 @@ module.exports = (router) => {
     //Get User Details
     router.get('/getBranchUserDetails/:id', (req, res) => {
         const [hospital_id, branch_id] = req.params.id.split('-');
-        console.log(branch_id);
-        console.log(branch_id);
+        //console.log(branch_id);
+        //console.log(branch_id);
         if (!hospital_id) {
             res.json({ success: false, message: 'No hospital id provided' });
         } else {
@@ -715,8 +716,8 @@ module.exports = (router) => {
 
     router.get('/getSurgeon/:id', (req, res) => {
         const [hospital_id, branch_id] = req.params.id.split('-');
-        console.log(branch_id);
-        console.log(branch_id);
+        //console.log(branch_id);
+        //console.log(branch_id);
         if (!hospital_id) {
             res.json({ success: false, message: 'No hospital id provided' });
         } else {
@@ -821,8 +822,8 @@ module.exports = (router) => {
     });
     router.get('/getHospitalBranchDetails/:id', (req, res) => {
         const [hospital_id, branch_id] = req.params.id.split('-');
-        console.log(hospital_id);
-        console.log(branch_id);
+        //console.log(hospital_id);
+        //console.log(branch_id);
         if (!hospital_id) {
             res.json({ success: false, message: 'No hospital Id provided' });
         } else {

@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 
 import { HospitalService } from './services/hospital.service';
+import { HospitalAdminService } from './services/hospital-admin.service';
 
 import { AuthGuard } from './guards/auth.guard';
 
@@ -22,7 +23,7 @@ import { AuthGuard } from './guards/auth.guard';
     FormsModule,
     HttpModule
   ],
-  providers: [HospitalService , AuthGuard],
+  providers: [HospitalService ,HospitalAdminService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
