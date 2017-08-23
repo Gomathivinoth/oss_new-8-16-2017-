@@ -149,3 +149,56 @@
     </div>
   </div>
 </div>
+
+<!--Edit Hospital-->
+<div class="row" *ngIf="!showForm">
+  <form>
+    <div class="col-md-2"></div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" class="form-control" placeholder="*New  Name" name="editSupport.editname" [(ngModel)]="editSupport.editname">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="text" class="form-control" placeholder="*New Email" name="editSupport.editemail" [(ngModel)]="editSupport.editemail">
+      </div>
+      <div class="form-group">
+        <label>Phoneno</label>
+        <input type="text" class="form-control" placeholder="*New Phoneno" name="editSupport.editphoneno" [(ngModel)]="editSupport.editphoneno">
+      </div>
+    </div>
+    <div class="col-md-4">
+
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" class="form-control" placeholder="*New Username" name="editSupport.editusername" [(ngModel)]="editSupport.editusername">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="text" class="form-control" placeholder="*New Password" name="editSupport.editpassword" [(ngModel)]="editSupport.editpassword">
+      </div>
+      <div class="form-group" class="hidden">
+        <input type="text" class="form-control" placeholder="*New Hospital id" name="editSupport.hospitalId" [(ngModel)]="editSupport.hospitalId">
+      </div>
+
+      <div class="form-group" class="hidden">
+        <input type="text" class="form-control" placeholder="*New branch Id" name="editSupport.branchId" [(ngModel)]="editSupport.branchId">
+      </div>
+
+      <div class="form-group" class="hidden">
+        <input type="text" class="form-control" placeholder="*New branch Id" name="editSupport.surgeonId" [(ngModel)]="editSupport.surgeonId">
+      </div>
+
+      <div class="form-group" class="hidden">
+        <input type="text" class="form-control" placeholder="*New User Id" name="editSupport.userId" [(ngModel)]="editSupport.userId">
+      </div>
+
+      <div class="text-center">
+        <button type="button" class="btn btn-primary" (click)="updateSupport(editSupport)">Update</button>
+        <button type="button" class="btn btn-danger" (click)="goBack()">Back</button>
+      </div>
+    </div>
+  </form>
+</div>
+<!--Edit Support staff-->

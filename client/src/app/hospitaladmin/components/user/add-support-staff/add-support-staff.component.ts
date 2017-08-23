@@ -45,6 +45,18 @@ export class AddSupportStaffComponent implements OnInit {
     password: ''
   }
 
+  editSupport = {
+    userId: '',
+    branchId: '',
+    hospitalId: '',
+    surgeonId: '',
+    editname: '',
+    editemail: '',
+    editphoneno: '',
+    editusername: '',
+    editpassword: ''
+  }
+
   getHospitalInfo() {
     this.hospitalId = localStorage.getItem('hospitalId');
     //console.log(this.hospitalId);
@@ -71,6 +83,7 @@ export class AddSupportStaffComponent implements OnInit {
 
   }
   showSurgeonName(id) {
+    const [hospital_id, branch_id, surgeon_id] = id.split('-');
     this.showSupport = true;
     this.hospitalAdminService.getSupportStaffInfo(id).subscribe(data => {
       this.supportLists = data.message;
@@ -80,6 +93,9 @@ export class AddSupportStaffComponent implements OnInit {
         this.showTable = true;
       }
 
+    });
+    this.hospitalAdminService.getSingleUserDetail(surgeon_id).subscribe(data => {
+      this.supportStaff.surgeonName = data.message.name;
     });
   }
 
@@ -101,15 +117,39 @@ export class AddSupportStaffComponent implements OnInit {
     });
   }
 
-  deleteSupportStaff(id){
+  editSupportStaff(id) {
+    this.showForm = false;
+    this.hospitalAdminService.getSingleUserDetail(id).subscribe(data => {
+      this.editSupport.editname = data.message.name;
+      this.editSupport.editemail = data.message.email;
+      this.editSupport.editphoneno = data.message.phoneno;
+      this.editSupport.editusername = data.message.username;
+      this.editSupport.editpassword = data.message.password;
+      this.editSupport.hospitalId = data.message.hospitalId;
+      this.editSupport.branchId = data.message.branchId;
+      this.editSupport.surgeonId = data.message.surgeonId;
+      this.editSupport.userId = data.message._id;
+    });
+
+  }
+
+  updateSupport(editSupport) {
+    this.hospitalAdminService.updateUserDetail(editSupport).subscribe(data => {
+      this.showForm = true;
+      const id = editSupport.hospitalId + '-' + editSupport.branchId + '-' + editSupport.surgeonId;
+      this.showSurgeonName(id);
+    });
+  }
+
+  deleteSupportStaff(id) {
     console.log(id);
-    this.hospitalAdminService.deleteUserDetails(id).subscribe(data =>{
+    this.hospitalAdminService.deleteUserDetails(id).subscribe(data => {
       const id = data.data + '-' + data.data1 + '-' + data.data2;
       this.showSurgeonName(id);
     });
   }
 
-   toggleStatus(user) {
+  toggleStatus(user) {
     console.log(user);
     this.hospitalAdminService.toggleUserStatus(user).subscribe(data => {
       const id = user.hospitalId + "-" + user.branchId + "-" + user.surgeonId;
@@ -117,6 +157,11 @@ export class AddSupportStaffComponent implements OnInit {
       this.showSurgeonName(id);
     });
   }
+
+  goBack() {
+    this.showForm = true;
+  }
+
 
   ngOnInit() {
     this.getHospitalInfo();

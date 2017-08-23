@@ -15,7 +15,9 @@ const hospitalSchema = new Schema({
     noOfSupportStaffs: { type: Number, default: 0 },
     hasBranch: { type: String, default: 'No' },
     noOfBranches: { type: Number, default: 0 },
-    active: { type: Boolean, default: true },
+    fileName: { type: String },
+    filetype: { type: String },
+    active: { type: Boolean, default: false },
     statusText: { type: String, default: 'Activate' },
     branchDetails: [{
         branchAlias: { type: String, required: true, unique: true },
@@ -27,7 +29,9 @@ const hospitalSchema = new Schema({
         branchWebsite: { type: String, required: true, lowercase: true },
         noOfSurgeons: { type: Number, default: 0 },
         noOfSupportStaffs: { type: Number, default: 0 },
-        active: { type: Boolean, default: true },
+        fileName: { type: String },
+        filetype: { type: String },
+        active: { type: Boolean, default: false },
         statusText: { type: String, default: 'Activate' },
         service: [{
             serviceName: { type: String },

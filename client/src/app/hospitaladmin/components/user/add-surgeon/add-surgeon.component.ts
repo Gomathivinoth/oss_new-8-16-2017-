@@ -45,7 +45,7 @@ export class AddSurgeonComponent implements OnInit {
   }
 
   editSurgeon = {
-    userId:'',
+    userId: '',
     branchId: '',
     hospitalId: '',
     editname: '',
@@ -131,9 +131,9 @@ export class AddSurgeonComponent implements OnInit {
 
   }
 
-  updateSurgeon(editSurgeon){   
+  updateSurgeon(editSurgeon) {
     this.hospitalAdminService.updateUserDetail(editSurgeon).subscribe(data => {
-       this.showForm = true;
+      this.showForm = true;
       const id = editSurgeon.hospitalId + '-' + editSurgeon.branchId;
       this.showBranchName(id);
     });
@@ -156,8 +156,8 @@ export class AddSurgeonComponent implements OnInit {
     });
   }
 
-   goBack() {
-   this.showForm = true;
+  goBack() {
+    this.showForm = true;
   }
 
   ngOnInit() {

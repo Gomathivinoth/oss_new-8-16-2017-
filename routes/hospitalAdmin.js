@@ -25,7 +25,7 @@ module.exports = (router) => {
     });
 
     router.post('/hospital_AddBranch', (req, res) => {
-        //console.log(req.body.service.length);
+
         if (!req.body.hospitalId) {
             res.json({ success: false, message: 'No hospital id provided' });
         } else {
@@ -73,20 +73,12 @@ module.exports = (router) => {
                                                                 branchEmail: req.body.branchEmail,
                                                                 branchWebsite: req.body.branchWebsite,
                                                                 noOfSurgeons: req.body.noOfSurgeons,
-                                                                noOfSupportStaffs: req.body.noOfSupportStaffs
+                                                                noOfSupportStaffs: req.body.noOfSupportStaffs,
+                                                                fileName: req.body.filename,
+                                                                filetype: req.body.filetype,
+                                                                service: req.body.service
 
                                                             });
-
-                                                            // for (let i = 0; i < req.body.service.length; i++) {
-                                                            //     hospital.branchDetails.service[i].push({
-                                                            //         service:req.body.service[i]
-                                                            //     });
-
-                                                            //     //  hospital.branchDetails.service[i]= req.body.service[i];
-
-                                                            // }
-
-
                                                             hospital.noOfBranches++;
                                                             hospital.hasBranch = 'Yes';
                                                             hospital.save((err) => {
@@ -111,6 +103,117 @@ module.exports = (router) => {
         }
     });
 
+    router.post('/hospital_EditBranch', (req, res) => {
+        console.log(req.body);
+        if (!req.body.hospitalId) {
+            res.json({ success: false, message: 'No hospital Id provided' });
+        } else {
+            if (!req.body.branchId) {
+                res.json({ success: false, message: 'No branch Id provided' });
+            } else {
+                req.body.hospitalId = mongoose.Types.ObjectId(req.body.hospitalId);
+                req.body.branchId = mongoose.Types.ObjectId(req.body.branchId);
+                Hospital.findOne({ _id: req.body.hospitalId }, (err, hospital) => {
+                    if (err) {
+                        res.json({ success: false, message: 'Not a valid hospital Id' });
+                    } else {
+                        if (!hospital) {
+                            res.json({ success: false, message: 'No hospital found!' });
+                        } else {
+                            for (let i = 0; i < hospital.branchDetails.length; i++) {
+                                if (req.body.branchId.equals(hospital.branchDetails[i]._id)) {
+                                    res.json({ success: true, message: hospital.branchDetails[i] });
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    });
+
+    //Delete Branch
+    router.post('/hospital_DeleteBranch', (req, res) => {
+        console.log(req.body);
+        if (!req.body.hospitalId) {
+            res.json({ success: false, message: 'No hospital id provided!' });
+        } else {
+            if (!req.body.branchId) {
+                res.json({ success: false, message: 'No branch Id provided!' });
+            } else {
+                req.body.hospitalId = mongoose.Types.ObjectId(req.body.hospitalId);
+                req.body.branchId = mongoose.Types.ObjectId(req.body.branchId);
+                Hospital.findOne({ _id: req.body.hospitalId }, (err, hospital) => {
+                    if (err) {
+                        res.json({ success: false, message: 'Not a valid Hospital Id!' });
+                    } else {
+                        if (!hospital) {
+                            res.json({ success: false, message: 'No hospital found!' });
+                        } else {
+                            for (let i = 0; i < hospital.branchDetails.length; i++) {
+                                if (req.body.branchId.equals(hospital.branchDetails[i]._id)) {
+                                    hospital.branchDetails.splice(i, 1);
+                                    hospital.noOfBranches--;
+                                    if (hospital.noOfBranches < 1) {
+                                        hospital.hasBranch = 'No';
+                                    }
+                                    hospital.save((err) => {
+                                        if (err) {
+                                            res.json({ success: false, message: err });
+                                        } else {
+                                            res.json({ success: true, message: 'Branch deleted' });
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    });
+
+    router.put('/toggleHospitalStatus', (req, res) => {
+        console.log(req.body);
+        if (!req.body.hospitalId) {
+            res.json({ success: false, message: 'No hospital id provided!' });
+        } else {
+            if (!req.body.branchId) {
+                res.json({ success: false, message: 'No branch Id provided!' });
+            } else {
+                req.body.hospitalId = mongoose.Types.ObjectId(req.body.hospitalId);
+                req.body.branchId = mongoose.Types.ObjectId(req.body.branchId);
+                Hospital.findOne({ _id: req.body.hospitalId }, (err, hospital) => {
+                    if (err) {
+                        res.json({ success: false, message: 'Not a valid Hospital Id!' });
+                    } else {
+                        if (!hospital) {
+                            res.json({ success: false, message: 'No hospital found!' });
+                        } else {
+                            for (let i = 0; i < hospital.branchDetails.length; i++) {
+                                if (req.body.branchId.equals(hospital.branchDetails[i]._id)) {
+                                    if (hospital.branchDetails[i].active) {
+                                        hospital.branchDetails[i].active = false;
+                                        hospital.branchDetails[i].statusText = 'Activate';
+                                    } else {
+                                        hospital.branchDetails[i].active = true;
+                                        hospital.branchDetails[i].statusText = 'Deactivate';
+                                    }
+                                    hospital.save((err) => {
+                                        if (err) {
+                                            res.json({ success: false, message: err });
+                                        } else {
+                                            res.json({ success: true, message: 'Branch deleted' });
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    });
 
     router.get('/getSurgeonInfo/:id', (req, res) => {
         const [hospital_id, branch_id] = req.params.id.split('-');

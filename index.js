@@ -1,4 +1,6 @@
 const express = require('express');
+const multer = require('multer');
+const path = require('path');
 const app = express();
 const router = express.Router();
 const mongoose = require('mongoose');
@@ -19,6 +21,15 @@ mongoose.connect(config.uri , (err) => {
     }
 });
 
+app.use(express.static(path.join(__dirname, 'uploads')));
+
+// para CORN
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 app.use(cors({
     origin : 'http://localhost:4200'
 }));
@@ -31,6 +42,32 @@ app.use(bodyParser.json())
 
 app.use('/authentication',authentication);
 app.use('/hospitalAdmin',hospitalAdmin);
+
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+
+var storage = multer.diskStorage({
+  // destino del fichero
+  destination: function (req, file, cb) {
+    cb(null, './uploads/')
+  },
+  // renombrar fichero
+  filename: function (req, file, cb) {
+    var dt = new Date().toJSON().slice(0,10).replace(/-/g,'-');
+    cb(null,dt+'-'+file.originalname);
+  }
+});
+
+var upload = multer({ storage: storage });
+
+app.post("/upload", upload.array("uploads[]", 12), function (req, res) {
+  console.log('files', req.files);
+  res.send(req.files);
+});
 
 app.listen(3000, () => {
     console.log('Listening on port 3000');

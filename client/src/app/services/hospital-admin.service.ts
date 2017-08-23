@@ -34,18 +34,37 @@ export class HospitalAdminService {
   }
 
   hospital_AddBranch(branch) {
-    console.log(branch);
+    //console.log(branch);
     this.createAuthenticationHeaders(); // Create headers
     return this.http.post(this.domain + 'hospitalAdmin/hospital_AddBranch/', branch, this.options).map(res => res.json());
 
   }
+
+  hospital_EditBranch(id){
+    console.log(id);
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.post(this.domain + 'authentication/hospital_EditBranch/', id , this.options).map(res => res.json());
+  }
+
+  hospital_DeleteBranch(id){
+   //console.log(id);
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.post(this.domain + 'hospitalAdmin/hospital_DeleteBranch/',id , this.options).map(res => res.json());
+  }
+
+    toggleHospitalStatus(id){
+    console.log(id);
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.put(this.domain + 'hospitalAdmin/toggleHospitalStatus/' , id , this.options).map(res => res.json());
+  }
+
   getSurgeonInfo(id) {
     this.createAuthenticationHeaders();
     return this.http.get(this.domain + 'hospitalAdmin/getSurgeonInfo/' + id, this.options).map(res => res.json());
 
   }
   hospital_AddSurgeon(surgeon){
-     console.log(surgeon);
+    // console.log(surgeon);
     this.createAuthenticationHeaders(); // Create headers
     return this.http.post(this.domain + 'hospitalAdmin/hospital_AddSurgeon/', surgeon, this.options).map(res => res.json());
 
@@ -92,9 +111,5 @@ export class HospitalAdminService {
     return this.http.put(this.domain + 'hospitalAdmin/toggleUserStatus/' , id , this.options).map(res => res.json());
   }
 
-  uploadImage(data) {
-    this.createAuthenticationHeaders();
-    return this.http.post(this.domain + 'upload/', data, this.options).map(res => res.json());
-  }
 
 }

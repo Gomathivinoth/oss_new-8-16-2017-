@@ -69,6 +69,21 @@
           </div>
         </div>
       </div>
+      <div class="form-group">
+        <label>Email ID</label>
+        <input type="text" #refEmail="ngModel" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" class="form-control" placeholder="*Enter Email"
+          name="branch.branchEmail" [(ngModel)]="branch.branchEmail">
+        <div *ngIf="branch_email">
+          <div *ngIf="refEmail.errors && (refEmail.dirty || refEmail.touched)" class="alert alert-danger">
+            <div [hidden]="!refEmail.errors.required">
+              Enter Email
+            </div>
+            <div [hidden]="!refEmail.errors.pattern">
+              Please enter valid emailid
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="col-md-4">
       <div class="form-group">
@@ -139,6 +154,10 @@
         </label>
 
       </div>
+      <div class="form-group">
+        <label>Upload Image</label>
+        <input type="file" (change)="fileChangeEvent($event)" placeholder="Upload file..." />
+      </div>
       <div class="text-center">
         <button type="submit" [disabled]="!branchForm.form.valid" class="btn btn-primary">Add Branch</button>
       </div>
@@ -166,10 +185,95 @@
       <tr *ngFor="let branch of branchLists">
         <td>{{branch.branchName}}</td>
         <td>{{branch.branchEmail}}</td>
-        <td><button class="btn btn-primary btn-xs" (click)="editHospital(branch._id)">Edit</button></td>
-        <td><button class="btn btn-danger btn-xs" (click)="deleteHospital(branch._id)">Delete</button></td>
-        <td><button type="button" class="btn btn-warning btn-xs" (click)="toggleStatus(hospital)">{{branch.statusText}}</button> </td>
+        <td><button class="btn btn-primary btn-xs" (click)="editBranch(branch._id,hospitalId)">Edit</button></td>
+        <td><button class="btn btn-danger btn-xs" (click)="deleteBranch(branch._id,hospitalId)">Delete</button></td>
+        <td><button type="button" class="btn btn-warning btn-xs" (click)="toggleStatus(branch._id,hospitalId)">{{branch.statusText}}</button>          </td>
       </tr>
     </tbody>
   </table>
+</div>
+
+<div class="row" *ngIf="!showForm">
+  <div class="col-md-2"></div>
+  <div class="col-md-4">
+    <div class="form-group">
+      <label>Alias</label>
+      <input type="text" class="form-control" placeholder="*New  alias" name="editbranch.editbranchAlias" [(ngModel)]="editbranch.editbranchAlias">
+    </div>
+    <div class="form-group">
+      <label>Type</label>
+      <select class="form-control" name="editbranch.editbranchType" [(ngModel)]="editbranch.editbranchType">
+          <option value="">--select type --</option>
+          <option value="PHC">PHC</option>
+          <option value="CHC">CHC</option>
+          <option value="District Hospital">District Hospital</option>
+          <option value="Medical College">Medical College</option>
+          <option value="Specialized Hospital">Specialized Hospital</option>
+          <option value="Super Speciality">Super Speciality</option>
+          <option value="General Hospital">General Hospital</option>
+        </select>
+    </div>
+    <div class="form-group">
+      <label>Branch Name</label>
+      <input type="text" class="form-control" placeholder="*New  name" name="editbranch.editname" [(ngModel)]="editbranch.editname">
+    </div>
+    <div class="form-group">
+      <label>Branch Address</label>
+      <input type="text" class="form-control" placeholder="*New  address" name="editbranch.editaddress" [(ngModel)]="editbranch.editaddress">
+    </div>
+    <div class="form-group">
+      <label>Phone Number</label>
+      <input type="text" class="form-control" placeholder="*New  phone number" name="editbranch.editphoneno" [(ngModel)]="editbranch.editphoneno">
+    </div>
+     <div class="form-group">
+      <label>Email</label>
+      <input type="text" class="form-control" placeholder="*New  email" name="editbranch.editemail" [(ngModel)]="editbranch.editemail">
+    </div>
+  </div>
+  <div class="col-md-4">
+   
+    <div class="form-group">
+      <label>Website</label>
+      <input type="text" class="form-control" placeholder="*New  website" name="editbranch.editwebsite" [(ngModel)]="editbranch.editwebsite">
+    </div>
+    <div class="form-group">
+      <label>Surgeons</label>
+      <select class="form-control" name="editbranch.noOfSurgeons" [(ngModel)]="editbranch.noOfSurgeons">
+            
+             <ng-template ngFor let-item [ngForOf]="createRange(5)" let-currentElementIndex="index+1">
+               <option  [ngValue]="currentElementIndex">{{currentElementIndex}}</option>
+           </ng-template>           
+          </select>
+    </div>
+    <div class="form-group">
+      <label>Support Staff</label>
+      <select class="form-control" name="editbranch.noOfSupportStaffs" [(ngModel)]="editbranch.noOfSupportStaffs">
+            
+             <ng-template ngFor let-item [ngForOf]="createRange(5)" let-currentElementIndex="index+1">
+               <option  [ngValue]="currentElementIndex">{{currentElementIndex}}</option>
+           </ng-template>           
+          </select>
+    </div>
+    <div class="form-group">
+      <label>Services Subscribed for</label><br>
+      <label *ngFor="let service of branch.service" class="checkbox-inline">
+          <input type="checkbox" name="service" [(ngModel)]="service.selected">
+          {{service.serviceName}}
+        </label>
+
+    </div>
+       <div class="form-group">
+          <img src="../../../../../../../uploads/{{ branch.filename }}" width="50px" height="50px">
+       </div>
+      <div class="form-group hidden">
+          <input type="text" class="form-control" placeholder="*New Branch Id" name="editbranch.branchId" [(ngModel)]="editbranch.branchId">
+        </div>
+        <div class="form-group hidden">
+          <input type="text" class="form-control" placeholder="*Hospital Id" name="editbranch.hospitalId" [(ngModel)]="editbranch.hospitalId">
+        </div>
+        <div class="text-center">
+          <button type="button" class="btn btn-primary" (click)="updateBranch(editbranch)">Update</button>
+          <button type="button" class="btn btn-danger" (click)="goBack()">Back</button>
+        </div>
+  </div>
 </div>

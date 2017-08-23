@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Http } from '@angular/http';
+import 'rxjs/add/operator/map';
 import { HospitalAdminService } from '../../../services/hospital-admin.service';
 
 @Component({
@@ -9,7 +11,8 @@ import { HospitalAdminService } from '../../../services/hospital-admin.service';
 export class DashboardComponent implements OnInit {
 
   constructor(
-    private hospitalAdminService:HospitalAdminService
+    private hospitalAdminService:HospitalAdminService,
+    private http :Http
   ) { }
 
   hospitalId;
@@ -34,26 +37,20 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  fileChangeEvent(fileInput: any) {
-    this.filesToUpload = <Array<File>>fileInput.target.files;
-    this.product.photo = fileInput.target.files[0]['name'];
-    console.log(this.filesToUpload);
-  }
-
   upload() {
     const formData: any = new FormData();
     const files: Array<File> = this.filesToUpload;
 
-    console.log(files);
-    const pics = formData.append("uploads[]", files[0],files[0]['name']);
-    console.log(pics);
-    // this.hospitalAdminService.uploadImage(formData).subscribe(data => {
-    //   console.log('files',data);
-    // });
+    formData.append("uploads[]", files[0], files[0]['name']);
+    
+    this.http.post('http://localhost:3000/upload', formData)
+      .map(files => files.json())
+      .subscribe(files => console.log('files', files))
+  }
 
-    // this.http.post('http://localhost:3001/upload', formData)
-    //   .map(files => files.json())
-    //   .subscribe(files => console.log('files', files))
+  fileChangeEvent(fileInput: any) {
+    this.filesToUpload = <Array<File>>fileInput.target.files;
+    this.product.photo = fileInput.target.files[0]['name'];
   }
 
 
