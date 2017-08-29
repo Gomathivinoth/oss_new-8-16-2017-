@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
     username:'',
     password:''
   }
+  success;
 
   constructor(
     private router:Router,
@@ -24,18 +25,23 @@ export class LoginComponent implements OnInit {
 
   loadUserModule(user){
     this.hospitalService.login(user).subscribe(data => {
-      console.log(data);
+    //this.success = '<div class="alert alert-success">'+ data.data +'</div>';
+   // alert('Login success');
       if(!data.success){
         this.message = data.message;
       }
       else {  
-        this.hospitalService.storeUserData(data.token , data.user , data.message.hospitalId); 
-       // console.log(data.message.usertype);//Stores user data in local storage
+        this.hospitalService.storeUserData(data.token , data.user , data.message.hospitalId, data.message.branchId); 
+       //console.log(data.message.usertype);//Stores user data in local storage
         if(data.message.usertype === 'superadmin'){
           this.router.navigate(['superadmin/dashboard']);
         } else if(data.message.usertype === 'hospitaladmin'){
           this.router.navigate(['hospitaladmin/dashboard']);
-        } 
+        }  else if(data.message.usertype === 'branchadmin'){
+          this.router.navigate(['branchadmin/dashboard']);
+        } else if(data.message.usertype === 'surgeon'){
+          this.router.navigate(['surgeon/dashboard']);
+        }
       }
     });
   }

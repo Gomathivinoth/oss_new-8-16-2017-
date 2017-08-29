@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Http } from '@angular/http';
 import { HospitalAdminService } from '../../../../services/hospital-admin.service';
 
 @Component({
@@ -11,7 +12,8 @@ export class AddSupportStaffComponent implements OnInit {
 
   constructor(
     private hospitalAdminService: HospitalAdminService,
-    private router: Router
+    private router: Router,
+    private http: Http
   ) { }
 
   hospitalId;
@@ -31,6 +33,7 @@ export class AddSupportStaffComponent implements OnInit {
   phone_no = true;
   username = true;
   password = true;
+  image = true;
 
   supportStaff = {
     hospitalId: '',
@@ -42,7 +45,9 @@ export class AddSupportStaffComponent implements OnInit {
     email: '',
     phoneno: '',
     username: '',
-    password: ''
+    password: '',
+    filename: '',
+    filetype: ''
   }
 
   editSupport = {
@@ -54,9 +59,12 @@ export class AddSupportStaffComponent implements OnInit {
     editemail: '',
     editphoneno: '',
     editusername: '',
-    editpassword: ''
+    editpassword: '',
+    filename: '',
+    editfilename: '',
+    editfiletype: ''
   }
-
+  filesToUpload: Array<File> = [];
   getHospitalInfo() {
     this.hospitalId = localStorage.getItem('hospitalId');
     //console.log(this.hospitalId);
@@ -100,6 +108,13 @@ export class AddSupportStaffComponent implements OnInit {
   }
 
   addSupport(supportStaff) {
+    const formData: any = new FormData();
+    const files: Array<File> = this.filesToUpload;
+    formData.append("uploads[]", files[0], files[0]['name']);
+
+    this.http.post('http://localhost:3000/upload', formData)
+      .map(files => files.json())
+      .subscribe(files => console.log('files', files))
     this.hospitalAdminService.hospital_AddSupportStaff(supportStaff).subscribe(data => {
       this.supportStaff.name = '';
       this.supportStaff.email = '';
@@ -113,8 +128,16 @@ export class AddSupportStaffComponent implements OnInit {
       this.phone_no = false;
       this.username = false;
       this.password = false;
+      this.image = false;
       this.showSurgeonName(supportStaff.surgeonId);
     });
+  }
+
+  fileChangeEvent(fileInput: any) {
+    this.filesToUpload = <Array<File>>fileInput.target.files;
+    var dt = new Date().toJSON().slice(0, 10).replace(/-/g, '-')
+    this.supportStaff.filename = dt + "-" + fileInput.target.files[0]['name'];
+    this.supportStaff.filetype = fileInput.target.files[0]['type'];
   }
 
   editSupportStaff(id) {
@@ -126,6 +149,7 @@ export class AddSupportStaffComponent implements OnInit {
       this.editSupport.editusername = data.message.username;
       this.editSupport.editpassword = data.message.password;
       this.editSupport.hospitalId = data.message.hospitalId;
+      this.editSupport.filename = data.message.fileName;
       this.editSupport.branchId = data.message.branchId;
       this.editSupport.surgeonId = data.message.surgeonId;
       this.editSupport.userId = data.message._id;
@@ -134,15 +158,32 @@ export class AddSupportStaffComponent implements OnInit {
   }
 
   updateSupport(editSupport) {
+    if (editSupport.editfilename) {
+      const formData: any = new FormData();
+      const files: Array<File> = this.filesToUpload;
+      //console.log(files);
+      formData.append("uploads[]", files[0], files[0]['name']);
+
+      this.http.post('http://localhost:3000/upload', formData)
+        .map(files => files.json())
+        .subscribe(files => console.log('files', files))
+    }
     this.hospitalAdminService.updateUserDetail(editSupport).subscribe(data => {
       this.showForm = true;
       const id = editSupport.hospitalId + '-' + editSupport.branchId + '-' + editSupport.surgeonId;
       this.showSurgeonName(id);
     });
   }
+  editFileChangeEvent(fileInput: any) {
+    this.filesToUpload = <Array<File>>fileInput.target.files;
+    var dt = new Date().toJSON().slice(0, 10).replace(/-/g, '-')
+    this.editSupport.editfilename = dt + "-" + fileInput.target.files[0]['name'];
+    this.editSupport.editfiletype = fileInput.target.files[0]['type'];
+
+  }
 
   deleteSupportStaff(id) {
-    console.log(id);
+    // console.log(id);
     this.hospitalAdminService.deleteUserDetails(id).subscribe(data => {
       const id = data.data + '-' + data.data1 + '-' + data.data2;
       this.showSurgeonName(id);
@@ -150,10 +191,10 @@ export class AddSupportStaffComponent implements OnInit {
   }
 
   toggleStatus(user) {
-    console.log(user);
+    //console.log(user);
     this.hospitalAdminService.toggleUserStatus(user).subscribe(data => {
       const id = user.hospitalId + "-" + user.branchId + "-" + user.surgeonId;
-      console.log(id);
+      //console.log(id);
       this.showSurgeonName(id);
     });
   }

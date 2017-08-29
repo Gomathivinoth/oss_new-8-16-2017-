@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Http } from '@angular/http';
 import { HospitalService } from '../../../../services/hospital.service';
 
 @Component({
@@ -10,7 +11,7 @@ import { HospitalService } from '../../../../services/hospital.service';
 export class AddSurgeonComponent implements OnInit {
 
   currentUrl;
-  selectHospital;
+  showForm;
   hospitalName;
   hospitalId;
   hospitalLists;
@@ -29,39 +30,49 @@ export class AddSurgeonComponent implements OnInit {
   phone_no = true;
   username = true;
   password = true;
+  name = true;
 
   surgeon = {
     branchId: '',
     hospitalId: '',
+    name: '',
     regno: '',
     city: '',
     country: '',
     email: '',
     phoneno: '',
     username: '',
-    password: ''
+    password: '',
+    filename: '',
+    filetype: ''
   }
 
   editAdmin = {
     editbranchid: '',
     edituserid: '',
     edithospitalId: '',
+    editname: '',
     editregno: '',
-    editemail:'',
-    editcity:'',
-    editcountry:'',
-    editphoneno:'',
+    editemail: '',
+    editcity: '',
+    editcountry: '',
+    editphoneno: '',
     editusername: '',
-    editpassword: ''
+    editpassword: '',
+    filename: '',
+    editfilename: '',
+    editfiletype: ''
   }
 
   hospital = {
-    hospitalAlias:''
+    hospitalAlias: ''
   }
+  filesToUpload: Array<File> = [];
   constructor(
     private hospitalService: HospitalService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private http: Http
   ) { }
 
   showAddHospitalName(id) {
@@ -75,7 +86,7 @@ export class AddSurgeonComponent implements OnInit {
     const [hospital_id, branch_id] = id.split('-');
     this.showAddSurgeon = true;
     this.hospitalService.getBranchUserDetails(id).subscribe(data => {
-      console.log(data.message);
+      //console.log(data.message);
       this.surgeonList = data.message;
       //console.log(data.message);
       if (this.surgeonList.length < 1) {
@@ -91,8 +102,17 @@ export class AddSurgeonComponent implements OnInit {
   }
 
   addSurgeon(surgeon) {
-    console.log(surgeon);
+     console.log(surgeon);
+    const formData: any = new FormData();
+    const files: Array<File> = this.filesToUpload;
+    formData.append("uploads[]", files[0], files[0]['name']);
+
+    this.http.post('http://localhost:3000/upload', formData)
+      .map(files => files.json())
+      .subscribe(files => console.log('files', files))
     this.hospitalService.addSurgeon(surgeon).subscribe(data => {
+      //  console.log(data.message);
+      this.surgeon.name = '';
       this.surgeon.regno = '';
       this.surgeon.email = '';
       this.surgeon.city = '';
@@ -102,6 +122,7 @@ export class AddSurgeonComponent implements OnInit {
       this.surgeon.password = '';
       this.branch_name = false;
       this.hos_name = false;
+      this.name = false;
       this.reg_no = false;
       this.country = false;
       this.city = false;
@@ -116,6 +137,14 @@ export class AddSurgeonComponent implements OnInit {
     });
   }
 
+  fileChangeEvent(fileInput: any) {
+    this.filesToUpload = <Array<File>>fileInput.target.files;
+    var dt = new Date().toJSON().slice(0, 10).replace(/-/g, '-')
+    this.surgeon.filename = dt + "-" + fileInput.target.files[0]['name'];
+    this.surgeon.filetype = fileInput.target.files[0]['type'];
+  }
+
+
   deleteSurgeon(id) {
     this.hospitalService.deleteHospitalAdmin(id).subscribe(data => {
       const id = data.data + "-" + data.data1;
@@ -125,11 +154,11 @@ export class AddSurgeonComponent implements OnInit {
 
   editSurgeon(id) {
     //console.log(id);
-    this.selectHospital = false;
-    this.showAddSurgeon1 = true;
+    this.showForm = false;
     this.hospitalService.getSingleUser(id).subscribe(data => {
-      console.log(data.message);
+      // console.log(data.message);
       this.editAdmin.edithospitalId = data.message.hospitalId;
+      this.editAdmin.editname = data.message.name;
       this.editAdmin.editregno = data.message.regno;
       this.editAdmin.editcity = data.message.city;
       this.editAdmin.editcountry = data.message.country;
@@ -137,36 +166,52 @@ export class AddSurgeonComponent implements OnInit {
       this.editAdmin.editphoneno = data.message.phoneno;
       this.editAdmin.editusername = data.message.username;
       this.editAdmin.editpassword = data.message.password;
+      this.editAdmin.filename = data.message.fileName;
       this.editAdmin.edituserid = data.message._id;
       this.editAdmin.editbranchid = data.message.branchId;
-      console.log(this.editAdmin);
+      //console.log(this.editAdmin);
     });
   }
   updatesurgeon(editAdmin) {
+    if (editAdmin.editfilename) {
+      const formData: any = new FormData();
+      const files: Array<File> = this.filesToUpload;
+      // console.log(files);
+      formData.append("uploads[]", files[0], files[0]['name']);
+
+      this.http.post('http://localhost:3000/upload', formData)
+        .map(files => files.json())
+        .subscribe(files => console.log('files', files))
+    }
     this.hospitalService.updateHospitalAdmin(editAdmin).subscribe(data => {
-      this.showAddSurgeon1 = false;
-      this.selectHospital = true;
+      this.showForm = true;
       const id = editAdmin.edithospitalId + "-" + editAdmin.editbranchid;
-      console.log(id);
+      // console.log(id);
       this.showAddBranchName(id);
 
     });
   }
-  goBack() {
-    this.showAddSurgeon1 = false;
-    this.selectHospital = true;
+  editFileChangeEvent(fileInput: any) {
+    this.filesToUpload = <Array<File>>fileInput.target.files;
+    var dt = new Date().toJSON().slice(0, 10).replace(/-/g, '-')
+    this.editAdmin.editfilename = dt + "-" + fileInput.target.files[0]['name'];
+    this.editAdmin.editfiletype = fileInput.target.files[0]['type'];
+
   }
-  toggleStatus(user){
-    console.log(user);
+  goBack() {
+    this.showForm = true;
+  }
+  toggleStatus(user) {
+    // console.log(user);
     this.hospitalService.toggleUserStatus(user).subscribe(data => {
-      const id = user.hospitalId+"-"+user.branchId;
-        console.log(id);
-       this.showAddBranchName(id);
+      const id = user.hospitalId + "-" + user.branchId;
+      // console.log(id);
+      this.showAddBranchName(id);
     });
   }
   ngOnInit() {
 
-    this.selectHospital = true;
+    this.showForm = true;
     this.hospitalService.getHospitals().subscribe(data => {
       this.hospitalLists = data.message;
     });

@@ -68,9 +68,6 @@
             </div>
           </div>
         </div>
-
-      </div>
-      <div class="col-md-4">
         <div class="form-group">
           <label>Phoneno</label>
           <input type="text" #refPhone="ngModel" required pattern="[789][0-9]{9}" class="form-control" placeholder="*Enter Phoneno"
@@ -86,6 +83,9 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="col-md-4">
+
         <div class="form-group">
           <label>Username</label>
           <input type="text" #refUsername="ngModel" required class="form-control" placeholder="*Enter Username" name="supportStaff.username"
@@ -112,7 +112,19 @@
             </div>
           </div>
         </div>
+        <div class="form-group">
+          <label>Upload Image</label>
+          <input type="file" #refImage="ngModel" required (change)="fileChangeEvent($event)" class="form-control" placeholder="Upload file..."
+            ngModel/>
+          <div *ngIf="image">
+            <div *ngIf="refImage.errors && (refImage.dirty || refImage.touched)" class="alert alert-danger">
+              <div [hidden]="!refImage.errors.required">
+                Browse Image
+              </div>
 
+            </div>
+          </div>
+        </div>
         <div class="text-center">
           <button class="btn btn-primary" type="submit" [disabled]="!supportAdminForm.form.valid" style="float:right;">Add Support Staff</button>
           <br><br><br>
@@ -167,16 +179,26 @@
         <label>Phoneno</label>
         <input type="text" class="form-control" placeholder="*New Phoneno" name="editSupport.editphoneno" [(ngModel)]="editSupport.editphoneno">
       </div>
-    </div>
-    <div class="col-md-4">
-
       <div class="form-group">
         <label>Username</label>
         <input type="text" class="form-control" placeholder="*New Username" name="editSupport.editusername" [(ngModel)]="editSupport.editusername">
       </div>
+    </div>
+    <div class="col-md-4">
+
+      
       <div class="form-group">
         <label>Password</label>
         <input type="text" class="form-control" placeholder="*New Password" name="editSupport.editpassword" [(ngModel)]="editSupport.editpassword">
+      </div>
+      <div class="form-group">
+        <input type="hidden" class="form-control" name="editSupport.filename" [(ngModel)]="editSupport.filename">
+        <img src="../../../assets/uploads/{{editSupport.filename}}" width="100px" height="100px">
+      </div>
+      <div class="form-group">
+        <label>Upload Image</label>
+        <input type="file" (change)="editFileChangeEvent($event)" class="form-control" placeholder="Upload file..." ngModel/>
+
       </div>
       <div class="form-group" class="hidden">
         <input type="text" class="form-control" placeholder="*New Hospital id" name="editSupport.hospitalId" [(ngModel)]="editSupport.hospitalId">

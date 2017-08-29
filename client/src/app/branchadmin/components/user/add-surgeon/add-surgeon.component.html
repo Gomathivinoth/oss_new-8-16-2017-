@@ -1,0 +1,249 @@
+<div class="row" *ngIf="showForm">
+  <h1 class="text-center">{{getdetail.hospitalName}} - {{getdetail.branchName}}</h1>
+  <div class="row">
+    <form #surgeonAdminForm="ngForm" (ngSubmit)="addSurgeon(surgeon)" novalidate>
+      <div class="col-md-2"></div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label>Alias</label>
+          <input type="hidden" class="form-control" placeholder="*New  alias" name="surgeon.hospitalId" [(ngModel)]="surgeon.hospitalId">
+          <input type="hidden" class="form-control" placeholder="*New  alias" name="surgeon.branchId" [(ngModel)]="surgeon.branchId">
+          <input type="text" class="form-control" placeholder="*New  alias" name="surgeon.branchAlias" [(ngModel)]="surgeon.branchAlias">
+        </div>
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" #refName="ngModel" required class="form-control" placeholder="*Enter Name" name="surgeon.name" [(ngModel)]="surgeon.name">
+          <div *ngIf="name">
+            <div *ngIf="refName.errors && (refName.dirty || refName.touched)" class="alert alert-danger">
+              <div [hidden]="!refName.errors.required">
+                Enter Name
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Regno</label>
+          <input type="text" #refRegno="ngModel" required class="form-control" placeholder="*Enter Regno" name="surgeon.regno" [(ngModel)]="surgeon.regno">
+          <div *ngIf="reg_no">
+            <div *ngIf="refRegno.errors && (refRegno.dirty || refRegno.touched)" class="alert alert-danger">
+              <div [hidden]="!refRegno.errors.required">
+                Enter Regno
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>City</label>
+          <input type="text" #refCity="ngModel" required class="form-control" placeholder="*Enter city" name="surgeon.city" [(ngModel)]="surgeon.city">
+          <div *ngIf="city">
+            <div *ngIf="refCity.errors && (refCity.dirty || refCity.touched)" class="alert alert-danger">
+              <div [hidden]="!refCity.errors.required">
+                Enter City
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Country</label>
+          <input type="text" #refCountry="ngModel" required class="form-control" placeholder="*Enter country" name="surgeon.country"
+            [(ngModel)]="surgeon.country">
+          <div *ngIf="country">
+            <div *ngIf="refCountry.errors && (refCountry.dirty || refCountry.touched)" class="alert alert-danger">
+              <div [hidden]="!refCountry.errors.required">
+                Enter Country
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="text" #refEmail="ngModel" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" placeholder="*Enter email"
+            class="form-control" name="surgeon.email" [(ngModel)]="surgeon.email">
+          <div *ngIf="email">
+            <div *ngIf="refEmail.errors && (refEmail.dirty || refEmail.touched)" class="alert alert-danger">
+              <div [hidden]="!refEmail.errors.required">
+                Enter Email
+              </div>
+              <div [hidden]="!refEmail.errors.pattern">
+                Please enter valid emailid
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Phoneno</label>
+          <input type="text" #refPhone="ngModel" required pattern="[789][0-9]{9}" class="form-control" placeholder="*Enter Phoneno"
+            name="surgeon.phoneno" [(ngModel)]="surgeon.phoneno">
+          <div *ngIf="phone_no">
+            <div *ngIf="refPhone.errors && (refPhone.dirty || refPhone.touched)" class="alert alert-danger">
+              <div [hidden]="!refPhone.errors.required">
+                Enter Phone Number
+              </div>
+              <div [hidden]="!refPhone.errors.pattern">
+                Please enter 10 digits
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" #refUsername="ngModel" required class="form-control" placeholder="*Enter Username" name="surgeon.username"
+            [(ngModel)]="surgeon.username">
+          <div *ngIf="username">
+            <div *ngIf="refUsername.errors && (refUsername.dirty || refUsername.touched)" class="alert alert-danger">
+              <div [hidden]="!refUsername.errors.required">
+                Enter Admin Username
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="text" #refPassword="ngModel" required class="form-control" placeholder="*Enter password" name="surgeon.password"
+            [(ngModel)]="surgeon.password">
+          <div *ngIf="password">
+            <div *ngIf="refPassword.errors && (refPassword.dirty || refPassword.touched)" class="alert alert-danger">
+              <div [hidden]="!refPassword.errors.required">
+                Enter Password
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <!-- <div class="form-group">
+          <label>Upload Image</label>
+          <input type="file" #refImage="ngModel" required class="form-control" placeholder="*Enter password" name="surgeon.filename"
+            [(ngModel)]="surgeon.filename">
+          <div *ngIf="image">
+            <div *ngIf="refImage.errors && (refImage.dirty || refImage.touched)" class="alert alert-danger">
+              <div [hidden]="!refImage.errors.required">
+               Browse
+              </div>
+
+            </div>
+          </div>
+        </div> -->
+        <div class="form-group">
+          <label>Upload Image</label>
+          <input type="file" #refImage="ngModel" required (change)="fileChangeEvent($event)" class="form-control" placeholder="Upload file..."
+            ngModel/>
+          <div *ngIf="image">
+            <div *ngIf="refImage.errors && (refImage.dirty || refImage.touched)" class="alert alert-danger">
+              <div [hidden]="!refImage.errors.required">
+                Browse Image
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="text-center">
+          <button class="btn btn-primary" type="submit" [disabled]="!surgeonAdminForm.form.valid" style="float:right;">Add Surgeon</button>
+          <br><br><br>
+        </div>
+      </div>
+    </form>
+    <br><br><br>
+    <div class="row" *ngIf="!showTable">
+      <div class="col-md-offset-4 col-md-4">
+        <h1 class="text-center">No Surgeons</h1>
+      </div>
+    </div>
+    <div class="col-md-offset-1 col-md-10 col-md-offset-2" *ngIf="showForm && showTable">
+      <table class="table">
+        <thead>
+          <tr>
+            <th> Name</th>
+            <th> Email</th>
+            <th>Edit</th>
+            <th>Delete</th>
+            <th>Deactive</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let surgeon of surgeonLists">
+          <tr *ngIf="surgeon.usertype == 'surgeon'">
+            <td>{{surgeon.name}}</td>
+            <td>{{surgeon.email}}</td>
+            <td><button class="btn btn-primary btn-xs" (click)="editSurgeons(surgeon._id)">Edit</button></td>
+            <td><button class="btn btn-danger btn-xs" (click)="deleteSurgeons(surgeon._id)">Delete</button></td>
+            <td><button type="button" class="btn btn-warning btn-xs" (click)="toggleStatus(surgeon)">{{surgeon.statusText}}</button>              </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="!showForm">
+  <form>
+    <div class="col-md-2"></div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" class="form-control" placeholder="*New  Name" name="editSurgeon.editname" [(ngModel)]="editSurgeon.editname">
+      </div>
+      <div class="form-group">
+        <label>Regno</label>
+        <input type="text" class="form-control" placeholder="*New Regno" name="editSurgeon.editregno" [(ngModel)]="editSurgeon.editregno">
+      </div>
+      <div class="form-group">
+        <label>City</label>
+        <input type="text" class="form-control" placeholder="*New City" name="editSurgeon.editcity" [(ngModel)]="editSurgeon.editcity">
+      </div>
+      <div class="form-group">
+        <label>Country</label>
+        <input type="text" class="form-control" placeholder="*New Country" name="editSurgeon.editcountry" [(ngModel)]="editSurgeon.editcountry">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="text" class="form-control" placeholder="*New Email" name="editSurgeon.editemail" [(ngModel)]="editSurgeon.editemail">
+      </div>
+      <div class="form-group">
+        <label>Phoneno</label>
+        <input type="text" class="form-control" placeholder="*New Phoneno" name="editSurgeon.editphoneno" [(ngModel)]="editSurgeon.editphoneno">
+      </div>
+    </div>
+    <div class="col-md-4">
+
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" class="form-control" placeholder="*New Username" name="editSurgeon.editusername" [(ngModel)]="editSurgeon.editusername">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="text" class="form-control" placeholder="*New Password" name="editSurgeon.editpassword" [(ngModel)]="editSurgeon.editpassword">
+      </div>
+      <div class="form-group">
+        <input type="hidden" class="form-control" name="editSurgeon.filename" [(ngModel)]="editSurgeon.filename">
+        <img src="../../../assets/uploads/{{editSurgeon.filename}}" width="100px" height="100px">
+      </div>
+      <div class="form-group">
+        <label>Upload Image</label>
+        <input type="file" (change)="editFileChangeEvent($event)" class="form-control" placeholder="Upload file..." ngModel/>
+
+      </div>
+      <div class="form-group" class="hidden">
+        <input type="text" class="form-control" placeholder="*New Hospital id" name="editSurgeon.hospitalId" [(ngModel)]="editSurgeon.hospitalId">
+      </div>
+
+      <div class="form-group" class="hidden">
+        <input type="text" class="form-control" placeholder="*New branch Id" name="editSurgeon.branchId" [(ngModel)]="editSurgeon.branchId">
+      </div>
+
+      <div class="form-group" class="hidden">
+        <input type="text" class="form-control" placeholder="*New User Id" name="editSurgeon.userId" [(ngModel)]="editSurgeon.userId">
+      </div>
+
+      <div class="text-center">
+        <button type="button" class="btn btn-primary" (click)="updateSurgeon(editSurgeon)">Update</button>
+        <button type="button" class="btn btn-danger" (click)="goBack()">Back</button>
+      </div>
+    </div>
+  </form>
+</div>

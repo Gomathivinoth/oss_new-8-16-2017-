@@ -1,0 +1,23 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Ortho Scoring System</a>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li [routerLinkActive]="['active']" ><a routerLink='/branchadmin/dashboard'>Dashboard</a></li>
+     
+       <li class="dropdown" [routerLinkActive]="['active']">
+        <a class="dropdown-toggle" data-toggle="dropdown">User
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li [routerLinkActive]="['active']"><a routerLink='/branchadmin/user/add-support-staff'>Add Support Staff</a></li>
+          <li [routerLinkActive]="['active']"><a routerLink='/branchadmin/user/add-surgeon'>Add Surgeon</a></li>
+        </ul>
+      </li>
+     
+    
+      <li><a href="#" (click)="logout()">Logout</a></li>
+    </ul>
+  </div>
+</nav>
+

@@ -9,6 +9,8 @@ import { LoginComponent } from './login/login.component';
 
 import { HospitalService } from './services/hospital.service';
 import { HospitalAdminService } from './services/hospital-admin.service';
+import { BranchAdminService } from './services/branch-admin.service';
+import { SurgeonService } from './services/surgeon.service';
 
 import { AuthGuard } from './guards/auth.guard';
 
@@ -23,7 +25,7 @@ import { AuthGuard } from './guards/auth.guard';
     FormsModule,
     HttpModule
   ],
-  providers: [HospitalService ,HospitalAdminService, AuthGuard],
+  providers: [HospitalService ,HospitalAdminService, BranchAdminService, SurgeonService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

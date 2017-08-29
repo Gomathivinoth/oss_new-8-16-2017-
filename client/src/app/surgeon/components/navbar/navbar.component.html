@@ -1,0 +1,41 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Ortho Scoring System</a>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li [routerLinkActive]="['active']"><a routerLink='/surgeon/dashboard'>Dashboard</a></li>
+      <li class="dropdown" [routerLinkActive]="['active']">
+        <a class="dropdown-toggle" data-toggle="dropdown">Knee
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li [routerLinkActive]="['active']"><a routerLink='/surgeon/knee/knee-primary'>knee Primary</a></li>
+          <li [routerLinkActive]="['active']"><a routerLink='/surgeon/knee/knee-revision'>knee Revision</a></li>
+          <li [routerLinkActive]="['active']"><a routerLink='/surgeon/knee/knee-patients'>View Knee Patients
+          </a></li>
+        </ul>
+      </li>
+       <li class="dropdown" [routerLinkActive]="['active']">
+        <a class="dropdown-toggle" data-toggle="dropdown">Hip
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li [routerLinkActive]="['active']"><a routerLink='/surgeon/Hip/hip-primary'>Hip Primary</a></li>
+          <li [routerLinkActive]="['active']"><a routerLink='/surgeon/Hip/hip-revision'>Hip Revision</a></li>
+          <li [routerLinkActive]="['active']"><a routerLink='/surgeon/Hip/hip-patients'>View Hip Patients
+          </a></li>
+        </ul>
+      </li>
+        <li class="dropdown" [routerLinkActive]="['active']">
+        <a class="dropdown-toggle" data-toggle="dropdown">Spine
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li [routerLinkActive]="['active']"><a routerLink='/surgeon/Spine/spine-primary'>Spine Primary</a></li>
+          <li [routerLinkActive]="['active']"><a routerLink='/surgeon/Spine/spine-revision'>Spine Revision</a></li>
+          <li [routerLinkActive]="['active']"><a routerLink='/surgeon/Spine/spine-patients'>View Spine Patients
+          </a></li>
+        </ul>
+      </li>
+      <li><a href="#" (click)="logout()">Logout</a></li>
+    </ul>
+  </div>
+</nav>

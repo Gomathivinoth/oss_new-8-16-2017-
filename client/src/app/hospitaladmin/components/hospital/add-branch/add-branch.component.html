@@ -86,7 +86,7 @@
       </div>
     </div>
     <div class="col-md-4">
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label>Email ID</label>
         <input type="text" #refEmail="ngModel" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" class="form-control" placeholder="*Enter Email"
           name="branch.branchEmail" [(ngModel)]="branch.branchEmail">
@@ -100,7 +100,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="form-group">
         <label>Website</label>
         <input type="text" #refWebsite="ngModel" required class="form-control" placeholder="*Enter Website" name="branch.branchWebsite"
@@ -156,7 +156,16 @@
       </div>
       <div class="form-group">
         <label>Upload Image</label>
-        <input type="file" (change)="fileChangeEvent($event)" placeholder="Upload file..." />
+        <input type="file" #refImage="ngModel" required (change)="fileChangeEvent($event)" class="form-control" placeholder="Upload file..."
+          ngModel/>
+        <div *ngIf="image">
+          <div *ngIf="refImage.errors && (refImage.dirty || refImage.touched)" class="alert alert-danger">
+            <div [hidden]="!refImage.errors.required">
+              Browse Image
+            </div>
+
+          </div>
+        </div>
       </div>
       <div class="text-center">
         <button type="submit" [disabled]="!branchForm.form.valid" class="btn btn-primary">Add Branch</button>
@@ -219,19 +228,19 @@
     </div>
     <div class="form-group">
       <label>Branch Address</label>
-      <input type="text" class="form-control" placeholder="*New  address" name="editbranch.editaddress" [(ngModel)]="editbranch.editaddress">
+      <textarea type="text" class="form-control" placeholder="*New  address" name="editbranch.editaddress" [(ngModel)]="editbranch.editaddress"></textarea>
     </div>
     <div class="form-group">
       <label>Phone Number</label>
       <input type="text" class="form-control" placeholder="*New  phone number" name="editbranch.editphoneno" [(ngModel)]="editbranch.editphoneno">
     </div>
-     <div class="form-group">
+    <div class="form-group">
       <label>Email</label>
       <input type="text" class="form-control" placeholder="*New  email" name="editbranch.editemail" [(ngModel)]="editbranch.editemail">
     </div>
   </div>
   <div class="col-md-4">
-   
+
     <div class="form-group">
       <label>Website</label>
       <input type="text" class="form-control" placeholder="*New  website" name="editbranch.editwebsite" [(ngModel)]="editbranch.editwebsite">
@@ -256,24 +265,31 @@
     </div>
     <div class="form-group">
       <label>Services Subscribed for</label><br>
-      <label *ngFor="let service of branch.service" class="checkbox-inline">
+      <label *ngFor="let service of editbranch.service" class="checkbox-inline">
           <input type="checkbox" name="service" [(ngModel)]="service.selected">
           {{service.serviceName}}
         </label>
 
     </div>
-       <div class="form-group">
-          <img src="../../../../../../../uploads/{{ branch.filename }}" width="50px" height="50px">
-       </div>
-      <div class="form-group hidden">
-          <input type="text" class="form-control" placeholder="*New Branch Id" name="editbranch.branchId" [(ngModel)]="editbranch.branchId">
-        </div>
-        <div class="form-group hidden">
-          <input type="text" class="form-control" placeholder="*Hospital Id" name="editbranch.hospitalId" [(ngModel)]="editbranch.hospitalId">
-        </div>
-        <div class="text-center">
-          <button type="button" class="btn btn-primary" (click)="updateBranch(editbranch)">Update</button>
-          <button type="button" class="btn btn-danger" (click)="goBack()">Back</button>
-        </div>
+    <div class="form-group">
+      <input type="hidden" class="form-control" name="editbranch.filename" [(ngModel)]="editbranch.filename">
+      <img src="../../../assets/uploads/{{editbranch.filename}}" width="100px" height="100px">
+    </div>
+    <div class="form-group">
+      <label>Upload Image</label>
+      <input type="file" (change)="editFileChangeEvent($event)" class="form-control" placeholder="Upload file..." ngModel/>
+
+    </div>
+    <!-- <img src="../../../../../../uploads/2017-08-23-gallery-8.jpg" width="50px" height="50px">{{branch.filename }} -->
+    <div class="form-group hidden">
+      <input type="text" class="form-control" placeholder="*New Branch Id" name="editbranch.branchId" [(ngModel)]="editbranch.branchId">
+    </div>
+    <div class="form-group hidden">
+      <input type="text" class="form-control" placeholder="*Hospital Id" name="editbranch.hospitalId" [(ngModel)]="editbranch.hospitalId">
+    </div>
+    <div class="text-center">
+      <button type="button" class="btn btn-primary" (click)="updateBranch(editbranch)">Update</button>
+      <button type="button" class="btn btn-danger" (click)="goBack()">Back</button>
+    </div>
   </div>
 </div>

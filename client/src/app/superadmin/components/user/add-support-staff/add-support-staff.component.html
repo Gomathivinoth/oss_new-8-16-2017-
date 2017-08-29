@@ -1,6 +1,7 @@
-<div class="col-md-offset-2 col-md-8" *ngIf="selectHospital">
+<div class="row" *ngIf="showForm">
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-1"></div>
+    <div class="col-md-3">
       <div class="form-group">
         <label for="sel1">Select Hospital:</label>
         <select #refHospital="ngModel" required class="form-control" [(ngModel)]="supportStaff.hospitalId" (ngModelChange)="showAddHospitalName(supportStaff.hospitalId)">
@@ -16,7 +17,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-4" *ngIf="selectBranch">
+    <div class="col-md-3" *ngIf="selectBranch">
       <div class="form-group">
         <label for="sel1">Select Branch:</label>
         <select #refBranch="ngModel" required class="form-control" [(ngModel)]="supportStaff.branchId" (ngModelChange)="showAddBranchName(supportStaff.branchId)">
@@ -32,12 +33,12 @@
         </div>
       </div>
     </div>
-    <div class="col-md-4" *ngIf="selectSurgeon">
+    <div class="col-md-3" *ngIf="selectSurgeon">
       <div class="form-group">
         <label for="sel1">Select Surgeon:</label>
         <select #refSurgeon="ngModel" required class="form-control" [(ngModel)]="supportStaff.surgeonId" (ngModelChange)="showAddSurgeonName(supportStaff.surgeonId)">
-           <!-- <option value="">--select Surgeon--</option>  -->
-          <option *ngFor="let support of supportList" [ngValue]="hospitalbranchId+'-'+support._id">{{support.name}}</option>
+            <option value="">--select Surgeon--</option>  
+          <option *ngFor="let support of supportLists" [ngValue]="hospitalbranchId+'-'+support._id">{{support.name}}</option>
         </select>
         <div *ngIf="surgeon_name">
           <div *ngIf="refSurgeon.errors && (refSurgeon.dirty || refSurgeon.touched)" class="alert alert-danger">
@@ -51,7 +52,8 @@
   </div>
   <div class="row" *ngIf="showAddSupportStaff">
     <form #supportAdminForm="ngForm" (ngSubmit)="addSupportStaff(supportStaff)" novalidate>
-      <div class="col-md-6">
+      <div class="col-md-2"></div>
+      <div class="col-md-4">
         <div class="form-group">
           <label>Name of Surgeon</label>
           <input type="text" class="form-control" placeholder="*New  type" name="surgeon.surgeonName" [(ngModel)]="surgeon.surgeonName">
@@ -82,8 +84,6 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="col-md-6">
         <div class="form-group">
           <label>Phoneno</label>
           <input type="text" #refPhone="ngModel" required pattern="[789][0-9]{9}" class="form-control" placeholder="*Enter Phoneno"
@@ -99,6 +99,9 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="col-md-4">
+
         <div class="form-group">
           <label>Username</label>
           <input type="text" #refUsername="ngModel" required class="form-control" placeholder="*Enter Username" name="supportStaff.username"
@@ -125,50 +128,63 @@
             </div>
           </div>
         </div>
+        <div class="form-group">
+          <label>Upload Image</label>
+          <input type="file" #refImage="ngModel" required (change)="fileChangeEvent($event)" class="form-control" placeholder="Upload file..."
+            ngModel/>
+          <div *ngIf="image">
+            <div *ngIf="refImage.errors && (refImage.dirty || refImage.touched)" class="alert alert-danger">
+              <div [hidden]="!refImage.errors.required">
+                Browse Image
+              </div>
+
+            </div>
+          </div>
+        </div>
         <div class="text-center">
           <button class="btn btn-primary" type="submit" [disabled]="!supportAdminForm.form.valid" style="float:right;">Add Support Staff</button>
           <br><br><br>
         </div>
       </div>
       <div>
-        <div class="row" *ngIf="!showTable">
-          <div class="col-md-offset-4 col-md-7">
-            <h1 class="text-center">No Support staff List</h1>
-          </div>
-        </div>
-        <div class="row" *ngIf="showTable">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Password</th>
-                <th>Type</th>
-                <th>Edit</th>
-                <th>Delete</th>
-                <th>Deactive</th>
-              </tr>
-            </thead>
-            <tbody *ngFor="let supportStaff of supportStaffList">
-              <tr *ngIf="supportStaff.usertype == 'supportstaff'">
-                <td>{{supportStaff.name}}</td>
-                <td>{{supportStaff.username}}</td>
-                <td>{{supportStaff.usertype}}</td>
-                <td><button type="button" class="btn btn-primary btn-xs" (click)="editSupportStaff(supportStaff._id)">Edit</button></td>
-                <td><button type="button" class="btn btn-danger btn-xs" (click)="deleteSupportStaff(supportStaff._id)">Delete</button></td>
-                <td><button type="button" class="btn btn-warning btn-xs" (click)="toggleStatus(supportStaff)">{{supportStaff.statusText}}</button>                  </td>
 
-              </tr>
-            </tbody>
-          </table>
-        </div>
       </div>
     </form>
-  </div>
+    <div class="row" *ngIf="!showTable">
+      <div class="col-md-offset-4 col-md-7">
+        <h1 class="text-center">No Support staff List</h1>
+      </div>
+    </div>
+    <div class="col-md-offset-1 col-md-10 col-md-offset-2" *ngIf="showForm && showTable"><br><br>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Password</th>
+            <th>Type</th>
+            <th>Edit</th>
+            <th>Delete</th>
+            <th>Deactive</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let supportStaff of supportStaffList">
+          <tr *ngIf="supportStaff.usertype == 'supportstaff'">
+            <td>{{supportStaff.name}}</td>
+            <td>{{supportStaff.username}}</td>
+            <td>{{supportStaff.usertype}}</td>
+            <td><button type="button" class="btn btn-primary btn-xs" (click)="editSupportStaff(supportStaff._id)">Edit</button></td>
+            <td><button type="button" class="btn btn-danger btn-xs" (click)="deleteSupportStaff(supportStaff._id)">Delete</button></td>
+            <td><button type="button" class="btn btn-warning btn-xs" (click)="toggleStatus(supportStaff)">{{supportStaff.statusText}}</button>              </td>
 
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
 </div>
 
-<div class="row" *ngIf="showAddSupportStaff1">
+<div class="row" *ngIf="!showForm">
   <form>
     <div class="col-md-2"></div>
     <div class="col-md-4">
@@ -184,16 +200,27 @@
         <label>Phoneno</label>
         <input type="text" class="form-control" placeholder="*New Password" name="editAdmin.editphoneno" [(ngModel)]="editAdmin.editphoneno">
       </div>
-    </div>
-    <div class="col-md-4">
-
       <div class="form-group">
         <label>Username</label>
         <input type="text" class="form-control" placeholder="*New Username" name="editAdmin.editusername" [(ngModel)]="editAdmin.editusername">
       </div>
+    </div>
+    <div class="col-md-4">
+
+
       <div class="form-group">
         <label>Password</label>
         <input type="text" class="form-control" placeholder="*New Password" name="editAdmin.editpassword" [(ngModel)]="editAdmin.editpassword">
+      </div>
+      <div class="form-group">
+        <input type="hidden" class="form-control" name="editAdmin.filename" [(ngModel)]="editAdmin.filename">
+        <img src="../../../assets/uploads/{{editAdmin.filename}}" width="100px" height="100px">
+      </div>
+      <div class="form-group">
+        <label>Upload Image</label>
+        <input type="file" #refImage="ngModel" required (change)="editFileChangeEvent($event)" class="form-control" placeholder="Upload file..."
+          ngModel/>
+
       </div>
       <div class="form-group" class="hidden">
         <input type="text" class="form-control" placeholder="*New Hospital Id" name="editAdmin.edituserid" [(ngModel)]="editAdmin.edituserid">

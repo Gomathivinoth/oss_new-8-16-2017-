@@ -28,7 +28,7 @@ module.exports = (router) => {
                                         res.json({ success: false, message: 'Invalid Password' });
                                     } else {
                                         const token = jwt.sign({ userId: user._id }, config.secret, { expiresIn: '24h' }); // Create a token for client
-                                        res.json({ success: true, message: user, token: token, user: { username: user.username } });
+                                        res.json({ success: true, data:'Login success', message: user, token: token, user: { username: user.username } });
                                     }
                                 }
                             });
@@ -42,25 +42,25 @@ module.exports = (router) => {
     /* ================================================
   MIDDLEWARE - Used to grab user's token from headers
   ================================================ */
-      router.use((req, res, next) => {
+    router.use((req, res, next) => {
         const token = req.headers['authorization']; // Create token found in headers
         //console.log(token);
         // Check if token was found in headers
         if (!token) {
-          res.json({ success: false, message: 'No token provided' }); // Return error
+            res.json({ success: false, message: 'No token provided' }); // Return error
         } else {
-          // Verify the token is valid
-          jwt.verify(token, config.secret, (err, decoded) => {
-            // Check if error is expired or invalid
-            if (err) {
-              res.json({ success: false, message: 'Token invalid: ' + err }); // Return error for token validation
-            } else {
-              req.decoded = decoded; // Create global variable to use in any request beyond
-              next(); // Exit middleware
-            }
-          });
+            // Verify the token is valid
+            jwt.verify(token, config.secret, (err, decoded) => {
+                // Check if error is expired or invalid
+                if (err) {
+                    res.json({ success: false, message: 'Token invalid: ' + err }); // Return error for token validation
+                } else {
+                    req.decoded = decoded; // Create global variable to use in any request beyond
+                    next(); // Exit middleware
+                }
+            });
         }
-      });
+    });
 
     /**Add new Hospital**/
     router.post('/addHospital', (req, res) => {
@@ -101,7 +101,10 @@ module.exports = (router) => {
                                                 hospitalEmail: req.body.hospitalEmail,
                                                 hospitalWebsite: req.body.hospitalWebsite,
                                                 noOfSurgeons: req.body.noOfSurgeons,
-                                                noOfSupportStaffs: req.body.noOfSupportStaffs
+                                                noOfSupportStaffs: req.body.noOfSupportStaffs,
+                                                service: req.body.service,
+                                                fileName: req.body.filename,
+                                                filetype: req.body.filetype
                                             });
                                             hospital.save((err) => {
                                                 if (err) {
@@ -200,7 +203,12 @@ module.exports = (router) => {
                         hospital.hospitalEmail = req.body.newHospitalEmail;
                         hospital.hospitalWebsite = req.body.newHospitalWebsite;
                         hospital.noOfSurgeons = req.body.newNoOfSurgeons;
-                        hospital.noOfSupportStaffs = req.body.newNoOfSupportStaffs
+                        hospital.noOfSupportStaffs = req.body.newNoOfSupportStaffs;
+                        hospital.service = req.body.newService;
+                        if (req.body.newfilename) {
+                            hospital.fileName = req.body.newfilename;
+                            hospital.filetype = req.body.newfiletype;
+                        }
                         hospital.save((err) => {
                             if (err) {
                                 res.json({ success: false, message: err });
@@ -262,7 +270,10 @@ module.exports = (router) => {
                             branchEmail: req.body.branchEmail,
                             branchWebsite: req.body.branchWebsite,
                             noOfSurgeons: req.body.noOfSurgeons,
-                            noOfSupportStaffs: req.body.noOfSupportStaffs
+                            noOfSupportStaffs: req.body.noOfSupportStaffs,
+                            service: req.body.service,
+                            fileName: req.body.filename,
+                            filetype: req.body.filetype
                         });
                         //Increase branch count 
                         hospital.noOfBranches++;
@@ -362,6 +373,11 @@ module.exports = (router) => {
                                     hospital.branchDetails[i].branchWebsite = req.body.newBranchWebsite;
                                     hospital.branchDetails[i].noOfSurgeons = req.body.newNoOfSurgeons;
                                     hospital.branchDetails[i].noOfSupportStaffs = req.body.newNoOfSupportStaffs;
+                                    hospital.branchDetails[i].service = req.body.service;
+                                    if (req.body.newfilename) {
+                                        hospital.branchDetails[i].fileName = req.body.newfilename;
+                                        hospital.branchDetails[i].filetype = req.body.newfiletype;
+                                    }
                                     hospital.save((err) => {
                                         if (err) {
                                             res.json({ success: false, message: 'Something went wrong!' });
@@ -401,6 +417,48 @@ module.exports = (router) => {
                                     hospital.noOfBranches--;
                                     if (hospital.noOfBranches < 1) {
                                         hospital.hasBranch = 'No';
+                                    }
+                                    hospital.save((err) => {
+                                        if (err) {
+                                            res.json({ success: false, message: err });
+                                        } else {
+                                            res.json({ success: true, message: 'Branch deleted' });
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    });
+
+    router.put('/toggleBranchStatus', (req, res) => {
+        // console.log(req.body);
+        if (!req.body.hospitalId) {
+            res.json({ success: false, message: 'No hospital id provided!' });
+        } else {
+            if (!req.body.branchId) {
+                res.json({ success: false, message: 'No branch Id provided!' });
+            } else {
+                req.body.hospitalId = mongoose.Types.ObjectId(req.body.hospitalId);
+                req.body.branchId = mongoose.Types.ObjectId(req.body.branchId);
+                Hospital.findOne({ _id: req.body.hospitalId }, (err, hospital) => {
+                    if (err) {
+                        res.json({ success: false, message: 'Not a valid Hospital Id!' });
+                    } else {
+                        if (!hospital) {
+                            res.json({ success: false, message: 'No hospital found!' });
+                        } else {
+                            for (let i = 0; i < hospital.branchDetails.length; i++) {
+                                if (req.body.branchId.equals(hospital.branchDetails[i]._id)) {
+                                    if (hospital.branchDetails[i].active) {
+                                        hospital.branchDetails[i].active = false;
+                                        hospital.branchDetails[i].statusText = 'Activate';
+                                    } else {
+                                        hospital.branchDetails[i].active = true;
+                                        hospital.branchDetails[i].statusText = 'Deactivate';
                                     }
                                     hospital.save((err) => {
                                         if (err) {
@@ -472,27 +530,61 @@ module.exports = (router) => {
                     res.json({ success: false, message: 'Something happened!' });
                 } else {
                     if (!hospital) {
-                        res.json({ success: false, message: 'No hospital matches the id' })
+                        res.json({ success: false, message: 'No hospital matches the id' });
                     } else {
-                        const user = new User({
-                            hospitalId: req.body.hospitalId,
-                            name: req.body.name,
-                            gender: req.body.gender,
-                            email: req.body.email,
-                            phoneno: req.body.phoneno,
-                            technicalno: req.body.technicalno,
-                            username: req.body.username,
-                            password: req.body.password,
-                            usertype: 'hospitaladmin'
-                        });
-
-                        user.save((err) => {
-                            if (err) {
-                                res.json({ success: false, message: err });
+                        if (!req.body.name) {
+                            res.json({ success: false, message: 'No name provided' });
+                        } else {
+                            if (!req.body.gender) {
+                                res.json({ success: false, message: 'No gender provided' });
                             } else {
-                                res.json({ success: true, message: 'Hospital Admin saved!' });
+                                if (!req.body.email) {
+                                    res.json({ success: false, message: 'No email provided' });
+                                } else {
+                                    if (!req.body.phoneno) {
+                                        res.json({ success: false, message: 'No phoneno provided' });
+                                    } else {
+                                        if (!req.body.technicalno) {
+                                            res.json({ success: false, message: 'No technicalno provided' });
+                                        } else {
+                                            if (!req.body.username) {
+                                                res.json({ success: false, message: 'No username provided' });
+                                            } else {
+                                                if (!req.body.password) {
+                                                    res.json({ success: false, message: 'No password provided' });
+                                                } else {
+                                                    if (!req.body.filename) {
+                                                        res.json({ success: false, message: 'No image provided' });
+                                                    } else {
+                                                        const user = new User({
+                                                            hospitalId: req.body.hospitalId,
+                                                            name: req.body.name,
+                                                            gender: req.body.gender,
+                                                            email: req.body.email,
+                                                            phoneno: req.body.phoneno,
+                                                            technicalno: req.body.technicalno,
+                                                            username: req.body.username,
+                                                            password: req.body.password,
+                                                            fileName: req.body.filename,
+                                                            filetype: req.body.filetype,
+                                                            usertype: 'hospitaladmin'
+                                                        });
+
+                                                        user.save((err) => {
+                                                            if (err) {
+                                                                res.json({ success: false, message: err });
+                                                            } else {
+                                                                res.json({ success: true, message: 'Hospital Admin saved!' });
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
-                        });
+                        }
                     }
                 }
             });
@@ -571,6 +663,10 @@ module.exports = (router) => {
                         user.technicalno = req.body.edittechno;
                         user.username = req.body.editusername;
                         user.password = req.body.editpassword;
+                        if (req.body.editfilename) {
+                            user.fileName = req.body.editfilename;
+                            user.filetype = req.body.editfiletype;
+                        }
                         user.save((err) => {
                             if (err) {
                                 res.json({ success: false, message: err });
@@ -626,38 +722,69 @@ module.exports = (router) => {
                     res.json({ success: false, message: 'Something happened!' });
                 } else {
                     if (!hospital) {
-                        res.json({ success: false, message: 'No hospital matches the id' })
+                        res.json({ success: false, message: 'No hospital matches the id' });
                     } else {
-                        const user = new User({
-                            hospitalId: req.body.hospitalId,
-                            branchId: branch_id,
-                            name: req.body.name,
-                            email: req.body.email,
-                            phoneno: req.body.phoneno,
-                            technicalno: req.body.technicalno,
-                            username: req.body.username,
-                            password: req.body.password,
-                            usertype: 'branchadmin'
-                        });
-
-                        user.save((err) => {
-                            if (err) {
-                                res.json({ success: false, message: err });
+                        if (!req.body.name) {
+                            res.json({ success: false, message: 'No name provided' });
+                        } else {
+                            if (!req.body.email) {
+                                res.json({ success: false, message: 'No email provided' });
                             } else {
-                                User.find({ branchId: req.body.branchId }, (err, branch) => {
-                                    if (err) {
-                                        res.json({ success: false, message: 'Something happened!' });
+                                if (!req.body.phoneno) {
+                                    res.json({ success: false, message: 'No phoneno provided' });
+                                } else {
+                                    if (!req.body.technicalno) {
+                                        res.json({ success: false, message: 'No technicalno provided' });
                                     } else {
-                                        if (!branch) {
-                                            res.json({ success: false, message: 'No Branch matches the id' })
+                                        if (!req.body.username) {
+                                            res.json({ success: false, message: 'No username provided' });
                                         } else {
-                                            res.json({ success: true, message: 'Branch Admin saved!', data: branch });
+                                            if (!req.body.password) {
+                                                res.json({ success: false, message: 'No password provided' });
+                                            } else {
+                                                if (!req.body.filename) {
+                                                    res.json({ success: false, message: 'No Image provided' });
+                                                } else {
+                                                    const user = new User({
+                                                        hospitalId: req.body.hospitalId,
+                                                        branchId: branch_id,
+                                                        name: req.body.name,
+                                                        email: req.body.email,
+                                                        phoneno: req.body.phoneno,
+                                                        technicalno: req.body.technicalno,
+                                                        username: req.body.username,
+                                                        password: req.body.password,
+                                                        fileName: req.body.filename,
+                                                        filetype: req.body.filetype,
+                                                        usertype: 'branchadmin'
+                                                    });
+
+                                                    user.save((err) => {
+                                                        if (err) {
+                                                            res.json({ success: false, message: err });
+                                                        } else {
+                                                            User.find({ branchId: req.body.branchId }, (err, branch) => {
+                                                                if (err) {
+                                                                    res.json({ success: false, message: 'Something happened!' });
+                                                                } else {
+                                                                    if (!branch) {
+                                                                        res.json({ success: false, message: 'No Branch matches the id' })
+                                                                    } else {
+                                                                        res.json({ success: true, message: 'Branch Admin saved!', data: branch });
+                                                                    }
+                                                                }
+                                                            });
+
+                                                        }
+                                                    });
+                                                }
+                                            }
                                         }
                                     }
-                                });
-
+                                }
                             }
-                        });
+                        }
+
                     }
                 }
             });
@@ -676,38 +803,74 @@ module.exports = (router) => {
                     res.json({ success: false, message: 'Something happened!' });
                 } else {
                     if (!hospital) {
-                        res.json({ success: false, message: 'No hospital matches the id' })
+                        res.json({ success: false, message: 'No hospital matches the id' });
                     } else {
-                        const user = new User({
-                            hospitalId: req.body.hospitalId,
-                            branchId: branch_id,
-                            regno:req.body.regno,
-                            city:req.body.city,
-                            country:req.body.country,
-                            email:req.body.email,
-                            phoneno:req.body.phoneno,
-                            username: req.body.username,
-                            password: req.body.password,
-                            usertype: 'surgeon'
-                        });
-
-                        user.save((err) => {
-                            if (err) {
-                                res.json({ success: false, message: err });
+                        if (!req.body.regno) {
+                            res.json({ success: false, message: 'No Regno provided' });
+                        } else {
+                            if (!req.body.city) {
+                                res.json({ success: false, message: 'No city provided' });
                             } else {
-                                User.find({ branchId: req.body.branchId }, (err, branch) => {
-                                    if (err) {
-                                        res.json({ success: false, message: 'Something happened!' });
+                                if (!req.body.country) {
+                                    res.json({ success: false, message: 'No country provided' });
+                                } else {
+                                    if (!req.body.email) {
+                                        res.json({ success: false, message: 'No email provided' });
                                     } else {
-                                        if (!branch) {
-                                            res.json({ success: false, message: 'No Branch matches the id' })
+                                        if (!req.body.phoneno) {
+                                            res.json({ success: false, message: 'No phoneno provided' });
                                         } else {
-                                            res.json({ success: true, message: 'Branch Admin saved!', data: branch });
+                                            if (!req.body.username) {
+                                                res.json({ success: false, message: 'No username provided' });
+                                            } else {
+                                                if (!req.body.password) {
+                                                    res.json({ success: false, message: 'No password provided' });
+                                                } else {
+                                                    if (!req.body.filename) {
+                                                        res.json({ success: false, message: 'No image provided' });
+                                                    } else {
+                                                        const user = new User({
+                                                            hospitalId: req.body.hospitalId,
+                                                            branchId: branch_id,
+                                                            name: req.body.name,
+                                                            regno: req.body.regno,
+                                                            city: req.body.city,
+                                                            country: req.body.country,
+                                                            email: req.body.email,
+                                                            phoneno: req.body.phoneno,
+                                                            username: req.body.username,
+                                                            password: req.body.password,
+                                                            fileName: req.body.filename,
+                                                            filetype: req.body.filetype,
+                                                            usertype: 'surgeon'
+                                                        });
+
+                                                        user.save((err) => {
+                                                            if (err) {
+                                                                res.json({ success: false, message: err });
+                                                            } else {
+                                                                User.find({ branchId: req.body.branchId }, (err, branch) => {
+                                                                    if (err) {
+                                                                        res.json({ success: false, message: 'Something happened!' });
+                                                                    } else {
+                                                                        if (!branch) {
+                                                                            res.json({ success: false, message: 'No Branch matches the id' })
+                                                                        } else {
+                                                                            res.json({ success: true, message: 'Branch Admin saved!', data: branch });
+                                                                        }
+                                                                    }
+                                                                });
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
-                                });
+                                }
                             }
-                        });
+                        }
+
                     }
                 }
             });
@@ -784,37 +947,64 @@ module.exports = (router) => {
                     res.json({ success: false, message: 'Something happened!' });
                 } else {
                     if (!hospital) {
-                        res.json({ success: false, message: 'No hospital matches the id' })
+                        res.json({ success: false, message: 'No hospital matches the id' });
                     } else {
-                        const user = new User({
-                            hospitalId: req.body.hospitalId,
-                            branchId: branch_id,
-                            surgeonId: surgeon_id,
-                            name: req.body.name,
-                            email:req.body.email,
-                            phoneno:req.body.phoneno,
-                            username: req.body.username,
-                            password: req.body.password,
-                            usertype: 'supportstaff'
-                        });
-
-                        user.save((err) => {
-                            if (err) {
-                                res.json({ success: false, message: err });
+                        if (!req.body.name) {
+                            res.json({ success: false, message: 'No name provided' });
+                        } else {
+                            if (!req.body.email) {
+                                res.json({ success: false, message: 'No email provided' });
                             } else {
-                                User.find({ branchId: req.body.branchId }, (err, branch) => {
-                                    if (err) {
-                                        res.json({ success: false, message: 'Something happened!' });
+                                if (!req.body.phoneno) {
+                                    res.json({ success: false, message: 'No phoneno provided' });
+                                } else {
+                                    if (!req.body.username) {
+                                        res.json({ success: false, message: 'No username provided' });
                                     } else {
-                                        if (!branch) {
-                                            res.json({ success: false, message: 'No Branch matches the id' })
+                                        if (!req.body.password) {
+                                            res.json({ success: false, message: 'No password provided' });
                                         } else {
-                                            res.json({ success: true, message: 'Branch Admin saved!', data: branch });
+                                            if (!req.body.filename) {
+                                                res.json({ success: false, message: 'No filename provided' });
+                                            } else {
+                                                const user = new User({
+                                                    hospitalId: req.body.hospitalId,
+                                                    branchId: branch_id,
+                                                    surgeonId: surgeon_id,
+                                                    name: req.body.name,
+                                                    email: req.body.email,
+                                                    phoneno: req.body.phoneno,
+                                                    username: req.body.username,
+                                                    password: req.body.password,
+                                                    fileName: req.body.filename,
+                                                    filetype: req.body.filetype,
+                                                    usertype: 'supportstaff'
+                                                });
+
+                                                user.save((err) => {
+                                                    if (err) {
+                                                        res.json({ success: false, message: err });
+                                                    } else {
+                                                        User.find({ branchId: req.body.branchId }, (err, branch) => {
+                                                            if (err) {
+                                                                res.json({ success: false, message: 'Something happened!' });
+                                                            } else {
+                                                                if (!branch) {
+                                                                    res.json({ success: false, message: 'No Branch matches the id' })
+                                                                } else {
+                                                                    res.json({ success: true, message: 'Branch Admin saved!', data: branch });
+                                                                }
+                                                            }
+                                                        });
+                                                    }
+                                                });
+                                            }
                                         }
                                     }
-                                });
+                                }
                             }
-                        });
+                        }
+
                     }
                 }
             });
@@ -850,69 +1040,69 @@ module.exports = (router) => {
 
     });
 
-    
-//toggleHospitalStatus
-router.put('/updateHospitalStatus',(req,res)=>{
-    if(!req.body._id){
-        res.json({ success:false , message:'No id provided!'});
-    } else {
-        Hospital.findOne({ _id:req.body._id },(err,hospital) =>{
-            if(err){
-                res.json({ success:false , message:'Not a valid id!'});
-            } else {
-                if(!hospital){
-                    res.json({ success:false , message:'No hospitals found!'});
-                } else {
-                    if(hospital.active){
-                        hospital.active = false;
-                        hospital.statusText = 'Activate';
-                    } else {
-                        hospital.active = true;
-                        hospital.statusText = 'Deactivate';
-                    }
-                    hospital.save((err) => {
-                        if(err){
-                            res.json({ success:false , message:'Something went wrong!'});
-                        } else {
-                            res.json({ success:true , message:'Status changed!'});
-                        }
-                    });
-                }
-            }
-        });
-    }
-});
 
-//toggleHospitalStatus
-router.put('/toggleUserStatus',(req,res)=>{
-    if(!req.body._id){
-        res.json({ success:false , message:'No id provided!'});
-    } else {
-        User.findOne({ _id:req.body._id },(err,user) =>{
-            if(err){
-                res.json({ success:false , message:'Not a valid id!'});
-            } else {
-                if(!user){
-                    res.json({ success:false , message:'No hospitals found!'});
+    //toggleHospitalStatus
+    router.put('/updateHospitalStatus', (req, res) => {
+        if (!req.body._id) {
+            res.json({ success: false, message: 'No id provided!' });
+        } else {
+            Hospital.findOne({ _id: req.body._id }, (err, hospital) => {
+                if (err) {
+                    res.json({ success: false, message: 'Not a valid id!' });
                 } else {
-                    if(user.active){
-                        user.active = false;
-                        user.statusText = 'Activate';
+                    if (!hospital) {
+                        res.json({ success: false, message: 'No hospitals found!' });
                     } else {
-                        user.active = true;
-                        user.statusText = 'Deactivate';
-                    }
-                    user.save((err) => {
-                        if(err){
-                            res.json({ success:false , message:'Something went wrong!'});
+                        if (hospital.active) {
+                            hospital.active = false;
+                            hospital.statusText = 'Activate';
                         } else {
-                            res.json({ success:true , message:'Status changed!'});
+                            hospital.active = true;
+                            hospital.statusText = 'Deactivate';
                         }
-                    });
+                        hospital.save((err) => {
+                            if (err) {
+                                res.json({ success: false, message: 'Something went wrong!' });
+                            } else {
+                                res.json({ success: true, message: 'Status changed!' });
+                            }
+                        });
+                    }
                 }
-            }
-        });
-    }
-});
+            });
+        }
+    });
+
+    //toggleHospitalStatus
+    router.put('/toggleUserStatus', (req, res) => {
+        if (!req.body._id) {
+            res.json({ success: false, message: 'No id provided!' });
+        } else {
+            User.findOne({ _id: req.body._id }, (err, user) => {
+                if (err) {
+                    res.json({ success: false, message: 'Not a valid id!' });
+                } else {
+                    if (!user) {
+                        res.json({ success: false, message: 'No hospitals found!' });
+                    } else {
+                        if (user.active) {
+                            user.active = false;
+                            user.statusText = 'Activate';
+                        } else {
+                            user.active = true;
+                            user.statusText = 'Deactivate';
+                        }
+                        user.save((err) => {
+                            if (err) {
+                                res.json({ success: false, message: 'Something went wrong!' });
+                            } else {
+                                res.json({ success: true, message: 'Status changed!' });
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    });
     return router;
 }

@@ -8,6 +8,8 @@ const config = require('./config/database');
 
 const authentication = require('./routes/authentication')(router);
 const hospitalAdmin = require('./routes/hospitalAdmin')(router);
+const branchAdmin = require('./routes/branchAdmin')(router);
+const surgeon = require('./routes/surgeon')(router);
 
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -42,6 +44,8 @@ app.use(bodyParser.json())
 
 app.use('/authentication',authentication);
 app.use('/hospitalAdmin',hospitalAdmin);
+app.use('/branchAdmin',branchAdmin);
+app.use('/surgeon',surgeon);
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -53,7 +57,7 @@ app.use(function (req, res, next) {
 var storage = multer.diskStorage({
   // destino del fichero
   destination: function (req, file, cb) {
-    cb(null, './uploads/')
+    cb(null, './client/src/assets/uploads/')
   },
   // renombrar fichero
   filename: function (req, file, cb) {
@@ -65,7 +69,7 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 app.post("/upload", upload.array("uploads[]", 12), function (req, res) {
-  console.log('files', req.files);
+ // console.log('files', req.files);
   res.send(req.files);
 });
 

@@ -1,10 +1,12 @@
 <div *ngIf="showAddBranchPage">
-  <div class="col-md-offset-2 col-md-8" *ngIf="selectHospital && !showEditForm && !editFromHospital">
+  <div class="row" *ngIf="selectHospital && !showEditForm && !editFromHospital">
     <div class="row">
-      <div class="col-md-offset-3 col-md-6">
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
         <div class="form-group">
           <label for="sel1">Select Hospital:</label>
           <select #refBranchHospitalName="ngModel" required class="form-control" [(ngModel)]="branch.hospitalId" (ngModelChange)="showAddBranchForm(branch.hospitalId)">
+             <option value="">--select hospital--</option>
               <option *ngFor="let hospital of hospitalLists" [ngValue]="hospital._id">{{hospital.hospitalName}}</option>
             </select>
           <div *ngIf="branch_hospital">
@@ -19,7 +21,8 @@
     </div>
     <div class="row" *ngIf="showAddBranch">
       <form #branchForm="ngForm" (ngSubmit)="addBranch(branch)" novalidate>
-        <div class="col-md-6">
+        <div class="col-md-2"></div>
+        <div class="col-md-4">
           <div class="form-group">
             <label>Alias</label>
             <input type="text" #refBranchalias="ngModel" placeholder="*Branch Alias Name" required class="form-control" name="branch.branchAlias"
@@ -34,8 +37,16 @@
           </div>
           <div class="form-group">
             <label>Type</label>
-            <input type="text" #refBranchType="ngModel" required placeholder="*Branch Type" class="form-control" name="branch.branchType"
-              [(ngModel)]="branch.branchType">
+            <select #refBranchType="ngModel" required placeholder="*Branch Type" class="form-control" name="branch.branchType" [(ngModel)]="branch.branchType">
+              <option value="">--select type --</option>
+          <option value="PHC">PHC</option>
+          <option value="CHC">CHC</option>
+          <option value="District Hospital">District Hospital</option>
+          <option value="Medical College">Medical College</option>
+          <option value="Specialized Hospital">Specialized Hospital</option>
+          <option value="Super Speciality">Super Speciality</option>
+          <option value="General Hospital">General Hospital</option>
+        </select>
             <div *ngIf="branch_type">
               <div *ngIf="refBranchType.errors && (refBranchType.dirty || refBranchType.touched)" class="alert alert-danger">
                 <div [hidden]="!refBranchType.errors.required">
@@ -83,8 +94,6 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="col-md-6">
           <div class="form-group">
             <label>Branch Email</label>
             <input type="text" #refBranchEmail="ngModel" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" class="form-control"
@@ -100,6 +109,9 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class="col-md-4">
+
           <div class="form-group">
             <label>Branch Website</label>
             <input type="text" #refBranchWebsite="ngModel" pattern="https?://.+" required class="form-control" placeholder="*Branch Website"
@@ -119,8 +131,9 @@
             <label>Surgeon</label>
             <select class="form-control" #refSurgeon="ngModel" required name="branch.noOfSurgeons" [(ngModel)]="branch.noOfSurgeons">
             <option value="">--select Suregon--</option>
-            <option [ngValue]="1">1</option>
-           <option [ngValue]="2">2</option>            
+            <ng-template ngFor let-item [ngForOf]="createRange(5)" let-currentElementIndex="index+1">
+               <option  [ngValue]="currentElementIndex">{{currentElementIndex}}</option>
+           </ng-template>          
           </select>
             <div *ngIf="branch_surgeon">
               <div *ngIf="refSurgeon.errors && (refSurgeon.dirty || refSurgeon.touched)" class="alert alert-danger">
@@ -134,8 +147,9 @@
             <label>Support Staff</label>
             <select class="form-control" #refSupport="ngModel" required name="branch.noOfSupportStaffs" [(ngModel)]="branch.noOfSupportStaffs">
             <option value="">--select Support--</option>
-            <option [ngValue]="1">1</option>
-           <option [ngValue]="2">2</option>            
+           <ng-template ngFor let-item [ngForOf]="createRange(5)" let-currentElementIndex="index+1">
+               <option  [ngValue]="currentElementIndex">{{currentElementIndex}}</option>
+           </ng-template>           
           </select>
             <div *ngIf="branch_support">
               <div *ngIf="refSupport.errors && (refSupport.dirty || refSupport.touched)" class="alert alert-danger">
@@ -145,15 +159,35 @@
               </div>
             </div>
           </div>
+          <div class="form-group">
+            <label>Services Subscribed for</label><br>
+            <label *ngFor="let service of branch.service" class="checkbox-inline">
+          <input type="checkbox" name="service" [(ngModel)]="service.selected">
+          {{service.serviceName}}
+        </label>
 
+          </div>
+          <div class="form-group">
+            <label>Upload Image</label>
+            <input type="file" #refImage="ngModel" required (change)="fileChangeEvent($event)" class="form-control" placeholder="Upload file..."
+              ngModel/>
+            <div *ngIf="image">
+              <div *ngIf="refImage.errors && (refImage.dirty || refImage.touched)" class="alert alert-danger">
+                <div [hidden]="!refImage.errors.required">
+                  Browse Image
+                </div>
+
+              </div>
+            </div>
+          </div>
           <div class="text-center">
-            <button type="submit" [disabled]="!branchForm.form.valid" class="btn btn-primary">Add Branch</button>
+            <button type="submit" [disabled]="!branchForm.form.valid" class="btn btn-primary" style="float:right;">Add Branch</button>
           </div>
         </div>
 
 
 
-        <div>
+        <div class="col-md-offset-1 col-md-10 col-md-offset-2">
           <table class="table">
             <thead>
               <tr>
@@ -161,6 +195,7 @@
                 <th>Branch Email</th>
                 <th>Edit</th>
                 <th>Delete</th>
+                <th>Deactive</th>
               </tr>
             </thead>
             <tbody>
@@ -169,6 +204,7 @@
                 <td>{{branch.branchEmail}}</td>
                 <td><button type="button" class="btn btn-primary btn-xs" (click)="editBranchFromSelectHospital(branch._id,branch.hospitalId)">Edit</button></td>
                 <td><button type="button" class="btn btn-danger btn-xs" (click)="deleteBranchFromSelectHospital(branch._id,branch.hospitalId)">Delete</button></td>
+                <td><button type="button" class="btn btn-warning btn-xs" (click)="toggleStatus1(branch._id,branch.hospitalId)">{{branch.statusText}}</button></td>
               </tr>
             </tbody>
           </table>
@@ -183,142 +219,164 @@
     <h1 class="text-center">{{hospitalName}}</h1>
     <div class="col-md-2"></div>
     <div class="col-md-4">
-    <div class="form-group hidden">
-      <label>Branch ID</label>
-      <input type="text" class="form-control" [(ngModel)]="branch.hospitalId">
-    </div>
-     <div class="form-group">
-            <label>Alias</label>
-            <input type="text" #refBranchalias="ngModel" placeholder="*Branch Alias Name" required class="form-control" name="branch.branchAlias"
-              [(ngModel)]="branch.branchAlias">
-            <div *ngIf="branch_alias">
-              <div *ngIf="refBranchalias.errors && (refBranchalias.dirty || refBranchalias.touched)" class="alert alert-danger">
-                <div [hidden]="!refBranchalias.errors.required">
-                  Enter Alias Name
-                </div>
-              </div>
+      <div class="form-group hidden">
+        <label>Branch ID</label>
+        <input type="text" class="form-control" [(ngModel)]="branch.hospitalId">
+      </div>
+      <div class="form-group">
+        <label>Alias</label>
+        <input type="text" #refBranchalias="ngModel" placeholder="*Branch Alias Name" required class="form-control" name="branch.branchAlias"
+          [(ngModel)]="branch.branchAlias">
+        <div *ngIf="branch_alias">
+          <div *ngIf="refBranchalias.errors && (refBranchalias.dirty || refBranchalias.touched)" class="alert alert-danger">
+            <div [hidden]="!refBranchalias.errors.required">
+              Enter Alias Name
             </div>
           </div>
-          <div class="form-group">
-            <label>Type</label>
-            <input type="text" #refBranchType="ngModel" required placeholder="*Branch Type" class="form-control" name="branch.branchType"
-              [(ngModel)]="branch.branchType">
-            <div *ngIf="branch_type">
-              <div *ngIf="refBranchType.errors && (refBranchType.dirty || refBranchType.touched)" class="alert alert-danger">
-                <div [hidden]="!refBranchType.errors.required">
-                  Enter Branch Type
-                </div>
-              </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Type</label>
+        <select #refBranchType="ngModel" required placeholder="*Branch Type" class="form-control" name="branch.branchType" [(ngModel)]="branch.branchType">
+          <option value="">--select type --</option>
+          <option value="PHC">PHC</option>
+          <option value="CHC">CHC</option>
+          <option value="District Hospital">District Hospital</option>
+          <option value="Medical College">Medical College</option>
+          <option value="Specialized Hospital">Specialized Hospital</option>
+          <option value="Super Speciality">Super Speciality</option>
+          <option value="General Hospital">General Hospital</option>
+        </select>
+        <div *ngIf="branch_type">
+          <div *ngIf="refBranchType.errors && (refBranchType.dirty || refBranchType.touched)" class="alert alert-danger">
+            <div [hidden]="!refBranchType.errors.required">
+              Enter Branch Type
             </div>
           </div>
-          <div class="form-group">
-            <label>Branch Name</label>
-            <input type="text" #refBranchName="ngModel" required class="form-control" placeholder="*Branch Name" name="branch.branchName"
-              [(ngModel)]="branch.branchName">
-            <div *ngIf="branch_name">
-              <div *ngIf="refBranchName.errors && (refBranchName.dirty || refBranchName.touched)" class="alert alert-danger">
-                <div [hidden]="!refBranchName.errors.required">
-                  Enter Branch Name
-                </div>
-              </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Branch Name</label>
+        <input type="text" #refBranchName="ngModel" required class="form-control" placeholder="*Branch Name" name="branch.branchName"
+          [(ngModel)]="branch.branchName">
+        <div *ngIf="branch_name">
+          <div *ngIf="refBranchName.errors && (refBranchName.dirty || refBranchName.touched)" class="alert alert-danger">
+            <div [hidden]="!refBranchName.errors.required">
+              Enter Branch Name
             </div>
           </div>
-          <div class="form-group">
-            <label>Branch Address</label>
-            <textarea type="text" #refBranchAddress="ngModel" required class="form-control" placeholder="*Branch Address" name="branch.branchAddress"
-              [(ngModel)]="branch.branchAddress"></textarea>
-            <div *ngIf="branch_address">
-              <div *ngIf="refBranchAddress.errors && (refBranchAddress.dirty || refBranchAddress.touched)" class="alert alert-danger">
-                <div [hidden]="!refBranchAddress.errors.required">
-                  Enter Branch Address
-                </div>
-              </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Branch Address</label>
+        <textarea type="text" #refBranchAddress="ngModel" required class="form-control" placeholder="*Branch Address" name="branch.branchAddress"
+          [(ngModel)]="branch.branchAddress"></textarea>
+        <div *ngIf="branch_address">
+          <div *ngIf="refBranchAddress.errors && (refBranchAddress.dirty || refBranchAddress.touched)" class="alert alert-danger">
+            <div [hidden]="!refBranchAddress.errors.required">
+              Enter Branch Address
             </div>
           </div>
-          <div class="form-group">
-            <label>Branch Phoneno</label>
-            <input type="text" #refBranchPhone="ngModel" pattern="[789][0-9]{9}" required class="form-control" placeholder="*Branch Phoneno"
-              name="branch.branchPhoneno" [(ngModel)]="branch.branchPhoneno">
-            <div *ngIf="branch_phoneno">
-              <div *ngIf="refBranchPhone.errors && (refBranchPhone.dirty || refBranchPhone.touched)" class="alert alert-danger">
-                <div [hidden]="!refBranchPhone.errors.required">
-                  Enter Branch Phone Number
-                </div>
-                <div [hidden]="!refBranchPhone.errors.pattern">
-                  Please enter 10 digits
-                </div>
-              </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Branch Phoneno</label>
+        <input type="text" #refBranchPhone="ngModel" pattern="[789][0-9]{9}" required class="form-control" placeholder="*Branch Phoneno"
+          name="branch.branchPhoneno" [(ngModel)]="branch.branchPhoneno">
+        <div *ngIf="branch_phoneno">
+          <div *ngIf="refBranchPhone.errors && (refBranchPhone.dirty || refBranchPhone.touched)" class="alert alert-danger">
+            <div [hidden]="!refBranchPhone.errors.required">
+              Enter Branch Phone Number
+            </div>
+            <div [hidden]="!refBranchPhone.errors.pattern">
+              Please enter 10 digits
             </div>
           </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Branch Email</label>
+        <input type="text" #refBranchEmail="ngModel" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" class="form-control"
+          placeholder="*Branch Email" name="branch.branchEmail" [(ngModel)]="branch.branchEmail">
+        <div *ngIf="branch_email">
+          <div *ngIf="refBranchEmail.errors && (refBranchEmail.dirty || refBranchEmail.touched)" class="alert alert-danger">
+            <div [hidden]="!refBranchEmail.errors.required">
+              Enter Branch Email
+            </div>
+            <div [hidden]="!refBranchEmail.errors.pattern">
+              Please enter valid emailid
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="col-md-4">
+
       <div class="form-group">
-            <label>Branch Email</label>
-            <input type="text" #refBranchEmail="ngModel" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" class="form-control"
-              placeholder="*Branch Email" name="branch.branchEmail" [(ngModel)]="branch.branchEmail">
-            <div *ngIf="branch_email">
-              <div *ngIf="refBranchEmail.errors && (refBranchEmail.dirty || refBranchEmail.touched)" class="alert alert-danger">
-                <div [hidden]="!refBranchEmail.errors.required">
-                  Enter Branch Email
-                </div>
-                <div [hidden]="!refBranchEmail.errors.pattern">
-                  Please enter valid emailid
-                </div>
-              </div>
+        <label>Branch Website</label>
+        <input type="text" #refBranchWebsite="ngModel" pattern="https?://.+" required class="form-control" placeholder="*Branch Website"
+          name="branch.branchWebsite" [(ngModel)]="branch.branchWebsite">
+        <div *ngIf="branch_website">
+          <div *ngIf="refBranchWebsite.errors && (refBranchWebsite.dirty || refBranchWebsite.touched)" class="alert alert-danger">
+            <div [hidden]="!refBranchWebsite.errors.required">
+              Enter Branch Website
+            </div>
+            <div [hidden]="!refBranchWebsite.errors.pattern">
+              Please enter valid website
             </div>
           </div>
-       <div class="form-group">
-            <label>Branch Website</label>
-            <input type="text" #refBranchWebsite="ngModel" pattern="https?://.+" required class="form-control" placeholder="*Branch Website"
-              name="branch.branchWebsite" [(ngModel)]="branch.branchWebsite">
-            <div *ngIf="branch_website">
-              <div *ngIf="refBranchWebsite.errors && (refBranchWebsite.dirty || refBranchWebsite.touched)" class="alert alert-danger">
-                <div [hidden]="!refBranchWebsite.errors.required">
-                  Enter Branch Website
-                </div>
-                <div [hidden]="!refBranchWebsite.errors.pattern">
-                  Please enter valid website
-                </div>
-              </div>
-            </div>
-          </div>
-       <div class="form-group">
-            <label>Surgeon</label>
-            <select class="form-control" #refSurgeon="ngModel" required name="branch.noOfSurgeons" [(ngModel)]="branch.noOfSurgeons">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Surgeon</label>
+        <select class="form-control" #refSurgeon="ngModel" required name="branch.noOfSurgeons" [(ngModel)]="branch.noOfSurgeons">
             <option value="">--select Suregon--</option>
-            <option [ngValue]="1">1</option>
-           <option [ngValue]="2">2</option>            
+           <ng-template ngFor let-item [ngForOf]="createRange(5)" let-currentElementIndex="index+1">
+               <option  [ngValue]="currentElementIndex">{{currentElementIndex}}</option>
+           </ng-template>          
           </select>
-            <div *ngIf="branch_surgeon">
-              <div *ngIf="refSurgeon.errors && (refSurgeon.dirty || refSurgeon.touched)" class="alert alert-danger">
-                <div [hidden]="!refSurgeon.errors.required">
-                  Select No of surgeon
-                </div>
-              </div>
+        <div *ngIf="branch_surgeon">
+          <div *ngIf="refSurgeon.errors && (refSurgeon.dirty || refSurgeon.touched)" class="alert alert-danger">
+            <div [hidden]="!refSurgeon.errors.required">
+              Select No of surgeon
             </div>
           </div>
-          <div class="form-group">
-            <label>Support Staff</label>
-            <select class="form-control" #refSupport="ngModel" required name="branch.noOfSupportStaffs" [(ngModel)]="branch.noOfSupportStaffs">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Support Staff</label>
+        <select class="form-control" #refSupport="ngModel" required name="branch.noOfSupportStaffs" [(ngModel)]="branch.noOfSupportStaffs">
             <option value="">--select Support--</option>
-            <option [ngValue]="1">1</option>
-           <option [ngValue]="2">2</option>            
+            <ng-template ngFor let-item [ngForOf]="createRange(5)" let-currentElementIndex="index+1">
+               <option  [ngValue]="currentElementIndex">{{currentElementIndex}}</option>
+           </ng-template>           
           </select>
-            <div *ngIf="branch_support">
-              <div *ngIf="refSupport.errors && (refSupport.dirty || refSupport.touched)" class="alert alert-danger">
-                <div [hidden]="!refSupport.errors.required">
-                  Select No of support staff
-                </div>
-              </div>
+        <div *ngIf="branch_support">
+          <div *ngIf="refSupport.errors && (refSupport.dirty || refSupport.touched)" class="alert alert-danger">
+            <div [hidden]="!refSupport.errors.required">
+              Select No of support staff
             </div>
           </div>
-    <div class="text-center">
-      <button class="btn btn-primary" (click)="addBranch(branch)">Add Branch</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Services Subscribed for</label><br>
+        <label *ngFor="let service of branch.service" class="checkbox-inline">
+          <input type="checkbox" name="service" [(ngModel)]="service.selected">
+          {{service.serviceName}}
+        </label>
+
+      </div>
+      <div class="form-group">
+        <label>Upload Image</label>
+        <input type="file" (change)="fileChangeEvent($event)" class="form-control" placeholder="Upload file..." ngModel/>
+
+      </div>
+      <div class="text-center">
+        <button class="btn btn-primary" (click)="addBranch(branch)" style="float:right;">Add Branch</button>
+      </div>
     </div>
-    </div>
-   <div class="row">
-      <div class="col-md-2"></div>
-      <div class="col-md-8">
+    <div class="col-md-offset-1 col-md-10 col-md-offset-2">
       <table class="table">
         <thead>
           <tr>
@@ -326,6 +384,7 @@
             <th>Branch Email</th>
             <th>Edit</th>
             <th>Delete</th>
+            <th>Deactive</th>
           </tr>
         </thead>
         <tbody>
@@ -334,52 +393,89 @@
             <td>{{branch.branchEmail}}</td>
             <td><button type="button" class="btn btn-primary btn-xs" (click)="editBranch(branch._id)">Edit</button></td>
             <td><button type="button" class="btn btn-danger btn-xs" (click)="deleteBranch(branch._id)">Delete</button></td>
+            <td><button type="button" class="btn btn-warning btn-xs" (click)="toggleStatus(branch._id)">{{branch.statusText}}</button></td>
           </tr>
         </tbody>
       </table>
-      </div>
     </div>
   </div>
-   
+
   <div class="row" *ngIf="!editFromHospital && showEditForm">
     <form>
       <div class="col-md-2"></div>
       <div class="col-md-4">
         <div class="form-group">
+          <label>Alias</label>
           <input type="text" class="form-control" placeholder="*New Branch Alias" name="newBranch.newBranchAlias" [(ngModel)]="newBranch.newBranchAlias">
         </div>
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="*New Branch Type" name="newBranch.newBranchType" [(ngModel)]="newBranch.newBranchType">
+          <label>Type</label>
+          <select class="form-control" placeholder="*New Branch Type" name="newBranch.newBranchType" [(ngModel)]="newBranch.newBranchType">
+          <option value="PHC">PHC</option>
+          <option value="CHC">CHC</option>
+          <option value="District Hospital">District Hospital</option>
+          <option value="Medical College">Medical College</option>
+          <option value="Specialized Hospital">Specialized Hospital</option>
+          <option value="Super Speciality">Super Speciality</option>
+          <option value="General Hospital">General Hospital</option>
+        </select>
         </div>
         <div class="form-group">
+          <label>Branch Name</label>
           <input type="text" class="form-control" placeholder="*New Branch Name" name="newBranch.newBranchName" [(ngModel)]="newBranch.newBranchName">
         </div>
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="*New Branch Address" name="newBranch.newBranchAddress" [(ngModel)]="newBranch.newBranchAddress">
+          <label>Address</label>
+          <textarea class="form-control" placeholder="*New Branch Address" name="newBranch.newBranchAddress" [(ngModel)]="newBranch.newBranchAddress"></textarea>
         </div>
         <div class="form-group">
+          <label>Phone no</label>
           <input type="text" class="form-control" placeholder="*New Branch Phoneno" name="newBranch.newBranchPhoneno" [(ngModel)]="newBranch.newBranchPhoneno">
         </div>
-
-      </div>
-      <div class="col-md-4">
         <div class="form-group">
+          <label>Email</label>
           <input type="text" class="form-control" placeholder="*New Branch Email" name="newBranch.newBranchEmail" [(ngModel)]="newBranch.newBranchEmail">
         </div>
+      </div>
+      <div class="col-md-4">
+
         <div class="form-group">
+          <label>Website</label>
           <input type="text" class="form-control" placeholder="*New Branch Website" name="newBranch.newBranchWebsite" [(ngModel)]="newBranch.newBranchWebsite">
         </div>
         <div class="form-group">
+          <label>Surgeons</label>
           <select class="form-control" name="newBranch.newNoOfSurgeons" [(ngModel)]="newBranch.newNoOfSurgeons">
-            <option [ngValue]="1">1</option>
-           <option [ngValue]="2">2</option>            
+            <ng-template ngFor let-item [ngForOf]="createRange(5)" let-currentElementIndex="index+1">
+               <option  [ngValue]="currentElementIndex">{{currentElementIndex}}</option>
+           </ng-template>          
           </select>
         </div>
         <div class="form-group">
+          <label>Support Staff</label>
           <select class="form-control" name="newBranch.newNoOfSupportStaffs" [(ngModel)]="newBranch.newNoOfSupportStaffs">
-            <option [ngValue]="1">1</option>
-           <option [ngValue]="2">2</option>            
+            <ng-template ngFor let-item [ngForOf]="createRange(5)" let-currentElementIndex="index+1">
+               <option  [ngValue]="currentElementIndex">{{currentElementIndex}}</option>
+           </ng-template>           
           </select>
+        </div>
+        <div class="form-group">
+      <label>Services Subscribed for</label><br>
+      <label *ngFor="let service of newBranch.service" class="checkbox-inline">
+          <input type="checkbox" name="service" [(ngModel)]="service.selected">
+          {{service.serviceName}}
+        </label>
+
+    </div>
+        <div class="form-group">
+          <input type="hidden" class="form-control" name="newBranch.filename" [(ngModel)]="newBranch.filename">
+          <img src="../../../assets/uploads/{{newBranch.filename}}" width="100px" height="100px">
+        </div>
+        <div class="form-group">
+          <label>Upload Image</label>
+          <input type="file" #refImage="ngModel" required (change)="editFileChangeEvent($event)" class="form-control" placeholder="Upload file..."
+            ngModel/>
+
         </div>
         <div class="form-group">
           <input type="text" class="form-control hidden" placeholder="*New Branch Id" name="newBranch.newBranchId" [(ngModel)]="newBranch.newBranchId">
@@ -395,45 +491,90 @@
     </form>
   </div>
 
+
+
   <div class="row" *ngIf="editFromHospital && !showEditForm">
     <form (ngSubmit)="updateBranchEdit(newBranchEdit)">
       <div class="col-md-2"></div>
       <div class="col-md-4">
         <div class="form-group">
+          <label>Alias</label>
           <input type="text" class="form-control" placeholder="*New Branch Alias" name="newBranchEdit.newBranchAlias" [(ngModel)]="newBranchEdit.newBranchAlias">
         </div>
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="*New Branch Type" name="newBranchEdit.newBranchType" [(ngModel)]="newBranchEdit.newBranchType">
+          <label>Type</label>
+          <select class="form-control" placeholder="*New Branch Type" name="newBranchEdit.newBranchType" [(ngModel)]="newBranchEdit.newBranchType">
+          <option value="PHC">PHC</option>
+          <option value="CHC">CHC</option>
+          <option value="District Hospital">District Hospital</option>
+          <option value="Medical College">Medical College</option>
+          <option value="Specialized Hospital">Specialized Hospital</option>
+          <option value="Super Speciality">Super Speciality</option>
+          <option value="General Hospital">General Hospital</option>
+        </select>
         </div>
         <div class="form-group">
+          <label>Name</label>
           <input type="text" class="form-control" placeholder="*New Branch Name" name="newBranchEdit.newBranchName" [(ngModel)]="newBranchEdit.newBranchName">
         </div>
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="*New Branch Address" name="newBranchEdit.newBranchAddress" [(ngModel)]="newBranchEdit.newBranchAddress">
+          <label>Address</label>
+          <textarea class="form-control" placeholder="*New Branch Address" name="newBranchEdit.newBranchAddress" [(ngModel)]="newBranchEdit.newBranchAddress"></textarea>
         </div>
         <div class="form-group">
+          <label>Phone no</label>
           <input type="text" class="form-control" placeholder="*New Branch Phoneno" name="newBranchEdit.newBranchPhoneno" [(ngModel)]="newBranchEdit.newBranchPhoneno">
         </div>
-
-      </div>
-      <div class="col-md-4">
         <div class="form-group">
+          <label>Email</label>
           <input type="text" class="form-control" placeholder="*New Branch Email" name="newBranchEdit.newBranchEmail" [(ngModel)]="newBranchEdit.newBranchEmail">
         </div>
+      </div>
+      <div class="col-md-4">
+
         <div class="form-group">
+          <label>Website</label>
           <input type="text" class="form-control" placeholder="*New Branch Website" name="newBranchEdit.newBranchWebsite" [(ngModel)]="newBranchEdit.newBranchWebsite">
         </div>
         <div class="form-group">
+          <label>Surgeon</label>
           <select class="form-control" name="newBranchEdit.newNoOfSurgeons" [(ngModel)]="newBranchEdit.newNoOfSurgeons">
-            <option [ngValue]="1">1</option>
-           <option [ngValue]="2">2</option>            
+            <ng-template ngFor let-item [ngForOf]="createRange(5)" let-currentElementIndex="index+1">
+               <option  [ngValue]="currentElementIndex">{{currentElementIndex}}</option>
+           </ng-template>           
           </select>
         </div>
         <div class="form-group">
+          <label>Support Staff</label>
           <select class="form-control" name="newBranchEdit.newNoOfSupportStaffs" [(ngModel)]="newBranchEdit.newNoOfSupportStaffs">
-            <option [ngValue]="1">1</option>
-           <option [ngValue]="2">2</option>            
+            <ng-template ngFor let-item [ngForOf]="createRange(5)" let-currentElementIndex="index+1">
+               <option  [ngValue]="currentElementIndex">{{currentElementIndex}}</option>
+           </ng-template>          
           </select>
+        </div>
+        <div class="form-group">
+          <label>Services Subscribed for</label><br>
+          <label *ngFor="let service of newBranchEdit.service" class="checkbox-inline">
+            <div *ngIf="service.selected; then thenBlock; else elseBlock"></div>
+           <ng-template #thenBlock>
+             <input type="checkbox" name="service"  checked  > {{service.serviceName}}
+            </ng-template>
+           <ng-template #elseBlock>
+            <input type="checkbox" name="service" [(ngModel)]="service.selected" >
+          {{service.serviceName}}
+          </ng-template>
+        </label>
+
+        </div>
+        <div class="form-group">
+          <input type="hidden" class="form-control" name="newBranchEdit.filename" [(ngModel)]="newBranchEdit.filename">
+          <img src="../../../assets/uploads/{{newBranchEdit.filename}}" width="100px" height="100px">
+        </div>
+        <div class="form-group">
+          <label>Upload Image</label>
+          <input type="file" #refImage="ngModel" required (change)="editBranchFileChangeEvent($event)" class="form-control" placeholder="Upload file..."
+            ngModel/>
+
         </div>
         <div class="form-group hidden">
           <input type="text" class="form-control" placeholder="*New Branch Id" name="newBranchEdit.newBranchId" [(ngModel)]="newBranchEdit.newBranchId">
@@ -448,8 +589,7 @@
       </div>
     </form>
   </div>
-</div>
 
-<div *ngIf="!showAddBranchPage">
-  <h1 class="text-center">No hospitals present!</h1>
-</div>
+  <div *ngIf="!showAddBranchPage">
+    <h1 class="text-center">No hospitals present!</h1>
+  </div>

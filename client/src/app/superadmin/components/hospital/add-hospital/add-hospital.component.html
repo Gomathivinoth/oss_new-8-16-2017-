@@ -3,6 +3,7 @@
     <div class="col-md-2"></div>
     <div class="col-md-4">
       <div class="form-group">
+        <label>Name</label>
         <input type="text" #refhospitalname="ngModel" required class="form-control" placeholder="*Hospital Name" name="hospital.hospitalName"
           [(ngModel)]="hospital.hospitalName">
         <div *ngIf="hos_name">
@@ -14,6 +15,7 @@
         </div>
       </div>
       <div class="form-group">
+        <label>Alias</label>
         <input type="text" #refalias="ngModel" maxlength="4" required class="form-control" placeholder="*Hospital Alias" name="hospital.hospitalAlias"
           [(ngModel)]="hospital.hospitalAlias">
         <div *ngIf="hos_alias">
@@ -28,17 +30,27 @@
         </div>
       </div>
       <div class="form-group">
-        <input type="text" #refhospitaltype="ngModel" required class="form-control" placeholder="*Hospital Type" name="hospital.hospitalType"
-          [(ngModel)]="hospital.hospitalType">
+        <label>Type</label>
+        <select #refhospitaltype="ngModel" required class="form-control" name="hospital.hospitalType" [(ngModel)]="hospital.hospitalType">
+          <option value="">--select type --</option>
+          <option value="PHC">PHC</option>
+          <option value="CHC">CHC</option>
+          <option value="District Hospital">District Hospital</option>
+          <option value="Medical College">Medical College</option>
+          <option value="Specialized Hospital">Specialized Hospital</option>
+          <option value="Super Speciality">Super Speciality</option>
+          <option value="General Hospital">General Hospital</option>
+        </select>
         <div *ngIf="hos_type">
           <div *ngIf="refhospitaltype.errors && (refhospitaltype.dirty || refhospitaltype.touched)" class="alert alert-danger">
             <div [hidden]="!refhospitaltype.errors.required">
-              Please enter a Hospital type
+              Select Hospital Name
             </div>
           </div>
         </div>
       </div>
       <div class="form-group">
+        <label>Address</label>
         <textarea #refaddress="ngModel" required class="form-control" placeholder="*Hospital Address" name="hospital.hospitalAddress"
           [(ngModel)]="hospital.hospitalAddress"></textarea>
         <div *ngIf="hos_address">
@@ -50,6 +62,7 @@
         </div>
       </div>
       <div class="form-group">
+        <label>Phone no</label>
         <input type="text" #refmobileno="ngModel" pattern="[789][0-9]{9}" required class="form-control" placeholder="*Hospital PhoneNo"
           name="hospital.hospitalPhoneno" [(ngModel)]="hospital.hospitalPhoneno">
         <div *ngIf="hos_phoneno">
@@ -64,6 +77,7 @@
         </div>
       </div>
       <div class="form-group">
+        <label>Email</label>
         <input type="text" #refemail="ngModel" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" class="form-control" placeholder="*Hospital Email"
           name="hospital.hospitalEmail" [(ngModel)]="hospital.hospitalEmail">
         <div *ngIf="hos_email">
@@ -80,6 +94,7 @@
     </div>
     <div class="col-md-4">
       <div class="form-group">
+        <label>Website</label>
         <input type="text" #refwebsite="ngModel" pattern="https?://.+" required class="form-control" placeholder="*Hospital Website"
           name="hospital.hospitalWebsite" [(ngModel)]="hospital.hospitalWebsite">
         <div *ngIf="hos_website">
@@ -94,6 +109,7 @@
         </div>
       </div>
       <div class="form-group">
+        <label>Surgeons</label>
         <select class="form-control" #refSurgeon="ngModel" required name="hospital.noOfSurgeons" [(ngModel)]="hospital.noOfSurgeons">
             <option value="">--select Suregon--</option>
              <ng-template ngFor let-item [ngForOf]="createRange(5)" let-currentElementIndex="index+1">
@@ -110,10 +126,11 @@
       </div>
 
       <div class="form-group">
+        <label>Support staff</label>
         <select class="form-control" #refSupport="ngModel" required name="hospital.noOfSupportStaffs" [(ngModel)]="hospital.noOfSupportStaffs">
             <option value="">--select Support staff--</option>
             <ng-template ngFor let-item [ngForOf]="createRange(5)" let-currentElementIndex="index+1">
-               <option  [ngValue]="">{{currentElementIndex}}</option>
+               <option  [ngValue]="currentElementIndex">{{currentElementIndex}}</option>
            </ng-template>
           </select>
         <div *ngIf="hos_support">
@@ -124,14 +141,27 @@
           </div>
         </div>
       </div>
-      <!-- <div class="form-group">
-        <label class="checkbox-inline"><input type="checkbox" value="">Knee</label>
-        <label class="checkbox-inline"><input type="checkbox" value="">Hip</label>
-        <label class="checkbox-inline"><input type="checkbox" value="">ACL</label>
-        <label class="checkbox-inline"><input type="checkbox" value="">PCL</label>
-        <label class="checkbox-inline"><input type="checkbox" value="">Spine</label>
-        <label class="checkbox-inline"><input type="checkbox" value="">All</label> 
-      </div>  -->
+      <div class="form-group">
+        <label>Services Subscribed for</label><br>
+        <label *ngFor="let service of hospital.service" class="checkbox-inline">
+          <input type="checkbox" name="service" [(ngModel)]="service.selected">
+          {{service.serviceName}}
+        </label>
+
+      </div>
+      <div class="form-group">
+        <label>Upload Image</label>
+        <input type="file" #refImage="ngModel" required (change)="fileChangeEvent($event)" class="form-control" placeholder="Upload file..."
+          ngModel/>
+        <div *ngIf="image">
+          <div *ngIf="refImage.errors && (refImage.dirty || refImage.touched)" class="alert alert-danger">
+            <div [hidden]="!refImage.errors.required">
+              Browse Image
+            </div>
+
+          </div>
+        </div>
+      </div>
 
       <div>
         <button type="submit" [disabled]="!hospitalForm.form.valid" class="btn btn-primary" style="float:right;">Add Hospital</button>
@@ -169,7 +199,7 @@
         <td>{{hospital.hospitalAlias}}</td>
         <td><button class="btn btn-primary btn-xs" (click)="editHospital(hospital._id)">Edit</button></td>
         <td><button class="btn btn-danger btn-xs" (click)="deleteHospital(hospital._id)">Delete</button></td>
-        <td><button type="button" class="btn btn-warning btn-xs" (click)="toggleStatus(hospital)">{{hospital.statusText}}</button> </td>
+        <td><button type="button" class="btn btn-warning btn-xs" (click)="toggleStatus(hospital)">{{hospital.statusText}}</button>          </td>
       </tr>
     </tbody>
   </table>
@@ -181,39 +211,77 @@
     <div class="col-md-2"></div>
     <div class="col-md-4">
       <div class="form-group">
+        <label>Name</label>
         <input type="text" class="form-control" placeholder="*New Hospital Name" name="newHospital.newHospitalName" [(ngModel)]="newHospital.newHospitalName">
       </div>
       <div class="form-group">
+        <label>Alias</label>
         <input type="text" class="form-control" placeholder="*New Hospital Alias" name="newHospital.newHospitalAlias" [(ngModel)]="newHospital.newHospitalAlias">
       </div>
       <div class="form-group">
-        <input type="text" class="form-control" placeholder="*New Hospital Type" name="newHospital.newHospitalType" [(ngModel)]="newHospital.newHospitalType">
+        <label>Type</label>
+        <select class="form-control" placeholder="*New Hospital Type" name="newHospital.newHospitalType" [(ngModel)]="newHospital.newHospitalType">
+        
+          <option value="PHC">PHC</option>
+          <option value="CHC">CHC</option>
+          <option value="District Hospital">District Hospital</option>
+          <option value="Medical College">Medical College</option>
+          <option value="Specialized Hospital">Specialized Hospital</option>
+          <option value="Super Speciality">Super Speciality</option>
+          <option value="General Hospital">General Hospital</option>
+        </select>
       </div>
       <div class="form-group">
-        <input type="text" class="form-control" placeholder="*New Hospital Address" name="newHospital.newHospitalAddress" [(ngModel)]="newHospital.newHospitalAddress">
+        <label>Address</label>
+        <textarea type="text" class="form-control" placeholder="*New Hospital Address" name="newHospital.newHospitalAddress" [(ngModel)]="newHospital.newHospitalAddress"></textarea>
       </div>
       <div class="form-group">
+        <label>Phone no</label>
         <input type="text" class="form-control" placeholder="*New Hospital Phone No" name="newHospital.newHospitalPhoneno" [(ngModel)]="newHospital.newHospitalPhoneno">
       </div>
       <div class="form-group">
+        <label>Email</label>
         <input type="text" class="form-control" placeholder="*New Hospital Email" name="newHospital.newHospitalEmail" [(ngModel)]="newHospital.newHospitalEmail">
       </div>
     </div>
     <div class="col-md-4">
       <div class="form-group">
+        <label>Website</label>
         <input type="text" class="form-control" placeholder="*New Hospital Website" name="newHospital.newHospitalWebsite" [(ngModel)]="newHospital.newHospitalWebsite">
       </div>
       <div class="form-group">
+        <label>Surgeons</label>
         <select class="form-control" name="newHospital.newNoOfSurgeons" [(ngModel)]="newHospital.newNoOfSurgeons">
-            <option [ngValue]="1">1</option>
-           <option [ngValue]="2">2</option>            
+            <ng-template ngFor let-item [ngForOf]="createRange(5)" let-currentElementIndex="index+1">
+               <option  [ngValue]="currentElementIndex">{{currentElementIndex}}</option>
+           </ng-template>            
           </select>
       </div>
       <div class="form-group">
+        <label>Support Staff</label>
         <select class="form-control" name="newHospital.newNoOfSupportStaffs" [(ngModel)]="newHospital.newNoOfSupportStaffs">
-            <option [ngValue]="1">1</option>
-           <option [ngValue]="2">2</option>            
+            <ng-template ngFor let-item [ngForOf]="createRange(5)" let-currentElementIndex="index+1">
+               <option  [ngValue]="currentElementIndex">{{currentElementIndex}}</option>
+           </ng-template>            
           </select>
+      </div>
+        <div class="form-group">
+      <label>Services Subscribed for</label><br>
+      <label *ngFor="let service of newHospital.service" class="checkbox-inline">
+          <input type="checkbox" name="service" [checked] = "service.selected" [(ngModel)]="service.selected">
+          {{service.serviceName}}
+        </label>
+
+    </div>
+      <div class="form-group">
+        <input type="hidden" class="form-control" name="newHospital.filename" [(ngModel)]="newHospital.filename">
+        <img src="../../../assets/uploads/{{newHospital.filename}}" width="100px" height="100px">
+      </div>
+      <div class="form-group">
+        <label>Upload Image</label>
+        <input type="file" #refImage="ngModel" required (change)="editFileChangeEvent($event)" class="form-control" placeholder="Upload file..."
+          ngModel/>
+
       </div>
       <div class="form-group" class="hidden">
         <input type="text" class="form-control" placeholder="*New Hospital Id" name="newHospital.newHospitalId" [(ngModel)]="newHospital.newHospitalId">

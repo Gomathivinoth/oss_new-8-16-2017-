@@ -6,10 +6,10 @@ import { AuthGuard } from './guards/auth.guard';
 
 // Our Array of Angular 2 Routes
 const appRoutes: Routes = [
-  { 
-      path: '', 
-      redirectTo: 'login', 
-      pathMatch: 'full' 
+  {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full'
   },
   {
     path: 'login',
@@ -23,6 +23,16 @@ const appRoutes: Routes = [
   {
     path: 'hospitaladmin',
     loadChildren: 'app/hospitaladmin/hospitaladmin.module#HospitaladminModule', // Default Route
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'branchadmin',
+    loadChildren: 'app/branchadmin/branchadmin.module#BranchadminModule', // Default Route
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'surgeon',
+    loadChildren: 'app/surgeon/surgeon.module#SurgeonModule', // Default Route
     canActivate: [AuthGuard]
   },
   { path: '**', component: LoginComponent } // "Catch-All" Route

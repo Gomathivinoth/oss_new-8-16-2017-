@@ -26,6 +26,7 @@ export class AddBranchComponent implements OnInit {
   branch_website = true;
   branch_surgeon = true;
   branch_support = true;
+  image = true;
   showForm = true;
   showTable;
   branchLists;
@@ -42,7 +43,7 @@ export class AddBranchComponent implements OnInit {
     noOfSurgeons: '',
     noOfSupportStaffs: '',
     filename: '',
-    filetype:'',
+    filetype: '',
     service: [{
       'serviceName': String,
       'selected': Boolean,
@@ -50,7 +51,7 @@ export class AddBranchComponent implements OnInit {
   }
   editbranch = {
     hospitalId: '',
-    branchId:'',
+    branchId: '',
     editbranchAlias: '',
     editbranchType: '',
     editname: '',
@@ -60,8 +61,9 @@ export class AddBranchComponent implements OnInit {
     editwebsite: '',
     noOfSurgeons: '',
     noOfSupportStaffs: '',
+    filename: '',
     editfilename: '',
-    editfiletype:'',
+    editfiletype: '',
     service: [{
       'serviceName': String,
       'selected': Boolean,
@@ -86,7 +88,7 @@ export class AddBranchComponent implements OnInit {
 
   getHospitalInfo() {
     this.hospitalId = localStorage.getItem('hospitalId');
-    console.log(this.hospitalId);
+    // console.log(this.hospitalId);
     this.hospitalId = JSON.parse(this.hospitalId);
     this.hospitalAdminService.getHospitalInfo(this.hospitalId).subscribe(data => {
       if (!data.success) {
@@ -96,7 +98,7 @@ export class AddBranchComponent implements OnInit {
         this.hospitalname = data.message.hospitalName;
         this.branch.branchAlias = data.message.hospitalAlias;
         this.branch.hospitalId = data.message._id;
-        console.log(this.branch.hospitalId);
+        // console.log(this.branch.hospitalId);
         if (this.branchLists.length < 1) {
           this.showTable = false;
         } else {
@@ -108,16 +110,16 @@ export class AddBranchComponent implements OnInit {
 
 
   addBranch(branch) {
-    console.log(branch);
+    // console.log(branch);
     const formData: any = new FormData();
     const files: Array<File> = this.filesToUpload;
     formData.append("uploads[]", files[0], files[0]['name']);
-    
+
     this.http.post('http://localhost:3000/upload', formData)
       .map(files => files.json())
       .subscribe(files => console.log('files', files))
     this.hospitalAdminService.hospital_AddBranch(branch).subscribe(data => {
-      console.log(data);
+      // console.log(data);
       this.branch.branchType = '';
       this.branch.branchName = '';
       this.branch.branchAddress = '';
@@ -134,23 +136,25 @@ export class AddBranchComponent implements OnInit {
       this.branch_website = false;
       this.branch_surgeon = false;
       this.branch_support = false;
+      this.image = false;
       this.getHospitalInfo();
     });
   }
 
-   fileChangeEvent(fileInput: any) {
+  fileChangeEvent(fileInput: any) {
     this.filesToUpload = <Array<File>>fileInput.target.files;
-    var dt = new Date().toJSON().slice(0,10).replace(/-/g,'-')
-    this.branch.filename = dt+"-"+fileInput.target.files[0]['name'];
+    var dt = new Date().toJSON().slice(0, 10).replace(/-/g, '-')
+    this.branch.filename = dt + "-" + fileInput.target.files[0]['name'];
     this.branch.filetype = fileInput.target.files[0]['type'];
   }
 
-  editBranch(branchId,hospitalId){
+  editBranch(branchId, hospitalId) {
     this.editbranch.hospitalId = hospitalId;
     this.editbranch.branchId = branchId;
     this.showForm = false;
     this.hospitalAdminService.hospital_EditBranch(this.editbranch).subscribe(data => {
-      if(data.success){
+      // console.log(data.message);
+      if (data.success) {
         this.editbranch.branchId = data.message._id;
         this.editbranch.editbranchAlias = data.message.branchAlias;
         this.editbranch.editbranchType = data.message.branchType;
@@ -161,11 +165,40 @@ export class AddBranchComponent implements OnInit {
         this.editbranch.editwebsite = data.message.branchWebsite;
         this.editbranch.noOfSurgeons = data.message.noOfSurgeons;
         this.editbranch.noOfSupportStaffs = data.message.noOfSupportStaffs;
-        this.branch.service = data.message.service;
-        this.branch.filename = data.message.fileName;
+        this.editbranch.service = data.message.service;
+        this.editbranch.filename = data.message.fileName;
         this.editbranch.hospitalId = hospitalId;
       }
     });
+  }
+
+  updateBranch(editbranch) {
+    //  console.log(editbranch);
+    if (editbranch.editfilename) {
+      const formData: any = new FormData();
+      const files: Array<File> = this.filesToUpload;
+      //console.log(files);
+      formData.append("uploads[]", files[0], files[0]['name']);
+
+      this.http.post('http://localhost:3000/upload', formData)
+        .map(files => files.json())
+        .subscribe(files => console.log('files', files))
+    }
+    this.showForm = true;
+    this.hospitalAdminService.hospital_UpdateBranch(this.editbranch).subscribe(data => {
+      //console.log(data);
+      this.getHospitalInfo();
+    });
+
+  }
+
+
+  editFileChangeEvent(fileInput: any) {
+    this.filesToUpload = <Array<File>>fileInput.target.files;
+    var dt = new Date().toJSON().slice(0, 10).replace(/-/g, '-')
+    this.editbranch.editfilename = dt + "-" + fileInput.target.files[0]['name'];
+    this.editbranch.editfiletype = fileInput.target.files[0]['type'];
+
   }
   deleteBranch(branchId, hospitalId) {
     //console.log(hospitalId);
@@ -183,6 +216,10 @@ export class AddBranchComponent implements OnInit {
     this.hospitalAdminService.toggleHospitalStatus(this.deletebranch).subscribe(data => {
       this.getHospitalInfo();
     });
+  }
+
+  goBack() {
+    this.showForm = true;
   }
 
   createRange() {

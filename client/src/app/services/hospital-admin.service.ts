@@ -46,6 +46,12 @@ export class HospitalAdminService {
     return this.http.post(this.domain + 'authentication/hospital_EditBranch/', id , this.options).map(res => res.json());
   }
 
+  hospital_UpdateBranch(branch){
+    console.log(branch);
+      this.createAuthenticationHeaders(); // Create headers
+      return this.http.put(this.domain + 'hospitalAdmin/hospital_UpdateBranch/' , branch , this.options).map(res => res.json());
+  }
+
   hospital_DeleteBranch(id){
    //console.log(id);
     this.createAuthenticationHeaders(); // Create headers
