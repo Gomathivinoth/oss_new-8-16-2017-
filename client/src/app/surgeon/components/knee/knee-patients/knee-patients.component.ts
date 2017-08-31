@@ -7,8 +7,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class KneePatientsComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+  ) { }
 
+  todaydate;
+  surgeonName;
+  hospitalName;
+  address;
+  getinfosurgeon = {
+    hospitalId: '',
+    branchId: '',
+    surgeonId: ''
+  } 
   ngOnInit() {
   }
 

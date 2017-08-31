@@ -42,13 +42,14 @@ export class HospitalService {
     localStorage.clear(); // Clear local storage
   }
 
-  storeUserData(token, user , hospitalId, branchId) {
+  storeUserData(token, user , hospitalId, branchId, surgeonId) {
    // console.log(hospitalId);
    // console.log(branchId);
     localStorage.setItem('token', token); // Set token in local storage
     localStorage.setItem('user', JSON.stringify(user)); // Set user in local storage as string
     localStorage.setItem('hospitalId',JSON.stringify(hospitalId));
     localStorage.setItem('branchId',JSON.stringify(branchId));
+    localStorage.setItem('surgeonId',JSON.stringify(surgeonId));
     this.authToken = token; // Assign token to be used elsewhere
     this.user = user; // Set user to be used elsewhere
   }
@@ -207,5 +208,6 @@ getBranchUserDetails(id){
     this.createAuthenticationHeaders(); // Create headers
     return this.http.put(this.domain + 'authentication/toggleUserStatus/' , id , this.options).map(res => res.json());
   }
+  
 
 }

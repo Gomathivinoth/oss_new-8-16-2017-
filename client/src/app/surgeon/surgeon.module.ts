@@ -20,6 +20,9 @@ import { SpineComponent } from './components/spine/spine.component';
 import { SpinePrimaryComponent } from './components/spine/spine-primary/spine-primary.component';
 import { SpineRevisionComponent } from './components/spine/spine-revision/spine-revision.component';
 import { SpinePatientsComponent } from './components/spine/spine-patients/spine-patients.component';
+import { DemographicComponent } from './components/demographic/demographic.component';
+import { TabComponent } from './components/tab/tab.component';
+import { TabContentComponent } from './components/tab-content/tab-content.component';
 
 
 
@@ -39,7 +42,10 @@ import { SpinePatientsComponent } from './components/spine/spine-patients/spine-
     HipPatientsComponent,
     SpinePrimaryComponent,
     SpineRevisionComponent,
-    SpinePatientsComponent
+    SpinePatientsComponent,
+    DemographicComponent,
+    TabComponent,
+    TabContentComponent
   ],
   imports: [
     AppRoutingModule,    

@@ -23,5 +23,21 @@ export class SurgeonService {
       })
     });
   }
+  surgeon_GetHospitalInfo(id) {
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.post(this.domain + 'surgeon/surgeon_GetHospitalInfo/', id, this.options).map(res => res.json());
+
+  }
+
+  surgeon_AddPatient(patient) {
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.post(this.domain + 'surgeon/surgeon_AddPatient/', patient, this.options).map(res => res.json());
+
+  }
+   surgeon_CountValue(id){
+      this.createAuthenticationHeaders(); // Create headers
+      return this.http.get(this.domain + 'surgeon/surgeon_CountValue/'+id , this.options).map(res => res.json());
+  }
+  
 
 }

@@ -1,0 +1,235 @@
+<div class="row" *ngIf="showForm">
+  <form #patientForm="ngForm" (ngSubmit)="addPatient(patient)" novalidate>
+    <div class="col-md-2"></div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <input type="hidden" class="form-control" placeholder="*Enter First Name" name="patient.hospitalId" [(ngModel)]="patient.hospitalId">
+        <input type="hidden" class="form-control" placeholder="*Enter First Name" name="patient.branchId" [(ngModel)]="patient.branchId">
+        <input type="hidden" class="form-control" placeholder="*Enter First Name" name="patient.surgeonId" [(ngModel)]="patient.surgeonId">
+        <label>First Name</label>        
+        <input type="text" #reffName="ngModel" required class="form-control" placeholder="*Enter First Name" name="patient.firstname"
+          [(ngModel)]="patient.firstname">
+        <div *ngIf="firstname">
+          <div *ngIf="reffName.errors && (reffName.dirty || reffName.touched)" class="alert alert-danger">
+            <div [hidden]="!reffName.errors.required">
+              Enter First Name
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Middle Name</label>
+        <input type="text" #refMName="ngModel" required class="form-control" placeholder="*Enter Middle Name" name="patient.middlename"
+          [(ngModel)]="patient.middlename">
+        <div *ngIf="middlename">
+          <div *ngIf="refMName.errors && (refMName.dirty || refMName.touched)" class="alert alert-danger">
+            <div [hidden]="!refMName.errors.required">
+              Enter Middle Name
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Last Name</label>
+        <input type="text" #refLName="ngModel" required class="form-control" placeholder="*Enter Last Name" name="patient.lastname"
+          [(ngModel)]="patient.lastname">
+        <div *ngIf="lastname">
+          <div *ngIf="refLName.errors && (refLName.dirty || refLName.touched)" class="alert alert-danger">
+            <div [hidden]="!refLName.errors.required">
+              Enter Middle Name
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>DOB(DD/DD/YYYY) </label>
+        <input type="text" #refdob="ngModel" required class="form-control" placeholder="____/__/__" name="patient.dob" [(ngModel)]="patient.dob">
+        <div *ngIf="dob">
+          <div *ngIf="refdob.errors && (refdob.dirty || refdob.touched)" class="alert alert-danger">
+            <div [hidden]="!refdob.errors.required">
+              Enter DOB
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Age</label>
+        <input type="text" #refage="ngModel" required class="form-control" placeholder="*Enter age" name="patient.age" [(ngModel)]="patient.age">
+        <div *ngIf="age">
+          <div *ngIf="refage.errors && (refage.dirty || refage.touched)" class="alert alert-danger">
+            <div [hidden]="!refage.errors.required">
+              Enter Age
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Gender</label>
+        <select #refgender="ngModel" required class="form-control" name="patient.gender" [(ngModel)]="patient.gender">
+         <option value="">--select gender--</option>
+        <option value="Male">Male</option>
+          <option value="Female">Female</option>
+       </select>
+        <div *ngIf="gender">
+          <div *ngIf="refgender.errors && (refgender.dirty || refgender.touched)" class="alert alert-danger">
+            <div [hidden]="!refgender.errors.required">
+              Select gender
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Height</label>
+        <input type="text" #refheight="ngModel" required class="form-control" placeholder="*Enter height" name="patient.height" [(ngModel)]="patient.height">
+        <div *ngIf="height">
+          <div *ngIf="refheight.errors && (refheight.dirty || refheight.touched)" class="alert alert-danger">
+            <div [hidden]="!refheight.errors.required">
+              Enter height
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Weight</label>
+        <input type="text" #refweight="ngModel" required class="form-control" placeholder="*Enter weight" name="patient.weight" [(ngModel)]="patient.weight">
+        <div *ngIf="weight">
+          <div *ngIf="refweight.errors && (refweight.dirty || refweight.touched)" class="alert alert-danger">
+            <div [hidden]="!refweight.errors.required">
+              Enter height
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>BMI</label>
+        <input type="text" #refbmi="ngModel" required class="form-control" placeholder="*Enter BMI" name="patient.bmi" [(ngModel)]="patient.bmi">
+        <div *ngIf="bmi">
+          <div *ngIf="refbmi.errors && (refbmi.dirty || refbmi.touched)" class="alert alert-danger">
+            <div [hidden]="!refbmi.errors.required">
+              Enter BMI
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label>UHID</label>
+        <input type="text" #refuhid="ngModel" required class="form-control" placeholder="*Enter UHID" name="patient.uhid" [(ngModel)]="patient.uhid">
+        <div *ngIf="uhid">
+          <div *ngIf="refuhid.errors && (refuhid.dirty || refuhid.touched)" class="alert alert-danger">
+            <div [hidden]="!refuhid.errors.required">
+              Enter UHID
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Study Id</label>
+        <input type="text" #refstudyid="ngModel" required class="form-control" placeholder="*Enter Study Id" name="patient.studyid"
+          [(ngModel)]="patient.studyid">
+        <div *ngIf="studyid">
+          <div *ngIf="refstudyid.errors && (refstudyid.dirty || refstudyid.touched)" class="alert alert-danger">
+            <div [hidden]="!refstudyid.errors.required">
+              Enter Study id
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>City</label>
+        <input type="text" #refcity="ngModel" required class="form-control" placeholder="*Enter city" name="patient.city" [(ngModel)]="patient.city">
+        <div *ngIf="city">
+          <div *ngIf="refcity.errors && (refcity.dirty || refcity.touched)" class="alert alert-danger">
+            <div [hidden]="!refcity.errors.required">
+              Enter City
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>State</label>
+        <input type="text" #refstate="ngModel" required class="form-control" placeholder="*Enter state" name="patient.state" [(ngModel)]="patient.state">
+        <div *ngIf="state">
+          <div *ngIf="refstate.errors && (refstate.dirty || refstate.touched)" class="alert alert-danger">
+            <div [hidden]="!refstate.errors.required">
+              Enter State
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Country</label>
+        <input type="text" #refcountry="ngModel" required class="form-control" placeholder="*Enter country" name="patient.country"
+          [(ngModel)]="patient.country">
+        <div *ngIf="country">
+          <div *ngIf="refcountry.errors && (refcountry.dirty || refcountry.touched)" class="alert alert-danger">
+            <div [hidden]="!refcountry.errors.required">
+              Enter Country
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Zipcode</label>
+        <input type="text" #refzipcode="ngModel" required class="form-control" placeholder="*Enter zipcode" name="patient.zipcode"
+          [(ngModel)]="patient.zipcode">
+        <div *ngIf="zipcode">
+          <div *ngIf="refzipcode.errors && (refzipcode.dirty || refzipcode.touched)" class="alert alert-danger">
+            <div [hidden]="!refzipcode.errors.required">
+              Enter zipcode
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Telephone No</label>
+        <input type="text" #refTelephone="ngModel" pattern="[789][0-9]{9}" required class="form-control" placeholder="*Enter Telephone Number"
+          name="patient.telephone" [(ngModel)]="patient.telephone">
+        <div *ngIf="telephone">
+          <div *ngIf="refTelephone.errors && (refTelephone.dirty || refTelephone.touched)" class="alert alert-danger">
+            <div [hidden]="!refTelephone.errors.required">
+              Enter Telephone Number
+            </div>
+            <div [hidden]="!refTelephone.errors.pattern">
+              Please enter 10 digits
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="text" #refPhone="ngModel" pattern="[789][0-9]{9}" required class="form-control" placeholder="*Enter Mobile Number"
+          name="patient.phoneno" [(ngModel)]="patient.phoneno">
+        <div *ngIf="phoneno">
+          <div *ngIf="refPhone.errors && (refPhone.dirty || refPhone.touched)" class="alert alert-danger">
+            <div [hidden]="!refPhone.errors.required">
+              Enter Phone Number
+            </div>
+            <div [hidden]="!refPhone.errors.pattern">
+              Please enter 10 digits
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="text" #refEmail="ngModel" required class="form-control" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" placeholder="*Enter Email"
+          name="patient.email" [(ngModel)]="patient.email">
+        <div *ngIf="email">
+          <div *ngIf="refEmail.errors && (refEmail.dirty || refEmail.touched)" class="alert alert-danger">
+            <div [hidden]="!refEmail.errors.required">
+              Enter Email
+            </div>
+            <div [hidden]="!refEmail.errors.pattern">
+              Please enter valid emailid
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-center">
+        <button class="btn btn-primary" type="submit" [disabled]="!patientForm.form.valid" style="float:right;">Add Patient</button>
+      </div>
+    </div>
+  </form>
+</div>

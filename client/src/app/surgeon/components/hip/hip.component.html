@@ -1,1 +1,28 @@
-<router-outlet></router-outlet>
+<!-- <router-outlet></router-outlet> -->
+<style>
+    :host {
+      font-family: Arial;
+    }
+
+    .tabs-selection {
+      background-color: #ddd;
+      display: flex;
+      box-sizing: border-box;
+      flex-direction: row;
+      padding-left: 16px;
+      padding-right: 16px;
+      width: 100%;
+    }
+</style>
+ <div class="tabs-selection">
+      <app-hip-primary [active]="isSelected(1)" (click)="setTab(1)">Tab 1</app-hip-primary>
+      <app-hip-primary [active]="isSelected(2)" (click)="setTab(2)">Tab 2</app-hip-primary>
+      <app-hip-primary [active]="isSelected(3)" (click)="setTab(3)">Tab 3</app-hip-primary>
+    </div>
+
+     <div [ngSwitch]="tab">
+      <app-hip-revision *ngSwitchCase="1">Tab content 1</app-hip-revision>
+      <app-hip-revision *ngSwitchCase="2">Tab content 2</app-hip-revision>
+      <app-hip-revision *ngSwitchCase="3"><app-hip-patients></app-hip-patients></app-hip-revision>
+      <app-hip-revision *ngSwitchDefault>Select a tab</app-hip-revision>
+    </div> 

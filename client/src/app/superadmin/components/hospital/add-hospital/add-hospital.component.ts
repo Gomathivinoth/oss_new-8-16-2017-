@@ -90,8 +90,7 @@ export class AddHospitalComponent implements OnInit {
     const files: Array<File> = this.filesToUpload;
     formData.append("uploads[]", files[0], files[0]['name']);
 
-    this.http.post('http://localhost:3000/upload', formData)
-      .map(files => files.json())
+    this.http.post('http://localhost:3000/upload', formData).map(files => files.json())
       .subscribe(files => console.log('files', files))
 
     this.hospitalService.addHospital(hospital).subscribe(data => {

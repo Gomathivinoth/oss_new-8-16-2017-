@@ -25,13 +25,12 @@ export class LoginComponent implements OnInit {
 
   loadUserModule(user){
     this.hospitalService.login(user).subscribe(data => {
-    //this.success = '<div class="alert alert-success">'+ data.data +'</div>';
-   // alert('Login success');
+      console.log(data);
       if(!data.success){
         this.message = data.message;
       }
       else {  
-        this.hospitalService.storeUserData(data.token , data.user , data.message.hospitalId, data.message.branchId); 
+        this.hospitalService.storeUserData(data.token , data.user , data.message.hospitalId, data.message.branchId, data.message._id); 
        //console.log(data.message.usertype);//Stores user data in local storage
         if(data.message.usertype === 'superadmin'){
           this.router.navigate(['superadmin/dashboard']);

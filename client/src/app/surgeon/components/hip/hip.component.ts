@@ -8,6 +8,15 @@ import { Component, OnInit } from '@angular/core';
 export class HipComponent implements OnInit {
 
   constructor() { }
+   tab = 0;
+
+  setTab(num: number) {
+    this.tab = num;
+  }
+  
+  isSelected(num: number) {
+    return this.tab === num;
+  }
 
   ngOnInit() {
   }
