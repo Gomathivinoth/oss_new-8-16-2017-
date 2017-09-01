@@ -14,23 +14,63 @@ export class KneePrimaryComponent implements OnInit {
     private router: Router
   ) { }
 
-  tab = 0;
 
-  setTab(num: number) {
-    if (num >= 2) {
-      this.applyblue = false;
-    } else {
-      this.applyblue = true;
-    }
-    this.tab = num;
+  patient_demographic = true;
+  patient_preoperative = false;
+  patient_radiology = false;
+  patient_intraoperative = false;
+  applydemographic;
+  applypreoperative;
+  applyradiology;
+  applyintraoperative;
+
+  demographic() {
+    this.applydemographic = true;
+    this.applypreoperative = false;
+    this.applyradiology = false;
+    this.applyintraoperative = false;
+    this.patient_demographic = true;
+    this.patient_preoperative = false;
+    this.patient_radiology = false;
+    this.patient_intraoperative = false;
   }
 
-  isSelected(num: number) {
-    return this.tab === num;
+  patientPreOperative() {
+
+    this.applydemographic = false;
+    this.applypreoperative = true;
+    this.applyradiology = false;
+    this.applyintraoperative = false;
+    this.patient_demographic = false;
+    this.patient_preoperative = true;
+    this.patient_radiology = false;
+    this.patient_intraoperative = false;
+  }
+
+  radiology() {
+    this.applydemographic = false;
+    this.applypreoperative = false;
+    this.applyradiology = true;
+    this.applyintraoperative = false;
+    this.patient_demographic = false;
+    this.patient_preoperative = false;
+    this.patient_radiology = true;
+    this.patient_intraoperative = false;
+
+  }
+
+  intraoperative() {
+    this.applydemographic = false;
+    this.applypreoperative = false;
+    this.applyradiology = false;
+    this.applyintraoperative = true;
+    this.patient_demographic = false;
+    this.patient_preoperative = false;
+    this.patient_radiology = false;
+    this.patient_intraoperative = true;
   }
 
   showForm = true;
-
   firstname = true;
   middlename = true;
   lastname = true;
@@ -50,6 +90,16 @@ export class KneePrimaryComponent implements OnInit {
   telephone = true;
   phoneno = true;
   email = true;
+  side = true;
+  bilateraltype = true;
+  combination = true;
+  surgerydate = true;
+  surgeonname = true;
+  etiology = true;
+  valgus = true;
+  varus = true;
+  flexion = true;
+
 
   patient = {
     hospitalId: '',
@@ -74,6 +124,15 @@ export class KneePrimaryComponent implements OnInit {
     telephone: '',
     phoneno: '',
     email: '',
+    side: '',
+    bilateraltype: '',
+    combination: '',
+    surgerydate: '',
+    surgeonname: '',
+    etiology:'',
+    valgus:'',
+    varus:'',
+    flexion:'',
     type: 'knee_primary'
   }
   getinfosurgeon = {
@@ -86,6 +145,9 @@ export class KneePrimaryComponent implements OnInit {
   heightvalues = '';
   weightvalues = '';
   alias;
+  bilateral = false;
+  combinationvalue = false;
+  disable = true;
 
   onKey(event: any) {
     this.patient.height = event.target.value;
@@ -103,16 +165,33 @@ export class KneePrimaryComponent implements OnInit {
     this.getinfosurgeon.surgeonId = JSON.parse(localStorage.getItem('surgeonId'));
     this.getinfosurgeon.branchId = JSON.parse(localStorage.getItem('branchId'));
     this.surgeonService.surgeon_GetHospitalInfo(this.getinfosurgeon).subscribe(data => {
-     this.patient.studyid = data.data.hospitalAlias;
+      this.alias = data.data.hospitalAlias;
       this.surgeonService.surgeon_CountValue(this.getinfosurgeon.surgeonId).subscribe(data => {
-      //   var num = 10000000;
-      //   num = num + (data.message.length + 1);
-      // //  var num1 = num.toString(num);
-      // //  var num2 = num1.substr(2,8);
-      //   this.patient.studyid = this.alias+''+num;
+        var num = 10000000;
+        var num1 = JSON.stringify(num + (data.message.length + 1));
+        var num2 = num1.substr(2, 8);
+        this.patient.studyid = this.alias + '' + num2;
       });
     });
 
+  }
+ 
+
+  bilateralChange(test) {
+    this.bilateral = true;
+    this.combinationvalue = false;
+  }
+
+  bilateraltypeChange(event) {
+    this.bilateral = true;
+    this.combinationvalue = true;
+
+  }
+  bilateralChange1(test) {
+    this.patient.bilateraltype = '';
+    this.patient.combination = '';
+    this.bilateral = false;
+    this.combinationvalue = false;
   }
 
   addPatient(patient) {
@@ -138,6 +217,9 @@ export class KneePrimaryComponent implements OnInit {
       this.patient.telephone = '';
       this.patient.phoneno = '';
       this.patient.email = '';
+      this.patient.side = '';
+      this.patient.bilateraltype = '';
+      this.patient.combination = '';
       this.firstname = false;
       this.middlename = false;
       this.lastname = false;
@@ -157,7 +239,16 @@ export class KneePrimaryComponent implements OnInit {
       this.telephone = false;
       this.phoneno = false;
       this.email = false;
-
+      this.side = false;
+      this.bilateraltype = false;
+      this.combination = false;
+      this.disable = false;
+      this.patient_demographic = false;
+      this.applypreoperative = true;
+      this.patient_preoperative = true;
+      // this.surgeonService.surgeon_GetLastPatientId().subscribe(data1 => {
+      //   console.log(data1);
+      // });
     });
 
   }

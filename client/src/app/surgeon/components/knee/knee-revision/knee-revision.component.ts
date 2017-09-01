@@ -14,21 +14,6 @@ export class KneeRevisionComponent implements OnInit {
     private router: Router
   ) { }
 
-  tab = 0;
-
-  setTab(num: number) {
-    if (num >= 2) {
-      this.applyblue = false;
-    } else {
-      this.applyblue = true;
-    }
-    this.tab = num;
-  }
-
-  isSelected(num: number) {
-    return this.tab === num;
-  }
-
   showForm = true;
 
   firstname = true;

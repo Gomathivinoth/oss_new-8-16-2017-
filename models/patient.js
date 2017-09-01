@@ -26,6 +26,9 @@ const patientSchema = new Schema({
     telephoneno: { type: Number },    
     phoneno: { type: Number },
     email: { type: String },
+    side: { type: String },
+    bilateraltype: { type: String },
+    combination: { type: String },
     type: { type: String }
 }, { collection: 'patient' });
 

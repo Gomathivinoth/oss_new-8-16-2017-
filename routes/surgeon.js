@@ -143,6 +143,9 @@ module.exports = (router) => {
                                                                                                         telephoneno: req.body.telephoneno,
                                                                                                         phoneno: req.body.phoneno,
                                                                                                         email: req.body.email,
+                                                                                                        side: req.body.side,
+                                                                                                        bilateraltype: req.body.bilateraltype,
+                                                                                                        combination: req.body.combination,
                                                                                                         type: req.body.type
                                                                                                     });
                                                                                                     patient.save((err) => {
@@ -178,7 +181,7 @@ module.exports = (router) => {
 
     });
 
-      router.get('/surgeon_CountValue/:id', (req, res) => {
+    router.get('/surgeon_CountValue/:id', (req, res) => {
         if (!req.params.id) {
             res.json({ success: false, message: 'No hospital id was provided!!' });
         } else {
@@ -195,5 +198,19 @@ module.exports = (router) => {
             });
         }
     });
+
+    //  router.get('/surgeon_GetLastPatientId', (req, res) => {
+    //     const data = Patient.find({},{ _id: -1 }).sort({_id:-1}).limit(1);
+    //     res.json({ success: true, message: data });
+
+    //     // Patient.find({}, (err, data) => {
+    //     //     if (err) {
+    //     //         res.json({ success: false, message: err });
+    //     //     } else {
+    //     //         res.json({ success: true, message: data });
+    //     //     }
+    //     // },sort({_id:-1}).limit(1));
+
+    // });
     return router;
 }
