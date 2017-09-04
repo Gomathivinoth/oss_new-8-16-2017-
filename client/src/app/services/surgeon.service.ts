@@ -38,8 +38,32 @@ export class SurgeonService {
     this.createAuthenticationHeaders(); // Create headers
     return this.http.get(this.domain + 'surgeon/surgeon_CountValue/' + id, this.options).map(res => res.json());
   }
-  // surgeon_GetLastPatientId() {
-  //   this.createAuthenticationHeaders(); // Create headers
-  //   return this.http.get(this.domain + 'surgeon/surgeon_GetLastPatientId', this.options).map(res => res.json());
-  // }
+  surgeon_GetLastPatientId() {
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.get(this.domain + 'surgeon/surgeon_GetLastPatientId', this.options).map(res => res.json());
+  }
+
+   surgeon_AddPatientPreoperative(patient) {
+     console.log(patient);
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.post(this.domain + 'surgeon/surgeon_AddPatientPreoperative/', patient, this.options).map(res => res.json());
+
+  }
+    surgeon_AddPatientRadiology(patient) {
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.post(this.domain + 'surgeon/surgeon_AddPatientRadiology/', patient, this.options).map(res => res.json());
+
+  }
+   surgeon_AddPatientIntraoperative(patient) {
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.post(this.domain + 'surgeon/surgeon_AddPatientIntraoperative/', patient, this.options).map(res => res.json());
+
+  }
+   surgeon_AddPatientPostoperative(patient) {
+     console.log(patient);
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.post(this.domain + 'surgeon/surgeon_AddPatientPostoperative/', patient, this.options).map(res => res.json());
+
+  }
+  
 }

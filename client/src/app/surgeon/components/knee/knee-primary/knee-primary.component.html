@@ -18,7 +18,8 @@
       <app-tab [style.background-color]="applyradiology? '#bbb': 'green'" [style.color]="applyradiology? 'black': 'white'" (click)="radiology()">Radiology</app-tab>
       <app-tab [style.background-color]="applyintraoperative? '#bbb': 'green'" [style.color]="applyintraoperative? 'black': 'white'"
         (click)="intraoperative()">Intra Operative</app-tab>
-      <app-tab (click)="setTab(5)">Post Operative</app-tab>
+      <app-tab [style.background-color]="applypostoperative? '#bbb': 'green'" [style.color]="applypostoperative? 'black': 'white'"
+        (click)="postoperative()">Post Operative</app-tab>
       <app-tab (click)="setTab(6)">Post Operative scores</app-tab>
     </div>
   </div>
@@ -72,7 +73,7 @@
         </div>
         <div class="form-group">
           <label>DOB(DD/MM/YYYY) </label>
-          <input type="text" #refdob="ngModel" required class="form-control" placeholder="__/__/___" name="patient.dob" [(ngModel)]="patient.dob">
+          <input type="date" #refdob="ngModel" required class="form-control" placeholder="__/__/___" name="patient.dob" [(ngModel)]="patient.dob">
           <div *ngIf="dob">
             <div *ngIf="refdob.errors && (refdob.dirty || refdob.touched)" class="alert alert-danger">
               <div [hidden]="!refdob.errors.required">
@@ -150,7 +151,7 @@
 
         <div class="form-group">
           <label>BMI</label>
-          <input type="text" #refbmi="ngModel" required class="form-control" placeholder="*Enter BMI" name="patient.bmi" [(ngModel)]="patient.bmi">
+          <input type="text" #refbmi="ngModel" required class="form-control" readonly placeholder="*Enter BMI" name="patient.bmi" [(ngModel)]="patient.bmi">
           <div *ngIf="bmi">
             <div *ngIf="refbmi.errors && (refbmi.dirty || refbmi.touched)" class="alert alert-danger">
               <div [hidden]="!refbmi.errors.required">
@@ -354,152 +355,1281 @@
 <!-- End Demographic form-->
 <!-- start preoperative form-->
 <app-tab-content *ngIf="patient_preoperative">
-  <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-4">
-      <div class="form-group">
-        <label>Date of Surgery</label>
-        <input type="text" #refdatesurgery="ngModel" required class="form-control" placeholder="*Enter surgery date" name="patient.surgerydate"
-          [(ngModel)]="patient.surgerydate">
-        <div *ngIf="surgerydate">
-          <div *ngIf="refdatesurgery.errors && (refdatesurgery.dirty || refdatesurgery.touched)" class="alert alert-danger">
-            <div [hidden]="!refdatesurgery.errors.required">
-              Enter surgery date
+  <form #preoperativeForm="ngForm" (ngSubmit)="addPatientPreoperative(patient)" novalidate>
+    <div class="row">
+      <div class="col-md-8"></div>
+      <div class="col-md-4" style="font-size:14px;">
+        <b> Name :</b> {{patientname}}<br>
+        <b>Age : </b>{{patientage}}<br>
+        <b>Sex : </b>{{patientsex}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label>Date of Surgery</label>
+          <input type="hidden" class="form-control" name="patient.patientId" [(ngModel)]="patient.patientId">
+          <input type="date" #refdatesurgery="ngModel" required class="form-control" placeholder="*Enter surgery date" name="patient.surgerydate"
+            [(ngModel)]="patient.surgerydate">
+          <div *ngIf="surgerydate">
+            <div *ngIf="refdatesurgery.errors && (refdatesurgery.dirty || refdatesurgery.touched)" class="alert alert-danger">
+              <div [hidden]="!refdatesurgery.errors.required">
+                Enter surgery date
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label>Surgeon Name</label>
+          <input type="text" #refSurgeon="ngModel" required class="form-control" placeholder="*Enter surgery date" name="patient.surgeonname"
+            [(ngModel)]="patient.surgeonname">
+          <div *ngIf="surgeonname">
+            <div *ngIf="refSurgeon.errors && (refSurgeon.dirty || refSurgeon.touched)" class="alert alert-danger">
+              <div [hidden]="!refSurgeon.errors.required">
+                Enter surgery Name
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-md-4">
-      <div class="form-group">
-        <label>Surgeon Name</label>
-        <input type="text" #refSurgeon="ngModel" required class="form-control" placeholder="*Enter surgery date" name="patient.surgeonname"
-          [(ngModel)]="patient.surgeonname">
-        <div *ngIf="surgeonname">
-          <div *ngIf="refSurgeon.errors && (refSurgeon.dirty || refSurgeon.touched)" class="alert alert-danger">
-            <div [hidden]="!refSurgeon.errors.required">
-              Enter surgery Name
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <h2>Preoperative Clinical Details</h2>
+      </div>
+    </div><br><br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-1">
+        <label>Etiology</label>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <input type="text" #refetiology="ngModel" required class="form-control" placeholder="*Enter etiology" name="patient.etiology"
+            [(ngModel)]="patient.etiology">
+          <div *ngIf="etiology">
+            <div *ngIf="refetiology.errors && (refetiology.dirty || refetiology.touched)" class="alert alert-danger">
+              <div [hidden]="!refetiology.errors.required">
+                Enter etiology
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
-      <h2>Preoperative Clinical Details</h2>
-    </div>
-  </div><br><br>
-  <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-1">
-      <label>Etiology</label>
-    </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <input type="text" #refetiology="ngModel" required class="form-control" placeholder="*Enter etiology" name="patient.etiology"
-          [(ngModel)]="patient.etiology">
-        <div *ngIf="etiology">
-          <div *ngIf="refetiology.errors && (refetiology.dirty || refetiology.touched)" class="alert alert-danger">
-            <div [hidden]="!refetiology.errors.required">
-              Enter etiology
-            </div>
-          </div>
-        </div>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-1">
+        <label>Deformity</label>
       </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-1">
-      <label>Deformity</label>
-    </div>
-    <div class="col-md-1">
-      <label>Valgus</label>
-    </div>
-    <div class="col-md-2">
-      <label class="radio-inline">
+      <div class="col-md-2">
+        <label>Valgus</label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
          <input type="radio"  #refvalgus="ngModel" required  [(ngModel)]="patient.valgus"  name="patient.valgus" value="Correctible">Correctible
       </label>
-    </div>
-    <div class="col-md-2">
-      <label class="radio-inline">
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
          <input type="radio"  #refvalgus="ngModel" required  [(ngModel)]="patient.valgus"  name="patient.valgus" value="Partially correctible">Partially correctible
       </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+          <input type="radio"  #refvalgus="ngModel" required  [(ngModel)]="patient.valgus"  name="patient.valgus" value="Fixed">Fixed
+      </label>
+      </div>
+      <div *ngIf="valgus">
+        <div *ngIf="refvalgus.errors && (refvalgus.dirty || refvalgus.touched)" class="alert alert-danger">
+          <div [hidden]="!refvalgus.errors.required">
+            select valgus
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-2">
+        <label>Varus</label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refvarus="ngModel" required  [(ngModel)]="patient.varus"  name="patient.varus" value="Correctible">Correctible
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refvarus="ngModel" required  [(ngModel)]="patient.varus"  name="patient.varus" value="Partially correctible">Partially correctible
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+          <input type="radio"  #refvarus="ngModel" required  [(ngModel)]="patient.varus"  name="patient.varus" value="Fixed">Fixed
+      </label>
+      </div>
+      <div *ngIf="varus">
+        <div *ngIf="refvarus.errors && (refvarus.dirty || refvarus.touched)" class="alert alert-danger">
+          <div [hidden]="!refvarus.errors.required">
+            select varus
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-2">
+        <label>Flexion</label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refFlexion="ngModel" required  [(ngModel)]="patient.flexion"  name="patient.flexion" value="Correctible">Correctible
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refFlexion="ngModel" required  [(ngModel)]="patient.flexion"  name="patient.flexion" value="Partially correctible">Partially correctible
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+          <input type="radio"  #refFlexion="ngModel" required  [(ngModel)]="patient.flexion"  name="patient.flexion" value="Fixed">Fixed
+      </label>
+      </div>
+      <div *ngIf="flexion">
+        <div *ngIf="refFlexion.errors && (refFlexion.dirty || refFlexion.touched)" class="alert alert-danger">
+          <div [hidden]="!refFlexion.errors.required">
+            select Flexion
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-1">
+        <label>Other joint involvement</label>
+      </div>
+      <div class="col-md-2" *ngFor="let joint of patient.joint">
+        <label class="checkbox-inline"><input type="checkbox"  #refJoint="ngModel" required name="joint" [(ngModel)]="joint.selected">{{joint.otherJointName}}</label>
+      </div>
+      <div *ngIf="joints">
+        <div *ngIf="refJoint.errors && (refJoint.dirty || refJoint.touched)" class="alert alert-danger">
+          <div [hidden]="!refJoint.errors.required">
+            select joint involvement
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-1">
+        <label>Current Symptoms</label>
+      </div>
+      <div class="col-md-2" *ngFor="let symptom of patient.symptoms">
+        <label class="checkbox-inline"><input type="checkbox"  #refsymptom="ngModel" required name="symptom" [(ngModel)]="symptom.selected">{{symptom.symptomsName}}</label>
+      </div>
+      <div *ngIf="joints">
+        <div *ngIf="refsymptom.errors && (refsymptom.dirty || refsymptom.touched)" class="alert alert-danger">
+          <div [hidden]="!refsymptom.errors.required">
+            select Current Symptoms
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-10">
+        <div class="text-center">
+          <button class="btn btn-primary" type="submit" [disabled]="!preoperativeForm.form.valid" style="float:right;">Add Patient</button>
+        </div>
+      </div>
+    </div>
+
+  </form>
+  <!--  
+  <br>
+   <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-1">
+      <label>Onset of Symptoms</label>
+    </div>
+    
+    <div class="col-md-2">
+      <label class="radio-inline">
+         <input type="radio"  #refonsetsymptom="ngModel" required  [(ngModel)]="patient.onsetsymptom"  name="patient.onsetsymptom" value="">> 1 month
+      </label>
     </div>
     <div class="col-md-2">
       <label class="radio-inline">
-          <input type="radio"  #refvalgus="ngModel" required  [(ngModel)]="patient.valgus"  name="patient.valgus" value="Fixed">Fixed
+         <input type="radio"  #refonsetsymptom="ngModel" required  [(ngModel)]="patient.onsetsymptom"  name="patient.onsetsymptom" value=""> > 6 months
       </label>
     </div>
-    <div *ngIf="valgus">
-      <div *ngIf="refvalgus.errors && (refvalgus.dirty || refvalgus.touched)" class="alert alert-danger">
-        <div [hidden]="!refvalgus.errors.required">
+    <div class="col-md-2">
+      <label class="radio-inline">
+          <input type="radio"  #refonsetsymptom="ngModel" required  [(ngModel)]="patient.onsetsymptom"  name="patient.onsetsymptom" value="">> 1 year
+      </label>
+    </div>
+    <div *ngIf="onsetsymptom">
+      <div *ngIf="refonsetsymptom.errors && (refonsetsymptom.dirty || refonsetsymptom.touched)" class="alert alert-danger">
+        <div [hidden]="!refonsetsymptom.errors.required">
           select valgus
         </div>
       </div>
     </div>
-  </div>
-  <br>
-   <div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-1">
-      <label>Varus</label>
-    </div>
-    <div class="col-md-2">
-      <label class="radio-inline">
-         <input type="radio"  #refvarus="ngModel" required  [(ngModel)]="patient.varus"  name="patient.varus" value="Correctible">Correctible
-      </label>
-    </div>
-    <div class="col-md-2">
-      <label class="radio-inline">
-         <input type="radio"  #refvarus="ngModel" required  [(ngModel)]="patient.varus"  name="patient.varus" value="Partially correctible">Partially correctible
-      </label>
-    </div>
-    <div class="col-md-2">
-      <label class="radio-inline">
-          <input type="radio"  #refvarus="ngModel" required  [(ngModel)]="patient.varus"  name="patient.varus" value="Fixed">Fixed
-      </label>
-    </div>
-    <div *ngIf="varus">
-      <div *ngIf="refvarus.errors && (refvarus.dirty || refvarus.touched)" class="alert alert-danger">
-        <div [hidden]="!refvarus.errors.required">
-          select varus
-        </div>
-      </div>
-    </div>
-  </div>
-  <br>
-   <div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-1">
-      <label>Flexion</label>
-    </div>
-    <div class="col-md-2">
-      <label class="radio-inline">
-         <input type="radio"  #refFlexion="ngModel" required  [(ngModel)]="patient.flexion"  name="patient.flexion" value="Correctible">Correctible
-      </label>
-    </div>
-    <div class="col-md-2">
-      <label class="radio-inline">
-         <input type="radio"  #refFlexion="ngModel" required  [(ngModel)]="patient.flexion"  name="patient.flexion" value="Partially correctible">Partially correctible
-      </label>
-    </div>
-    <div class="col-md-2">
-      <label class="radio-inline">
-          <input type="radio"  #refFlexion="ngModel" required  [(ngModel)]="patient.flexion"  name="patient.flexion" value="Fixed">Fixed
-      </label>
-    </div>
-    <div *ngIf="flexion">
-      <div *ngIf="refFlexion.errors && (refFlexion.dirty || refFlexion.touched)" class="alert alert-danger">
-        <div [hidden]="!refFlexion.errors.required">
-          select Flexion
-        </div>
-      </div>
-    </div>
-  </div>
+  </div>  -->
 </app-tab-content>
 <!-- End preoperative form-->
-<app-tab-content *ngIf="patient_radiology">Radiology</app-tab-content>
-<app-tab-content *ngIf="patient_intraoperative">Intraoperative</app-tab-content>
+<app-tab-content *ngIf="patient_radiology">
+  <form #radiologyForm="ngForm" (ngSubmit)="addPatientRadiology(patient)" novalidate>
+    <div class="row">
+      <div class="col-md-8"></div>
+      <div class="col-md-4" style="font-size:14px;">
+        <b> Name :</b> {{patientname}}<br>
+        <b>Age : </b>{{patientage}}<br>
+        <b>Sex : </b>{{patientsex}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <h2>Radiological evaluations</h2>
+        <input type="hidden" class="form-control" name="patient.patientId" [(ngModel)]="patient.patientId">
+      </div>
+    </div><br><br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Implant in situ</label>
+      </div>
+      <div class="col-md-2" *ngFor="let implant of patient.implantsitu">
+        <label class="checkbox-inline"><input type="checkbox"  #refimplant="ngModel" required name="implant" [(ngModel)]="implant.selected">{{implant.implantsituName}}</label>
+      </div>
+      <div *ngIf="implant">
+        <div *ngIf="refimplant.errors && (refimplant.dirty || refimplant.touched)" class="alert alert-danger">
+          <div [hidden]="!refimplant.errors.required">
+            select Implant in situ
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Deformity</label>
+      </div>
+      <div class="col-md-2">
+        <label>Valgus</label>
+      </div>
+      <div class="col-md-2">
+        <select #refvalgus="ngModel" required class="form-control" name="patient.rad_valgus" [(ngModel)]="patient.rad_valgus">
+        <option value="">--select One</option>
+        <option value="1">0-10 &deg;</option>
+        <option value="2">10-20 &deg;</option>
+        <option value="3">20-30 &deg;</option>
+        <option value="4">&gt; 30 &deg;</option>
+    </select>
+        <div *ngIf="valgus">
+          <div *ngIf="refvalgus.errors && (refvalgus.dirty || refvalgus.touched)" class="alert alert-danger">
+            <div [hidden]="!refvalgus.errors.required">
+              select valgus
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-4"></div>
+      <div class="col-md-2">
+        <label>Varus</label>
+      </div>
+      <div class="col-md-2">
+        <select #refVarus="ngModel" required class="form-control" name="patient.rad_varus" [(ngModel)]="patient.rad_varus">
+        <option value="">--select One</option>
+        <option value="1">0-10 &deg;</option>
+        <option value="2">10-20 &deg;</option>
+        <option value="3">20-30 &deg;</option>
+        <option value="4">&gt; 30 &deg;</option>
+        <option value="3">Extraarticular deformity</option>
+    </select>
+        <div *ngIf="Varus">
+          <div *ngIf="refVarus.errors && (refVarus.dirty || refVarus.touched)" class="alert alert-danger">
+            <div [hidden]="!refVarus.errors.required">
+              select Varus
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Patella</label>
+      </div>
+      <div class="col-md-3">
+        <select #refPatella="ngModel" required class="form-control" name="patient.rad_patella" [(ngModel)]="patient.rad_patella">
+        <option value="">--select One</option>
+        <option value="1">Patella Baja</option>
+    </select>
+        <div *ngIf="Patella">
+          <div *ngIf="refPatella.errors && (refPatella.dirty || refPatella.touched)" class="alert alert-danger">
+            <div [hidden]="!refPatella.errors.required">
+              select Patella
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Stress fracture</label>
+      </div>
+      <div class="col-md-2" *ngFor="let fracture of patient.rad_stressfracture">
+        <label class="checkbox-inline"><input type="checkbox"  #reffracture="ngModel" required name="fracture" [(ngModel)]="fracture.selected">{{fracture.stressfractureName}}</label>
+      </div>
+      <div *ngIf="fracture">
+        <div *ngIf="reffracture.errors && (reffracture.dirty || reffracture.touched)" class="alert alert-danger">
+          <div [hidden]="!reffracture.errors.required">
+            select Stress fracture
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>VCA (Valgus 
+correction Angle)</label>
+      </div>
+      <div class="col-md-3">
+        <div class="input-group date form_datetime" data-link-field="inputLastSeen">
+          <input type="text" #refvca="ngModel" required placeholder="*Enter VCA angle" class="form-control" name="patient.rad_vcaangle"
+            [(ngModel)]="patient.rad_vcaangle">
+          <span class="input-group-addon">
+                Measured
+              </span>
+        </div>
+
+        <div *ngIf="vca">
+          <div *ngIf="refvca.errors && (refvca.dirty || refvca.touched)" class="alert alert-danger">
+            <div [hidden]="!refvca.errors.required">
+              Enter VCA
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Availability of</label>
+      </div>
+      <div class="col-md-2">
+        <label>CT</label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refct="ngModel" required  [(ngModel)]="patient.rad_availabilityct"  name="patient.rad_availabilityct" value="Yes">Yes
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refct="ngModel" required  [(ngModel)]="patient.rad_availabilityct"  name="patient.rad_availabilityct" value="No">No
+      </label>
+      </div>
+      <div *ngIf="availabilityct">
+        <div *ngIf="refct.errors && (refct.dirty || refct.touched)" class="alert alert-danger">
+          <div [hidden]="!refct.errors.required">
+            select Availability CT
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-4"></div>
+
+      <div class="col-md-2">
+        <label>MRI</label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refmri="ngModel" required  [(ngModel)]="patient.rad_availabilitymri"  name="patient.rad_availabilitymri" value="Yes">Yes
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refmri="ngModel" required  [(ngModel)]="patient.rad_availabilitymri"  name="patient.rad_availabilitymri" value="No">No
+      </label>
+      </div>
+      <div *ngIf="availabilitymri">
+        <div *ngIf="refmri.errors && (refmri.dirty || refmri.touched)" class="alert alert-danger">
+          <div [hidden]="!refmri.errors.required">
+            select Availability MRI
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Upload Image</label>
+      </div>
+      <div class="col-md-3">
+        <input type="file" class="form-control" (change)="fileChangeEvent($event)" ngModel>
+        <div *ngIf="image">
+          <div *ngIf="refimage.errors && (refimage.dirty || refimage.touched)" class="alert alert-danger">
+            <div [hidden]="!refimage.errors.required">
+              Browse image
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Vitamin D Level</label>
+      </div>
+      <div class="col-md-3">
+        <div class="input-group date form_datetime" data-link-field="inputLastSeen">
+          <input type="text" #refvitamin="ngModel" required class="form-control" placeholder="*Enter vitamin D Level" name="patient.rad_vitaminD"
+            [(ngModel)]="patient.rad_vitaminD">
+          <span class="input-group-addon">
+                Range
+              </span>
+        </div>
+        <div *ngIf="vitaminD">
+          <div *ngIf="refvitamin.errors && (refvitamin.dirty || refvitamin.touched)" class="alert alert-danger">
+            <div [hidden]="!refvitamin.errors.required">
+              Enter vitamin D Level
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Vitamin B12 Level</label>
+      </div>
+      <div class="col-md-3">
+        <div class="input-group date form_datetime" data-link-field="inputLastSeen">
+          <input type="text" #refvitaminb="ngModel" required class="form-control" placeholder="*Enter vitamin B12 Level" name="patient.rad_vitaminB12"
+            [(ngModel)]="patient.rad_vitaminB12">
+          <span class="input-group-addon">
+                Range
+              </span>
+        </div>
+        <div *ngIf="vitaminB">
+          <div *ngIf="refvitaminb.errors && (refvitaminb.dirty || refvitaminb.touched)" class="alert alert-danger">
+            <div [hidden]="!refvitaminb.errors.required">
+              Enter vitamin B12 Level
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-11">
+        <div class="text-center">
+          <button class="btn btn-primary" type="submit" [disabled]="!radiologyForm.form.valid" style="float:right;">Add Patient</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</app-tab-content>
+<app-tab-content *ngIf="patient_intraoperative">
+  <form #intraoperativeForm="ngForm" (ngSubmit)="addPatientIntraoperative(patient)" novalidate>
+    <div class="row">
+      <div class="col-md-8"></div>
+      <div class="col-md-4" style="font-size:14px;">
+        <b> Name :</b> {{patientname}}<br>
+        <b>Age : </b>{{patientage}}<br>
+        <b>Sex : </b>{{patientsex}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <h2>Intraoperative Evalutions</h2>
+        <input type="hidden" class="form-control" name="patient.patientId" [(ngModel)]="patient.patientId">
+      </div>
+    </div><br><br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Procedure</label>
+      </div>
+      <div class="col-md-3">
+        <select #refProcedure="ngModel" required class="form-control" name="patient.intra_procedure" [(ngModel)]="patient.intra_procedure">
+        <option value="">--select One</option>
+        <option value="1">Uni Medial</option>
+    </select>
+        <div *ngIf="Procedure">
+          <div *ngIf="refProcedure.errors && (refProcedure.dirty || refProcedure.touched)" class="alert alert-danger">
+            <div [hidden]="!refProcedure.errors.required">
+              select Procedure
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Navigation</label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refNavigation="ngModel" required  [(ngModel)]="patient.intra_navigation"  name="patient.intra_navigation" value="Yes">Yes
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refNavigation="ngModel" required  [(ngModel)]="patient.intra_navigation"  name="patient.intra_navigation" value="No">No
+      </label>
+      </div>
+      <div *ngIf="Navigation">
+        <div *ngIf="refNavigation.errors && (refNavigation.dirty || refNavigation.touched)" class="alert alert-danger">
+          <div [hidden]="!refNavigation.errors.required">
+            select Navigation
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Drapes</label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refDrapes="ngModel" required  [(ngModel)]="patient.intra_drapes"  name="patient.intra_drapes" value="Disposable">Disposable
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refDrapes="ngModel" required  [(ngModel)]="patient.intra_drapes"  name="patient.intra_drapes" value="Reusable">Reusable
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refDrapes="ngModel" required  [(ngModel)]="patient.intra_drapes"  name="patient.intra_drapes" value="Both">Both
+      </label>
+      </div>
+      <div *ngIf="Drapes">
+        <div *ngIf="refDrapes.errors && (refDrapes.dirty || refDrapes.touched)" class="alert alert-danger">
+          <div [hidden]="!refDrapes.errors.required">
+            select Drapes
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Hoods</label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refHoods="ngModel" required  [(ngModel)]="patient.intra_hoods"  name="patient.intra_hoods" value="Yes">Yes
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refHoods="ngModel" required  [(ngModel)]="patient.intra_hoods"  name="patient.intra_hoods" value="No">No
+      </label>
+      </div>
+      <div *ngIf="Hoods">
+        <div *ngIf="refHoods.errors && (refHoods.dirty || refHoods.touched)" class="alert alert-danger">
+          <div [hidden]="!refHoods.errors.required">
+            select Hoods
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Prophylactic antibiotic</label>
+      </div>
+      <div class="col-md-3">
+        <input type="text" #refProphylactic="ngModel" required class="form-control" placeholder="*Enter Prophylactic antibiotic"
+          name="patient.intra_prophylactic" [(ngModel)]="patient.intra_prophylactic">
+
+        <div *ngIf="Prophylactic">
+          <div *ngIf="refProphylactic.errors && (refProphylactic.dirty || refProphylactic.touched)" class="alert alert-danger">
+            <div [hidden]="!refProphylactic.errors.required">
+              Enter Prophylactic antibiotic
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Tranexamic acid</label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refTranexamic="ngModel" required  [(ngModel)]="patient.intra_tranexamic" (change)="tranexamicChange($event)"  name="patient.intra_tranexamic" value="Yes">Yes
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refTranexamic="ngModel" required  [(ngModel)]="patient.intra_tranexamic"  (change)="tranexamicChange1($event)" name="patient.intra_tranexamic" value="No">No
+      </label>
+      </div>
+      <div *ngIf="Tranexamic">
+        <div *ngIf="refTranexamic.errors && (refTranexamic.dirty || refTranexamic.touched)" class="alert alert-danger">
+          <div [hidden]="!refTranexamic.errors.required">
+            select Tranexamic acid
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="tranexamicacid">
+      <br>
+      <div class="col-md-4"></div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refTranexamicoption="ngModel" required  [(ngModel)]="patient.intra_tranexamicoption"  name="patient.intra_tranexamicoption" value="1">Local
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refTranexamicoption="ngModel" required  [(ngModel)]="patient.intra_tranexamicoption"  name="patient.intra_tranexamicoption" value="2">IV
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refTranexamicoption="ngModel" required  [(ngModel)]="patient.intra_tranexamicoption"  name="patient.intra_tranexamicoption" value="3">Both
+      </label>
+      </div>
+      <div *ngIf="Tranexamicoption">
+        <div *ngIf="refTranexamicoption.errors && (refTranexamicoption.dirty || refTranexamicoption.touched)" class="alert alert-danger">
+          <div [hidden]="!refTranexamicoption.errors.required">
+            select Tranexamic acid
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Anaesthesia</label>
+      </div>
+      <div class="col-md-2" *ngFor="let anaesthesia of patient.intra_anaesthesia">
+        <label class="checkbox-inline"><input type="checkbox"  #refanaesthesia="ngModel" required name="anaesthesia" [(ngModel)]="anaesthesia.selected">{{anaesthesia.anaesthesiaName}}</label>
+      </div>
+      <div *ngIf="anaesthesias">
+        <div *ngIf="refanaesthesia.errors && (refanaesthesia.dirty || refanaesthesia.touched)" class="alert alert-danger">
+          <div [hidden]="!refanaesthesia.errors.required">
+            select Anaesthesia
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>ASA Grade</label>
+      </div>
+      <div class="col-md-3">
+        <select #refgrade="ngModel" required class="form-control" name="patient.intra_grade" [(ngModel)]="patient.intra_grade">
+        <option value="">--select One</option>
+        <option value="1">Grade I</option>
+        <option value="2">Grade II</option>
+        <option value="3">Grade III</option>
+        <option value="4">Grade IV</option>
+        <option value="5">Grade V</option>
+        <option value="6">Grade E</option>
+    </select>
+        <div *ngIf="Grade">
+          <div *ngIf="refgrade.errors && (refgrade.dirty || refgrade.touched)" class="alert alert-danger">
+            <div [hidden]="!refgrade.errors.required">
+              select Grade
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Tourniquet</label>
+      </div>
+      <div class="col-md-3">
+        <select #refTourniquet="ngModel" required class="form-control" name="patient.intra_tourniquet" [(ngModel)]="patient.intra_tourniquet">
+        <option value="">--select One</option>
+        <option value="1">Not used</option>
+        <option value="2">During cementing only</option>
+        <option value="3">Released before closure</option>
+        <option value="4">Release after closure</option>
+        <option value="5">Intermittent</option>
+    </select>
+        <div *ngIf="Tourniquet">
+          <div *ngIf="refTourniquet.errors && (refTourniquet.dirty || refTourniquet.touched)" class="alert alert-danger">
+            <div [hidden]="!refTourniquet.errors.required">
+              select Tourniquet
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Tourniquet Time</label>
+      </div>
+      <div class="col-md-3">
+        <input type="text" #refTourniquetTime="ngModel" required class="form-control" placeholder="*Enter Tourniquet Time" name="patient.intra_tourniquettime"
+          [(ngModel)]="patient.intra_tourniquettime">
+
+        <div *ngIf="TourniquetTime">
+          <div *ngIf="refTourniquetTime.errors && (refTourniquetTime.dirty || refTourniquetTime.touched)" class="alert alert-danger">
+            <div [hidden]="!refTourniquetTime.errors.required">
+              Enter Tourniquet Time
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Tourniquet Pressure</label>
+      </div>
+      <div class="col-md-3">
+        <input type="text" #refTourniquetPressure="ngModel" required class="form-control" placeholder="*Enter Tourniquet Pressure"
+          name="patient.intra_tourniquetpressure" [(ngModel)]="patient.intra_tourniquetpressure">
+
+        <div *ngIf="TourniquetPressure">
+          <div *ngIf="refTourniquetPressure.errors && (refTourniquetPressure.dirty || refTourniquetPressure.touched)" class="alert alert-danger">
+            <div [hidden]="!refTourniquetPressure.errors.required">
+              Enter Tourniquet Pressure
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Arthrotomy</label>
+      </div>
+      <div class="col-md-3">
+        <select #refArthrotomy="ngModel" required class="form-control" name="patient.intra_arthrotomy" [(ngModel)]="patient.intra_arthrotomy">
+        <option value="">--select One</option>
+        <option value="1">Not used</option>
+    </select>
+        <div *ngIf="Arthrotomy">
+          <div *ngIf="refArthrotomy.errors && (refArthrotomy.dirty || refArthrotomy.touched)" class="alert alert-danger">
+            <div [hidden]="!refArthrotomy.errors.required">
+              select Arthrotomy
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Tibial defect</label>
+      </div>
+      <div class="col-md-3">
+        <select #refTibialdefect="ngModel" required class="form-control" name="patient.intra_tibialdefect" [(ngModel)]="patient.intra_tibialdefect">
+        <option value="">--select One</option>
+        <option value="1">Antero-medial</option>
+        <option value="2">Central</option>
+        <option value="3">Postero-medial</option>
+        <option value="4">Antero-lateral</option>
+        <option value="5">Postero-lateral</option>
+    </select>
+        <div *ngIf="Tibialdefect">
+          <div *ngIf="refTibialdefect.errors && (refTibialdefect.dirty || refTibialdefect.touched)" class="alert alert-danger">
+            <div [hidden]="!refTibialdefect.errors.required">
+              select Tibial defect
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Tibial Defect – AORI Classification</label>
+      </div>
+      <div class="col-md-2">
+        <img src="../../../assets/images/grade1.jpg" width="150px" height="150px"><br>
+        <label class="radio-inline">
+         <input type="radio"  #refaoriclassification="ngModel" required  [(ngModel)]="patient.intra_aoriclassification" name="patient.intra_aoriclassification" value="1">&nbsp;Grade 1
+      </label>
+      </div>
+      <div class="col-md-2">
+        <img src="../../../assets/images/grade2.jpg" width="150px" height="150px"><br>
+        <label class="radio-inline">
+         <input type="radio"  #refaoriclassification="ngModel" required  [(ngModel)]="patient.intra_aoriclassification"  name="patient.intra_aoriclassification" value="2">&nbsp;Grade 2A
+      </label>
+      </div>
+      <div class="col-md-2">
+        <img src="../../../assets/images/grade3.jpg" width="150px" height="150px"><br>
+        <label class="radio-inline">        
+         <input type="radio"  #refaoriclassification="ngModel" required  [(ngModel)]="patient.intra_aoriclassification"  name="patient.intra_aoriclassification" value="3">&nbsp;Grade 2B
+      </label>
+      </div>
+      <div class="col-md-2">
+        <img src="../../../assets/images/grade4.jpg" width="150px" height="150px"><br>
+        <label class="radio-inline">
+         <input type="radio"  #refaoriclassification="ngModel" required  [(ngModel)]="patient.intra_aoriclassification"  name="patient.intra_aoriclassification" value="4">&nbsp;Grade 3
+      </label>
+      </div>
+      <div *ngIf="aoriclassification">
+        <div *ngIf="refaoriclassification.errors && (refaoriclassification.dirty || refaoriclassification.touched)" class="alert alert-danger">
+          <div [hidden]="!refaoriclassification.errors.required">
+            select AORI classification
+          </div>
+        </div>
+      </div>
+    </div><br><br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <h4>Patella - Outer bridge Classification</h4>
+      </div>
+    </div><br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Choose</th>
+              <th colspan="2">Outer Bridge Classification of Arthritis of Articular Cartilage</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <input type="radio" #refpatellaouterbridgeclassification="ngModel" required [(ngModel)]="patient.intra_patellaouterbridgeclassification"
+                  name="patient.intra_patellaouterbridgeclassification" value="1">
+              </td>
+              <td>&nbsp;Grade 0</td>
+              <td>Normal cartilage</td>
+            </tr>
+            <tr>
+              <td>
+                <input type="radio" #refpatellaouterbridgeclassification="ngModel" required [(ngModel)]="patient.intra_patellaouterbridgeclassification"
+                  name="patient.intra_patellaouterbridgeclassification" value="2">
+              </td>
+              <td>&nbsp;Grade I</td>
+              <td>cartilage with softening and swelling</td>
+            </tr>
+            <tr>
+              <td>
+                <input type="radio" #refpatellaouterbridgeclassification="ngModel" required [(ngModel)]="patient.intra_patellaouterbridgeclassification"
+                  name="patient.intra_patellaouterbridgeclassification" value="3">
+              </td>
+              <td>&nbsp;Grade III</td>
+              <td>Partial-thickness defect with fissures on the surface that do not reach subchondral bone or exceed 1.5 cm in
+                diameter
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input type="radio" #refpatellaouterbridgeclassification="ngModel" required [(ngModel)]="patient.intra_patellaouterbridgeclassification"
+                  name="patient.intra_patellaouterbridgeclassification" value="4">
+              </td>
+              <td>&nbsp;Grade IV</td>
+              <td>Fissuring on the level of subchondral bone in an area with a diameter more than 1.5 cm
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input type="radio" #refpatellaouterbridgeclassification="ngModel" required [(ngModel)]="patient.intra_patellaouterbridgeclassification"
+                  name="patient.intra_patellaouterbridgeclassification" value="5">
+              </td>
+              <td>&nbsp;Grade V</td>
+              <td>Exposed subchondral bone
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div *ngIf="aoriclassification">
+          <div *ngIf="refpatellaouterbridgeclassification.errors && (refpatellaouterbridgeclassification.dirty || refpatellaouterbridgeclassification.touched)"
+            class="alert alert-danger">
+            <div [hidden]="!refpatellaouterbridgeclassification.errors.required">
+              select patella outer bridge classification
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Patellar thickness</label>
+      </div>
+      <div class="col-md-3">
+        <div class="input-group date form_datetime" data-link-field="inputLastSeen">
+          <input type="text" #refPatellarthickness="ngModel" required class="form-control" placeholder="*Enter Patellar thickness"
+            name="patient.intra_patellarthickness" [(ngModel)]="patient.intra_patellarthickness">
+          <span class="input-group-addon">
+                mm
+              </span>
+        </div>
+        <div *ngIf="Patellarthickness">
+          <div *ngIf="refPatellarthickness.errors && (refPatellarthickness.dirty || refPatellarthickness.touched)" class="alert alert-danger">
+            <div [hidden]="!refPatellarthickness.errors.required">
+              Enter Patellar thickness
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Lat. retinaculum release</label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refretinaculum="ngModel" required  [(ngModel)]="patient.intra_retinaculum"  name="patient.intra_retinaculum" value="Yes">Yes
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refretinaculum="ngModel" required  [(ngModel)]="patient.intra_retinaculum"  name="patient.intra_retinaculum" value="No">No
+      </label>
+      </div>
+      <div *ngIf="retinaculum">
+        <div *ngIf="refretinaculum.errors && (refretinaculum.dirty || refretinaculum.touched)" class="alert alert-danger">
+          <div [hidden]="!refretinaculum.errors.required">
+            select retinaculum release
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>ACL</label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refACL="ngModel" required  [(ngModel)]="patient.intra_acl"  name="patient.intra_acl" value="1">Intact
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refACL="ngModel" required  [(ngModel)]="patient.intra_acl"  name="patient.intra_acl" value="2">Linear striation
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refACL="ngModel" required  [(ngModel)]="patient.intra_acl"  name="patient.intra_acl" value="3">Ruptured
+      </label>
+      </div>
+      <div *ngIf="ACL">
+        <div *ngIf="refACL.errors && (refACL.dirty || refACL.touched)" class="alert alert-danger">
+          <div [hidden]="!refACL.errors.required">
+            select ACL
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>PCL</label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refPCL="ngModel" required  [(ngModel)]="patient.intra_pcl"  name="patient.intra_pcl" value="1">Intact
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refPCL="ngModel" required  [(ngModel)]="patient.intra_pcl"  name="patient.intra_pcl" value="2">Linear striation
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refPCL="ngModel" required  [(ngModel)]="patient.intra_pcl"  name="patient.intra_pcl" value="3">Ruptured
+      </label>
+      </div>
+      <div *ngIf="PCL">
+        <div *ngIf="refPCL.errors && (refPCL.dirty || refPCL.touched)" class="alert alert-danger">
+          <div [hidden]="!refPCL.errors.required">
+            select PCL
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>MCL</label>
+      </div>
+
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refMCL="ngModel" required  [(ngModel)]="patient.intra_mcl"  name="patient.intra_mcl" value="1">Normal
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refMCL="ngModel" required  [(ngModel)]="patient.intra_mcl"  name="patient.intra_mcl" value="2">Pathological
+      </label>
+      </div>
+      <div *ngIf="MCL">
+        <div *ngIf="refMCL.errors && (refMCL.dirty || refMCL.touched)" class="alert alert-danger">
+          <div [hidden]="!refMCL.errors.required">
+            select MCL
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>LCL</label>
+      </div>
+
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refLCL="ngModel" required  [(ngModel)]="patient.intra_lcl"  name="patient.intra_lcl" value="1">Normal
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refLCL="ngModel" required  [(ngModel)]="patient.intra_lcl"  name="patient.intra_lcl" value="2">Pathological
+      </label>
+      </div>
+      <div *ngIf="LCL">
+        <div *ngIf="refLCL.errors && (refLCL.dirty || refLCL.touched)" class="alert alert-danger">
+          <div [hidden]="!refLCL.errors.required">
+            select LCL
+          </div>
+        </div>
+      </div>
+    </div>
+    <br><br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <h3>Soft tissue Release</h3>
+      </div>
+    </div><br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Varus</label>
+      </div>
+      <div class="col-md-2" *ngFor="let varus of patient.intra_varus">
+        <label class="checkbox-inline"><input type="checkbox"  #refVarus="ngModel" required name="varus" [(ngModel)]="varus.selected">{{varus.varusName}}</label>
+      </div>
+      <div *ngIf="Varus">
+        <div *ngIf="refVarus.errors && (refVarus.dirty || refVarus.touched)" class="alert alert-danger">
+          <div [hidden]="!refVarus.errors.required">
+            select Varus
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Valgus</label>
+      </div>
+      <div class="col-md-2" *ngFor="let valgus of patient.intra_valgus">
+        <label class="checkbox-inline"><input type="checkbox"  #refValgus="ngModel" required name="valgus" [(ngModel)]="valgus.selected">{{valgus.valgusName}}</label>
+      </div>
+      <div *ngIf="Valgus">
+        <div *ngIf="refValgus.errors && (refValgus.dirty || refValgus.touched)" class="alert alert-danger">
+          <div [hidden]="!refValgus.errors.required">
+            select Valgus
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>flexion</label>
+      </div>
+      <div class="col-md-2" *ngFor="let flexion of patient.intra_flexion">
+        <label class="checkbox-inline"><input type="checkbox"  #refflexion1="ngModel" required name="flexion" [(ngModel)]="flexion.selected">{{flexion.flexionName}}</label>
+      </div>
+      <div *ngIf="flexion1">
+        <div *ngIf="refflexion1.errors && (refflexion1.dirty || refflexion1.touched)" class="alert alert-danger">
+          <div [hidden]="!refflexion1.errors.required">
+            select flexion
+          </div>
+        </div>
+      </div>
+    </div><br>
+    <div class="row">
+      <div class="col-md-11">
+        <div class="text-center">
+          <button class="btn btn-primary" type="submit" [disabled]="!intraoperativeForm.form.valid" style="float:right;">Add Patient</button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+</app-tab-content>
+<app-tab-content *ngIf="patient_postoperative">
+  <form #postoperativeForm="ngForm" (ngSubmit)="addPatientPostoperative(patient)" novalidate>
+    <div class="row">
+      <div class="col-md-8"></div>
+      <div class="col-md-4" style="font-size:14px;">
+        <b> Name :</b> {{patientname}}<br>
+        <b>Age : </b>{{patientage}}<br>
+        <b>Sex : </b>{{patientsex}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <h2>Postoperative radiographic assessment</h2>
+        <input type="hidden" class="form-control" name="patient.patientId" [(ngModel)]="patient.patientId">
+      </div>
+    </div><br><br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Date of input</label>
+      </div>
+      <div class="col-md-3">
+        <input type="date" #refdate="ngModel" required class="form-control" placeholder="*Enter date" name="patient.post_date" [(ngModel)]="patient.post_date">
+
+        <div *ngIf="dateinput">
+          <div *ngIf="refdate.errors && (refdate.dirty || refdate.touched)" class="alert alert-danger">
+            <div [hidden]="!refdate.errors.required">
+              Enter date
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <h2>Radiological evaluations</h2>
+      </div>
+    </div><br><br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Side of the Knee</label>
+      </div>
+      <div class="col-md-3">
+        <input type="text" readonly class="form-control" placeholder="*Enter date" name="patient.post_side" [(ngModel)]="patient.post_side">
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Posterior slope</label>
+      </div>
+      <div class="col-md-3">
+        <input type="text" #refslope="ngModel" required class="form-control" placeholder="*Enter Posterior slope" name="patient.post_posteriorslope"
+          [(ngModel)]="patient.post_posteriorslope">
+
+        <div *ngIf="slope">
+          <div *ngIf="refslope.errors && (refslope.dirty || refslope.touched)" class="alert alert-danger">
+            <div [hidden]="!refslope.errors.required">
+              Enter Posterior slope
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Hip-knee-ankle axis</label>
+      </div>
+      <div class="col-md-3">
+        <input type="text" #refhipknee="ngModel" required class="form-control" placeholder="*Enter Hip knee ankle axis" name="patient.post_hipkneeankle"
+          [(ngModel)]="patient.post_hipkneeankle">
+
+        <div *ngIf="hipknee">
+          <div *ngIf="refhipknee.errors && (refhipknee.dirty || refhipknee.touched)" class="alert alert-danger">
+            <div [hidden]="!refhipknee.errors.required">
+              Enter Hip knee ankle axis
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Upload Image</label>
+      </div>
+      <div class="col-md-3">
+        <input type="file" class="form-control" (change)="postFileChangeEvent($event)" ngModel>
+        <div *ngIf="image">
+          <div *ngIf="refimage.errors && (refimage.dirty || refimage.touched)" class="alert alert-danger">
+            <div [hidden]="!refimage.errors.required">
+              Browse image
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-11">
+        <div class="text-center">
+          <button class="btn btn-primary" type="submit" [disabled]="!postoperativeForm.form.valid" style="float:right;">Add Patient</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</app-tab-content>
