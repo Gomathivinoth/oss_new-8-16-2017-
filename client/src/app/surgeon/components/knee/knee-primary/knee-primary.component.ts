@@ -133,6 +133,7 @@ export class KneePrimaryComponent implements OnInit {
   onsetsymptom = true;
 
 
+
   patient = {
     patientId: '',
     hospitalId: '',
@@ -174,6 +175,60 @@ export class KneePrimaryComponent implements OnInit {
       'symptomsName': String,
       'selected': Boolean,
     }],
+    symptomaggravated: [{
+      'aggravatedName': String,
+      'selected': Boolean,
+    }],
+    Comorbidities: [{
+      'comorbiditiesName': String,
+      'selected': Boolean,
+    }],
+    Previouskneesurgeries: [{
+      'PreviouskneesurgeriesName': String,
+      'selected': Boolean,
+    }],
+    steroid: '',
+    viscosupplement: '',
+    flexiondeformity: '',
+    hyperextension: '',
+    patellartracking: '',
+    quadricepspower: '',
+    filename: '',
+    filetype: '',
+
+    // knee score start
+    totalkneescore: 0,
+    kneescore_walking: 0,
+    kneescore_stairs: 0,
+    // knee score end
+
+    // womac score strat
+    totalwomacscore: 0,
+    womac_walking: 0,
+    womac_Stair: 0,
+    womac_nocturnal: 0,
+    womac_rest: 0,
+    womac_weight: 0,
+    totaldivide: 0,
+    // womac score end
+
+    //kujala score start
+    totalkujalascore: 0,
+    kujalascore_limp: 0,
+    kujalascore_support: 0,
+    kujalascore_walking: 0,
+    kujalascore_stairs: 0,
+    kujalascore_squatting: 0,
+    kujalascore_running: 0,
+    kujalascore_jumping: 0,
+    kujalascore_prolonged: 0,
+    kujalascore_pain: 0,
+    kujalascore_swelling: 0,
+    kujalascore_painful: 0,
+    kujalascore_atrophy: 0,
+    kujalascore_flexion: 0,
+    //kujala score end
+
     //radiology start
     implantsitu: [{
       'implantsituName': String,
@@ -263,6 +318,40 @@ export class KneePrimaryComponent implements OnInit {
     { 'symptomsName': 'Giving way', 'selected': false }
   ];
 
+  symptomaggravated: any = [
+    { 'aggravatedName': 'Walking', 'selected': false },
+    { 'aggravatedName': 'Standing', 'selected': false },
+    { 'aggravatedName': 'Stairs', 'selected': false }
+  ];
+
+  Comorbidities: any = [
+    { 'comorbiditiesName': 'Diabetes', 'selected': false },
+    { 'comorbiditiesName': 'Hypertension', 'selected': false },
+    { 'comorbiditiesName': 'Endocrine', 'selected': false },
+    { 'comorbiditiesName': 'Coronary heart disease', 'selected': false },
+    { 'comorbiditiesName': 'Hepatitis', 'selected': false },
+    { 'comorbiditiesName': 'HIV', 'selected': false },
+    { 'comorbiditiesName': 'Lung disease', 'selected': false },
+    // { 'comorbiditiesName': 'Peripheral vascular disease', 'selected': false },
+    // { 'comorbiditiesName': 'Rheumatologic condition', 'selected': false },
+    { 'comorbiditiesName': 'Parkinsons', 'selected': false }
+    // { 'comorbiditiesName': 'Others', 'selected': false },
+    // { 'comorbiditiesName': 'Chronic Kidney Disease', 'selected': false }
+    // { 'comorbiditiesName': 'Type 2', 'selected': false },
+    // { 'comorbiditiesName': 'HBsAg', 'selected': false }
+  ];
+
+  Previouskneesurgeries: any = [
+    { 'PreviouskneesurgeriesName': 'Arthroscopy', 'selected': false },
+    { 'PreviouskneesurgeriesName': 'UKR', 'selected': false },
+    { 'PreviouskneesurgeriesName': 'Patellectomy', 'selected': false },
+    { 'PreviouskneesurgeriesName': 'Lateral release', 'selected': false },
+    { 'PreviouskneesurgeriesName': 'Meniscectomy', 'selected': false },
+    { 'PreviouskneesurgeriesName': 'Synovectomy', 'selected': false },
+    { 'PreviouskneesurgeriesName': 'Tib. Osteotomy', 'selected': false },
+    { 'PreviouskneesurgeriesName': 'Others', 'selected': false }
+  ];
+
   implantsitu: any = [
     { 'implantsituName': 'None', 'selected': false },
     { 'implantsituName': 'Nail', 'selected': false },
@@ -326,9 +415,221 @@ export class KneePrimaryComponent implements OnInit {
   bilateral = false;
   combinationvalue = false;
   tranexamicacid = false;
-  disable = true;
+  disable = false;
+
+  totalkneescore = '0';
+  totalwomacscore = '0';
+  totalkujalascore = '0';
+
+  // knee scoring function start
+
+  kneescoreWalkingChange(event: any) {
+    this.patient.kneescore_walking = event.target.value;
+    this.patient.totalkneescore = +this.patient.kneescore_walking + + this.patient.kneescore_stairs;
+  }
+
+  kneescorestairsChange(event: any) {
+    this.patient.kneescore_stairs = event.target.value;
+    this.patient.totalkneescore = +this.patient.kneescore_stairs + +this.patient.kneescore_walking;
+  }
+
+  addkneescore(score) {
+    console.log(score);
+    this.surgeonService.surgeon_Patientkneescoure(score).subscribe(data => {
+      this.surgeonService.surgeon_GetLastPatientId().subscribe(dataPatientId => {
+        this.totalkneescore = dataPatientId.message[0].preoperative.prekneescore.totalkneescore;
+        console.log(this.totalkneescore);
+      });
+    });
+  }
+
+  // knee scoring function end
+
+  // womac scoring function start
+
+  womacwalkChange(event: any) {
+    this.patient.womac_walking = event.target.value;
+    this.patient.totalwomacscore = +this.patient.womac_walking + + this.patient.womac_Stair +
+      + this.patient.womac_nocturnal + + this.patient.womac_rest + +this.patient.womac_weight;
+    this.patient.totaldivide = (this.patient.totalwomacscore / 96) * 100;
+    console.log(this.patient.totaldivide);
+  }
+
+  womacstairChange(event: any) {
+    this.patient.womac_Stair = event.target.value;
+    this.patient.totalwomacscore = +this.patient.womac_Stair + +this.patient.womac_walking +
+      + this.patient.womac_nocturnal + + this.patient.womac_rest + +this.patient.womac_weight;
+    this.patient.totaldivide = (this.patient.totalwomacscore / 96) * 100;
+  }
+
+  womacnocturnalChange(event: any) {
+    this.patient.womac_nocturnal = event.target.value;
+    this.patient.totalwomacscore = +this.patient.womac_Stair + +this.patient.womac_walking +
+      + this.patient.womac_nocturnal + + this.patient.womac_rest + +this.patient.womac_weight;
+    this.patient.totaldivide = (this.patient.totalwomacscore / 96) * 100;
+  }
+
+  womacrestChange(event: any) {
+    this.patient.womac_rest = event.target.value;
+    this.patient.totalwomacscore = +this.patient.womac_Stair + +this.patient.womac_walking +
+      + this.patient.womac_nocturnal + + this.patient.womac_rest + +this.patient.womac_weight;
+    this.patient.totaldivide = (this.patient.totalwomacscore / 96) * 100;
+  }
+
+  womacweightChange(event: any) {
+    this.patient.womac_weight = event.target.value;
+    this.patient.totalwomacscore = +this.patient.womac_Stair + +this.patient.womac_walking +
+      + this.patient.womac_nocturnal + + this.patient.womac_rest + +this.patient.womac_weight;
+   this.patient.totaldivide = (this.patient.totalwomacscore / 96) * 100;
+  }
+
+  addwomacscore(score) {
+    console.log(score);
+    this.surgeonService.surgeon_Patientwomacscoure(score).subscribe(data => {
+      this.surgeonService.surgeon_GetLastPatientId().subscribe(dataPatientId => {
+        this.totalwomacscore = dataPatientId.message[0].preoperative.prewomacscore.totalwomacscore;
+        console.log(this.totalkneescore);
+      });
+    });
+  }
+
+  // womac scoring function end
+
+  // kujala scoring function start
+
+  kujalascorelimpChange(event: any) {
+    this.patient.kujalascore_limp = event.target.value;
+    this.patient.totalkujalascore = +this.patient.kujalascore_limp + + this.patient.kujalascore_stairs +
+      + this.patient.kujalascore_support + + this.patient.kujalascore_walking + + this.patient.kujalascore_squatting +
+      + this.patient.kujalascore_running + + this.patient.kujalascore_jumping + + this.patient.kujalascore_prolonged +
+      + this.patient.kujalascore_pain + + this.patient.kujalascore_swelling + + this.patient.kujalascore_painful +
+      + this.patient.kujalascore_atrophy + + this.patient.kujalascore_flexion;
+  }
+
+  kujalascoresupportChange(event: any) {
+    this.patient.kujalascore_support = event.target.value;
+    this.patient.totalkujalascore = +this.patient.kujalascore_limp + + this.patient.kujalascore_stairs +
+      + this.patient.kujalascore_support + + this.patient.kujalascore_walking + + this.patient.kujalascore_squatting +
+      + this.patient.kujalascore_running + + this.patient.kujalascore_jumping + + this.patient.kujalascore_prolonged +
+      + this.patient.kujalascore_pain + + this.patient.kujalascore_swelling + + this.patient.kujalascore_painful +
+      + this.patient.kujalascore_atrophy + + this.patient.kujalascore_flexion;
+  }
+
+  kujalascorewalkingChange(event: any) {
+    this.patient.kujalascore_walking = event.target.value;
+    this.patient.totalkujalascore = +this.patient.kujalascore_limp + + this.patient.kujalascore_stairs +
+      + this.patient.kujalascore_support + + this.patient.kujalascore_walking + + this.patient.kujalascore_squatting +
+      + this.patient.kujalascore_running + + this.patient.kujalascore_jumping + + this.patient.kujalascore_prolonged +
+      + this.patient.kujalascore_pain + + this.patient.kujalascore_swelling + + this.patient.kujalascore_painful +
+      + this.patient.kujalascore_atrophy + + this.patient.kujalascore_flexion;
+  }
+
+  kujalascorestairsChange(event: any) {
+    this.patient.kujalascore_stairs = event.target.value;
+    this.patient.totalkujalascore = +this.patient.kujalascore_limp + + this.patient.kujalascore_stairs +
+      + this.patient.kujalascore_support + + this.patient.kujalascore_walking + + this.patient.kujalascore_squatting +
+      + this.patient.kujalascore_running + + this.patient.kujalascore_jumping + + this.patient.kujalascore_prolonged +
+      + this.patient.kujalascore_pain + + this.patient.kujalascore_swelling + + this.patient.kujalascore_painful +
+      + this.patient.kujalascore_atrophy + + this.patient.kujalascore_flexion;
+  }
+
+  kujalascoresquattingChange(event: any) {
+    this.patient.kujalascore_squatting = event.target.value;
+    this.patient.totalkujalascore = +this.patient.kujalascore_limp + + this.patient.kujalascore_stairs +
+      + this.patient.kujalascore_support + + this.patient.kujalascore_walking + + this.patient.kujalascore_squatting +
+      + this.patient.kujalascore_running + + this.patient.kujalascore_jumping + + this.patient.kujalascore_prolonged +
+      + this.patient.kujalascore_pain + + this.patient.kujalascore_swelling + + this.patient.kujalascore_painful +
+      + this.patient.kujalascore_atrophy + + this.patient.kujalascore_flexion;
+  }
+
+  kujalascorerunningChange(event: any) {
+    this.patient.kujalascore_running = event.target.value;
+    this.patient.totalkujalascore = +this.patient.kujalascore_limp + + this.patient.kujalascore_stairs +
+      + this.patient.kujalascore_support + + this.patient.kujalascore_walking + + this.patient.kujalascore_squatting +
+      + this.patient.kujalascore_running + + this.patient.kujalascore_jumping + + this.patient.kujalascore_prolonged +
+      + this.patient.kujalascore_pain + + this.patient.kujalascore_swelling + + this.patient.kujalascore_painful +
+      + this.patient.kujalascore_atrophy + + this.patient.kujalascore_flexion;
+  }
+
+  kujalascorejumpingChange(event: any) {
+    this.patient.kujalascore_jumping = event.target.value;
+    this.patient.totalkujalascore = +this.patient.kujalascore_limp + + this.patient.kujalascore_stairs +
+      + this.patient.kujalascore_support + + this.patient.kujalascore_walking + + this.patient.kujalascore_squatting +
+      + this.patient.kujalascore_running + + this.patient.kujalascore_jumping + + this.patient.kujalascore_prolonged +
+      + this.patient.kujalascore_pain + + this.patient.kujalascore_swelling + + this.patient.kujalascore_painful +
+      + this.patient.kujalascore_atrophy + + this.patient.kujalascore_flexion;
+  }
+
+  kujalascoreprolongedChange(event: any) {
+    this.patient.kujalascore_prolonged = event.target.value;
+    this.patient.totalkujalascore = +this.patient.kujalascore_limp + + this.patient.kujalascore_stairs +
+      + this.patient.kujalascore_support + + this.patient.kujalascore_walking + + this.patient.kujalascore_squatting +
+      + this.patient.kujalascore_running + + this.patient.kujalascore_jumping + + this.patient.kujalascore_prolonged +
+      + this.patient.kujalascore_pain + + this.patient.kujalascore_swelling + + this.patient.kujalascore_painful +
+      + this.patient.kujalascore_atrophy + + this.patient.kujalascore_flexion;
+  }
+
+  kujalascorepainChange(event: any) {
+    this.patient.kujalascore_pain = event.target.value;
+    this.patient.totalkujalascore = +this.patient.kujalascore_limp + + this.patient.kujalascore_stairs +
+      + this.patient.kujalascore_support + + this.patient.kujalascore_walking + + this.patient.kujalascore_squatting +
+      + this.patient.kujalascore_running + + this.patient.kujalascore_jumping + + this.patient.kujalascore_prolonged +
+      + this.patient.kujalascore_pain + + this.patient.kujalascore_swelling + + this.patient.kujalascore_painful +
+      + this.patient.kujalascore_atrophy + + this.patient.kujalascore_flexion;
+  }
+
+  kujalascoreswellingChange(event: any) {
+    this.patient.kujalascore_swelling = event.target.value;
+    this.patient.totalkujalascore = +this.patient.kujalascore_limp + + this.patient.kujalascore_stairs +
+      + this.patient.kujalascore_support + + this.patient.kujalascore_walking + + this.patient.kujalascore_squatting +
+      + this.patient.kujalascore_running + + this.patient.kujalascore_jumping + + this.patient.kujalascore_prolonged +
+      + this.patient.kujalascore_pain + + this.patient.kujalascore_swelling + + this.patient.kujalascore_painful +
+      + this.patient.kujalascore_atrophy + + this.patient.kujalascore_flexion;
+  }
+
+  kujalascorepainfulChange(event: any) {
+    this.patient.kujalascore_painful = event.target.value;
+    this.patient.totalkujalascore = +this.patient.kujalascore_limp + + this.patient.kujalascore_stairs +
+      + this.patient.kujalascore_support + + this.patient.kujalascore_walking + + this.patient.kujalascore_squatting +
+      + this.patient.kujalascore_running + + this.patient.kujalascore_jumping + + this.patient.kujalascore_prolonged +
+      + this.patient.kujalascore_pain + + this.patient.kujalascore_swelling + + this.patient.kujalascore_painful +
+      + this.patient.kujalascore_atrophy + + this.patient.kujalascore_flexion;
+  }
+
+  kujalascoreatrophyChange(event: any) {
+    this.patient.kujalascore_atrophy = event.target.value;
+    this.patient.totalkujalascore = +this.patient.kujalascore_limp + + this.patient.kujalascore_stairs +
+      + this.patient.kujalascore_support + + this.patient.kujalascore_walking + + this.patient.kujalascore_squatting +
+      + this.patient.kujalascore_running + + this.patient.kujalascore_jumping + + this.patient.kujalascore_prolonged +
+      + this.patient.kujalascore_pain + + this.patient.kujalascore_swelling + + this.patient.kujalascore_painful +
+      + this.patient.kujalascore_atrophy + + this.patient.kujalascore_flexion;
+  }
+
+  kujalascoreflexionChange(event: any) {
+    this.patient.kujalascore_flexion = event.target.value;
+    this.patient.totalkujalascore = +this.patient.kujalascore_limp + + this.patient.kujalascore_stairs +
+      + this.patient.kujalascore_support + + this.patient.kujalascore_walking + + this.patient.kujalascore_squatting +
+      + this.patient.kujalascore_running + + this.patient.kujalascore_jumping + + this.patient.kujalascore_prolonged +
+      + this.patient.kujalascore_pain + + this.patient.kujalascore_swelling + + this.patient.kujalascore_painful +
+      + this.patient.kujalascore_atrophy + + this.patient.kujalascore_flexion;
+  }
 
 
+  addkujalascore(score) {
+    console.log(score);
+    this.surgeonService.surgeon_Patientkujalascoure(score).subscribe(data => {
+      this.surgeonService.surgeon_GetLastPatientId().subscribe(dataPatientId => {
+        console.log(dataPatientId);
+        this.totalkujalascore = dataPatientId.message[0].preoperative.prekujalascore.totalkujalascore;
+        console.log(this.totalkneescore);
+      });
+    });
+  }
+
+
+  // kujala scoring function end
+
+  // bmi calucation start
   onKey(event: any) {
     this.patient.height = event.target.value;
   }
@@ -341,6 +642,7 @@ export class KneePrimaryComponent implements OnInit {
     this.patient.bmi = JSON.parse(rbmi);
   }
 
+  // bmi calculation end
   Surgeon_GetHospitalInfo() {
     this.getinfosurgeon.hospitalId = JSON.parse(localStorage.getItem('hospitalId'));
     this.getinfosurgeon.surgeonId = JSON.parse(localStorage.getItem('surgeonId'));
@@ -455,6 +757,12 @@ export class KneePrimaryComponent implements OnInit {
     });
   }
   addPatientPreoperative(patient) {
+    const formData: any = new FormData();
+    const files: Array<File> = this.filesToUpload;
+    formData.append("uploads[]", files[0], files[0]['name']);
+    this.http.post('http://localhost:3000/upload', formData)
+      .map(files => files.json())
+      .subscribe(files => console.log('files', files))
     this.surgeonService.surgeon_AddPatientPreoperative(patient).subscribe(data => {
       console.log(data);
       this.patient_demographic = false;
@@ -465,6 +773,12 @@ export class KneePrimaryComponent implements OnInit {
     });
   }
 
+  prefileChangeEvent(fileInput: any) {
+    this.filesToUpload = <Array<File>>fileInput.target.files;
+    var dt = new Date().toJSON().slice(0, 10).replace(/-/g, '-')
+    this.patient.filename = dt + "-" + fileInput.target.files[0]['name'];
+    this.patient.filetype = fileInput.target.files[0]['type'];
+  }
   addPatientRadiology(patient) {
     const formData: any = new FormData();
     const files: Array<File> = this.filesToUpload;
@@ -508,7 +822,7 @@ export class KneePrimaryComponent implements OnInit {
       .map(files => files.json())
       .subscribe(files => console.log('files', files))
     this.surgeonService.surgeon_AddPatientPostoperative(patient).subscribe(data => {
-     alert('success');
+      alert('success');
     });
   }
   postFileChangeEvent(fileInput: any) {
@@ -533,6 +847,9 @@ export class KneePrimaryComponent implements OnInit {
     this.patient.intra_varus = this.intravarus;
     this.patient.intra_valgus = this.intravalgus;
     this.patient.intra_flexion = this.intraflexion;
+    this.patient.symptomaggravated = this.symptomaggravated;
+    this.patient.Comorbidities = this.Comorbidities;
+    this.patient.Previouskneesurgeries = this.Previouskneesurgeries;
   }
 
 }

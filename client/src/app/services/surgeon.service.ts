@@ -43,27 +43,44 @@ export class SurgeonService {
     return this.http.get(this.domain + 'surgeon/surgeon_GetLastPatientId', this.options).map(res => res.json());
   }
 
-   surgeon_AddPatientPreoperative(patient) {
-     console.log(patient);
+  surgeon_AddPatientPreoperative(patient) {
+    //  console.log(patient);
     this.createAuthenticationHeaders(); // Create headers
     return this.http.post(this.domain + 'surgeon/surgeon_AddPatientPreoperative/', patient, this.options).map(res => res.json());
 
   }
-    surgeon_AddPatientRadiology(patient) {
+  surgeon_Patientkneescoure(score) {
+    //  console.log(score);
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.post(this.domain + 'surgeon/surgeon_Patientkneescoure/', score, this.options).map(res => res.json());
+  }
+
+  surgeon_Patientwomacscoure(score) {
+    //  console.log(score);
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.post(this.domain + 'surgeon/surgeon_Patientwomacscoure/', score, this.options).map(res => res.json());
+  }
+
+   surgeon_Patientkujalascoure(score) {
+    //  console.log(score);
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.post(this.domain + 'surgeon/surgeon_Patientkujalascoure/', score, this.options).map(res => res.json());
+  }
+  surgeon_AddPatientRadiology(patient) {
     this.createAuthenticationHeaders(); // Create headers
     return this.http.post(this.domain + 'surgeon/surgeon_AddPatientRadiology/', patient, this.options).map(res => res.json());
 
   }
-   surgeon_AddPatientIntraoperative(patient) {
+  surgeon_AddPatientIntraoperative(patient) {
     this.createAuthenticationHeaders(); // Create headers
     return this.http.post(this.domain + 'surgeon/surgeon_AddPatientIntraoperative/', patient, this.options).map(res => res.json());
 
   }
-   surgeon_AddPatientPostoperative(patient) {
-     console.log(patient);
+  surgeon_AddPatientPostoperative(patient) {
+    console.log(patient);
     this.createAuthenticationHeaders(); // Create headers
     return this.http.post(this.domain + 'surgeon/surgeon_AddPatientPostoperative/', patient, this.options).map(res => res.json());
 
   }
-  
+
 }

@@ -1,7 +1,6 @@
 <div class="row">
   <div class="col-md-2"></div>
   <div class="col-md-7">
-
     <div class="tabs-selection" *ngIf="disable">
       <app-tab [style.background-color]="applyblue? '#bbb': 'green'" [style.color]="applyblue? 'black': 'white'" (click)="demographic()">Demographic</app-tab>
       <app-tab style="cursor:not-allowed;">Pre-Operative</app-tab>
@@ -404,7 +403,7 @@
     </div><br><br>
     <div class="row">
       <div class="col-md-2"></div>
-      <div class="col-md-1">
+      <div class="col-md-2">
         <label>Etiology</label>
       </div>
       <div class="col-md-3">
@@ -423,7 +422,7 @@
     </div>
     <div class="row">
       <div class="col-md-2"></div>
-      <div class="col-md-1">
+      <div class="col-md-2">
         <label>Deformity</label>
       </div>
       <div class="col-md-2">
@@ -454,7 +453,7 @@
     </div>
     <br>
     <div class="row">
-      <div class="col-md-3"></div>
+      <div class="col-md-4"></div>
       <div class="col-md-2">
         <label>Varus</label>
       </div>
@@ -483,7 +482,7 @@
     </div>
     <br>
     <div class="row">
-      <div class="col-md-3"></div>
+      <div class="col-md-4"></div>
       <div class="col-md-2">
         <label>Flexion</label>
       </div>
@@ -513,7 +512,7 @@
     <br>
     <div class="row">
       <div class="col-md-2"></div>
-      <div class="col-md-1">
+      <div class="col-md-2">
         <label>Other joint involvement</label>
       </div>
       <div class="col-md-2" *ngFor="let joint of patient.joint">
@@ -530,7 +529,7 @@
     <br>
     <div class="row">
       <div class="col-md-2"></div>
-      <div class="col-md-1">
+      <div class="col-md-2">
         <label>Current Symptoms</label>
       </div>
       <div class="col-md-2" *ngFor="let symptom of patient.symptoms">
@@ -546,6 +545,355 @@
     </div>
     <br>
     <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Onset of Symptoms</label>
+      </div>
+
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refonsetsymptom="ngModel" required  [(ngModel)]="patient.onsetsymptom"  name="patient.onsetsymptom" value="1">&gt; 1 month
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refonsetsymptom="ngModel" required  [(ngModel)]="patient.onsetsymptom"  name="patient.onsetsymptom" value="2"> &gt; 6 months
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+          <input type="radio"  #refonsetsymptom="ngModel" required  [(ngModel)]="patient.onsetsymptom"  name="patient.onsetsymptom" value="3">&gt; 1 year
+      </label>
+      </div>
+      <div *ngIf="onsetsymptom">
+        <div *ngIf="refonsetsymptom.errors && (refonsetsymptom.dirty || refonsetsymptom.touched)" class="alert alert-danger">
+          <div [hidden]="!refonsetsymptom.errors.required">
+            select Onset of Symptoms
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Symptoms aggravated by</label>
+      </div>
+      <div class="col-md-2" *ngFor="let aggravated of patient.symptomaggravated">
+        <label class="checkbox-inline"><input type="checkbox"  #refaggravated="ngModel" required name="aggravated" [(ngModel)]="aggravated.selected">{{aggravated.aggravatedName}}</label>
+      </div>
+      <div *ngIf="sysaggravated">
+        <div *ngIf="refaggravated.errors && (refaggravated.dirty || refaggravated.touched)" class="alert alert-danger">
+          <div [hidden]="!refaggravated.errors.required">
+            select Symptoms aggravated
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Co morbidities</label>
+      </div>
+      <div class="col-md-2" *ngFor="let Comorbidities of patient.Comorbidities">
+        <label class="checkbox-inline"><input type="checkbox"  #refComorbidities="ngModel" required name="Comorbidities" [(ngModel)]="Comorbidities.selected">{{Comorbidities.comorbiditiesName}}</label>
+      </div>
+      <div *ngIf="comorbidities">
+        <div *ngIf="refComorbidities.errors && (refComorbidities.dirty || refComorbidities.touched)" class="alert alert-danger">
+          <div [hidden]="!refComorbidities.errors.required">
+            select Co morbidities
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Previous knee surgeries</label>
+      </div>
+      <div class="col-md-2" *ngFor="let kneesurgeries of patient.Previouskneesurgeries">
+        <label class="checkbox-inline"><input type="checkbox"  #refkneesurgeries="ngModel" required name="kneesurgeries" [(ngModel)]="kneesurgeries.selected">{{kneesurgeries.PreviouskneesurgeriesName}}</label>
+      </div>
+      <div *ngIf="kneesurgeries">
+        <div *ngIf="refkneesurgeries.errors && (refkneesurgeries.dirty || refkneesurgeries.touched)" class="alert alert-danger">
+          <div [hidden]="!refkneesurgeries.errors.required">
+            select Previous knee surgeries
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Intraarticular Inj</label>
+      </div>
+
+      <div class="col-md-2">
+        <label> Steroid</label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refSteroid="ngModel" required  [(ngModel)]="patient.steroid"  name="patient.steroid" value="1"> Yes
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+          <input type="radio"  #refSteroid="ngModel" required  [(ngModel)]="patient.steroid"  name="patient.steroid" value="2"> No
+      </label>
+      </div>
+      <div *ngIf="Steroid">
+        <div *ngIf="refSteroid.errors && (refSteroid.dirty || refSteroid.touched)" class="alert alert-danger">
+          <div [hidden]="!refSteroid.errors.required">
+            select Steroid
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-4"></div>
+
+      <div class="col-md-2">
+        <label> Visco supplement</label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refViscosupplement="ngModel" required  [(ngModel)]="patient.viscosupplement"  name="patient.viscosupplement" value="1"> Yes
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+          <input type="radio"  #refViscosupplement="ngModel" required  [(ngModel)]="patient.viscosupplement"  name="patient.viscosupplement" value="2"> No
+      </label>
+      </div>
+      <div *ngIf="supplement">
+        <div *ngIf="refViscosupplement.errors && (refViscosupplement.dirty || refViscosupplement.touched)" class="alert alert-danger">
+          <div [hidden]="!refViscosupplement.errors.required">
+            select Visco supplement
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Flexion deformity</label>
+      </div>
+
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refFlexion="ngModel" required  [(ngModel)]="patient.flexiondeformity"  name="patient.flexiondeformity" value="1"> None
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refFlexion="ngModel" required  [(ngModel)]="patient.flexiondeformity"  name="patient.flexiondeformity" value="2"> &nbsp;0-10&deg;
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+          <input type="radio"  #refFlexion="ngModel" required  [(ngModel)]="patient.flexiondeformity"  name="patient.flexiondeformity" value="3"> &nbsp;10-20&deg;
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+          <input type="radio"  #refFlexion="ngModel" required  [(ngModel)]="patient.flexiondeformity"  name="patient.flexiondeformity" value="4"> &nbsp;20-30&deg;
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+          <input type="radio"  #refFlexion="ngModel" required  [(ngModel)]="patient.flexiondeformity"  name="patient.flexiondeformity" value="5"> &gt;30&deg;
+      </label>
+      </div>
+      <div *ngIf="Flexion">
+        <div *ngIf="refFlexion.errors && (refFlexion.dirty || refFlexion.touched)" class="alert alert-danger">
+          <div [hidden]="!refFlexion.errors.required">
+            select Flexion deformity
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Hyper extension</label>
+      </div>
+
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refhyperextension="ngModel" required  [(ngModel)]="patient.hyperextension"  name="patient.hyperextension" value="1"> None
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refhyperextension="ngModel" required  [(ngModel)]="patient.hyperextension"  name="patient.hyperextension" value="2"> &nbsp;0-10&deg;
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+          <input type="radio"  #refhyperextension="ngModel" required  [(ngModel)]="patient.hyperextension"  name="patient.hyperextension" value="3"> &nbsp;10-20&deg;
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+          <input type="radio"  #refhyperextension="ngModel" required  [(ngModel)]="patient.hyperextension"  name="patient.hyperextension" value="4"> &nbsp;20-30&deg;
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+          <input type="radio"  #refhyperextension="ngModel" required  [(ngModel)]="patient.hyperextension"  name="patient.hyperextension" value="5"> &gt;30&deg;
+      </label>
+      </div>
+      <div *ngIf="extension">
+        <div *ngIf="refhyperextension.errors && (refhyperextension.dirty || refhyperextension.touched)" class="alert alert-danger">
+          <div [hidden]="!refhyperextension.errors.required">
+            select Hyper extension
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Retro patellar tenderness</label>
+      </div>
+
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refpatellar="ngModel" required  [(ngModel)]="patient.retropatellar"  name="patient.retropatellar" value="1"> Yes
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refpatellar="ngModel" required  [(ngModel)]="patient.retropatellar"  name="patient.retropatellar" value="2"> No
+      </label>
+      </div>
+
+      <div *ngIf="patellar">
+        <div *ngIf="refpatellar.errors && (refpatellar.dirty || refpatellar.touched)" class="alert alert-danger">
+          <div [hidden]="!refpatellar.errors.required">
+            select Retro patellar tenderness
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Patellar Tracking</label>
+      </div>
+
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refpatellarTracking="ngModel" required  [(ngModel)]="patient.patellartracking"  name="patient.patellartracking" value="Normal"> Normal
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refpatellarTracking="ngModel" required  [(ngModel)]="patient.patellartracking"  name="patient.patellartracking" value="Dislocated"> Dislocated
+      </label>
+      </div>
+
+      <div *ngIf="patellarTracking">
+        <div *ngIf="refpatellarTracking.errors && (refpatellarTracking.dirty || refpatellarTracking.touched)" class="alert alert-danger">
+          <div [hidden]="!refpatellarTracking.errors.required">
+            select Patellar Tracking
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Quadriceps power</label>
+      </div>
+
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refquadricepspower="ngModel" required  [(ngModel)]="patient.quadricepspower"  name="patient.quadricepspower" value="1"> &gt; 3/5
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refquadricepspower="ngModel" required  [(ngModel)]="patient.quadricepspower"  name="patient.quadricepspower" value="2"> 3/5
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refquadricepspower="ngModel" required  [(ngModel)]="patient.quadricepspower"  name="patient.quadricepspower" value="3"> &lt; 3/5
+      </label>
+      </div>
+      <div *ngIf="quadricepspower">
+        <div *ngIf="refquadricepspower.errors && (refquadricepspower.dirty || refquadricepspower.touched)" class="alert alert-danger">
+          <div [hidden]="!refquadricepspower.errors.required">
+            select Quadriceps power
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <h2>upload clinical images</h2>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Browse Image</label>
+      </div>
+
+      <div class="col-md-3">
+        <input type="file" class="form-control" (change)="prefileChangeEvent($event)" ngModel>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <h2>Click for Other scoring systems</h2>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2">
+      </div>
+      <div class="col-md-2">
+        <a href="#" data-toggle="modal" data-target="#myModalkneescore">
+          <div class="panel panel-default clearfix dashboard-stats rounded">
+            <span class="glyphicon glyphicon-user" style="font-size:25px; color:blue;"></span>
+            <b> Knee Society Score</b> : {{totalkneescore}}
+          </div>
+        </a>
+      </div>
+      <div class="col-md-2">
+        <a href="#" data-toggle="modal" data-target="#myModalwomacscore">
+          <div class="panel panel-default clearfix dashboard-stats rounded">
+            <span class="glyphicon glyphicon-user" style="font-size:25px; color:blue;"></span>
+            <b> WOMAC Score</b> : {{totalwomacscore}}
+          </div>
+        </a>
+      </div>
+      <div class="col-md-2">
+        <a href="#" data-toggle="modal" data-target="#myModalkujalascore">
+          <div class="panel panel-default clearfix dashboard-stats rounded">
+            <span class="glyphicon glyphicon-user" style="font-size:25px; color:blue;"></span>
+            <b> Kujala Score</b> : {{totalkujalascore}}
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="row">
       <div class="col-md-10">
         <div class="text-center">
           <button class="btn btn-primary" type="submit" [disabled]="!preoperativeForm.form.valid" style="float:right;">Add Patient</button>
@@ -554,39 +902,527 @@
     </div>
 
   </form>
-  <!--  
-  <br>
-   <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-1">
-      <label>Onset of Symptoms</label>
-    </div>
-    
-    <div class="col-md-2">
-      <label class="radio-inline">
-         <input type="radio"  #refonsetsymptom="ngModel" required  [(ngModel)]="patient.onsetsymptom"  name="patient.onsetsymptom" value="">> 1 month
-      </label>
-    </div>
-    <div class="col-md-2">
-      <label class="radio-inline">
-         <input type="radio"  #refonsetsymptom="ngModel" required  [(ngModel)]="patient.onsetsymptom"  name="patient.onsetsymptom" value=""> > 6 months
-      </label>
-    </div>
-    <div class="col-md-2">
-      <label class="radio-inline">
-          <input type="radio"  #refonsetsymptom="ngModel" required  [(ngModel)]="patient.onsetsymptom"  name="patient.onsetsymptom" value="">> 1 year
-      </label>
-    </div>
-    <div *ngIf="onsetsymptom">
-      <div *ngIf="refonsetsymptom.errors && (refonsetsymptom.dirty || refonsetsymptom.touched)" class="alert alert-danger">
-        <div [hidden]="!refonsetsymptom.errors.required">
-          select valgus
+  <!-- scoring modal windows start  -->
+  <div class="modal fade" id="myModalkneescore" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color:blue;color:white;">
+          <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+          <div class="row">
+            <div class="col-md-4">
+              <b> Name :</b> {{patientname}}<br>
+              <b>Age : </b>{{patientage}}<br>
+              <b>Sex : </b>{{patientsex}}</div>
+            <div class="col-md-4">
+              <p style="text-align:center;font-size:25px;">Knee Score</p>
+            </div>
+            <div class="col-md-4">
+              <span id="circle" style="float:right; color:#555;">
+                <span  style=" font-size: 20px; width: 50px; float: right; font-weight: bold;">{{patient.totalkneescore}}
+			         </span></span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-12">
+              <h1>Knee Score</h1>
+              <input type="hidden" class="form-control" name="patient.patientId" [(ngModel)]="patient.patientId">
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-2">Pain</div>
+            <div class="col-lg-4">
+              <p>
+                Walking
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.kneescore_walking" (click)="kneescoreWalkingChange($event)" name="patient.kneescore_walking"
+                value="35">&nbsp;None&nbsp;35<br>
+              <input type="radio" [(ngModel)]="patient.kneescore_walking" (click)="kneescoreWalkingChange($event)" name="patient.kneescore_walking"
+                value="30">&nbsp;Mild&nbsp;or&nbsp;occasional&nbsp;30<br>
+              <input type="radio" [(ngModel)]="patient.kneescore_walking" (click)="kneescoreWalkingChange($event)" name="patient.kneescore_walking"
+                value="15">&nbsp;Moderate&nbsp;15<br>
+              <input type="radio" [(ngModel)]="patient.kneescore_walking" (click)="kneescoreWalkingChange($event)" name="patient.kneescore_walking"
+                value="0">&nbsp;Severe&nbsp;0
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-4">
+              <p>
+                Stairs
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.kneescore_stairs" (click)="kneescorestairsChange($event)" name="patient.kneescore_stairs"
+                value="15">&nbsp;None&nbsp;15<br>
+              <input type="radio" [(ngModel)]="patient.kneescore_stairs" (click)="kneescorestairsChange($event)" name="patient.kneescore_stairs"
+                value="10">&nbsp;Mild&nbsp;or&nbsp;occasional&nbsp;10<br>
+              <input type="radio" [(ngModel)]="patient.kneescore_stairs" (click)="kneescorestairsChange($event)" name="patient.kneescore_stairs"
+                value="5">&nbsp;Moderate&nbsp;5<br>
+              <input type="radio" [(ngModel)]="patient.kneescore_stairs" (click)="kneescorestairsChange($event)" name="patient.kneescore_stairs"
+                value="0">&nbsp;Severe&nbsp;0
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" data-dismiss="modal" class="btn btn-primary" (click)="addkneescore(patient)">Submit</button>
         </div>
       </div>
     </div>
-  </div>  -->
+  </div>
+
+  <!--womacscore start -->
+  <div class="modal fade" id="myModalwomacscore" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color:blue;color:white;">
+          <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+          <div class="row">
+            <div class="col-md-4">
+              <b> Name :</b> {{patientname}}<br>
+              <b>Age : </b>{{patientage}}<br>
+              <b>Sex : </b>{{patientsex}}</div>
+            <div class="col-md-4">
+              <p style="text-align:center;font-size:25px;">WOMAC Score</p>
+            </div>
+            <div class="col-md-4">
+              <span id="circle" style="float:right; color:#555;">
+                <span  style=" font-size: 20px; width: 50px; float: right; font-weight: bold;">{{patient.totalwomacscore}}
+			         </span></span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-12">
+              <h1>WOMAC Score</h1>
+              <input type="hidden" class="form-control" name="patient.patientId" [(ngModel)]="patient.patientId">
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-2">Pain</div>
+            <div class="col-lg-3">
+              <p>
+                1). Walking
+              </p>
+            </div>
+            <div class="col-lg-1"><input type="radio" [(ngModel)]="patient.womac_walking" (click)="womacwalkChange($event)" name="patient.womac_walking"
+                value="0">&nbsp;0</div>
+            <div class="col-lg-1"><input type="radio" [(ngModel)]="patient.womac_walking" (click)="womacwalkChange($event)" name="patient.womac_walking"
+                value="1">&nbsp;1</div>
+            <div class="col-lg-1"><input type="radio" [(ngModel)]="patient.womac_walking" (click)="womacwalkChange($event)" name="patient.womac_walking"
+                value="2">&nbsp;2</div>
+            <div class="col-lg-1"><input type="radio" [(ngModel)]="patient.womac_walking" (click)="womacwalkChange($event)" name="patient.womac_walking"
+                value="3">&nbsp;3</div>
+            <div class="col-lg-1"><input type="radio" [(ngModel)]="patient.womac_walking" (click)="womacwalkChange($event)" name="patient.womac_walking"
+                value="4">&nbsp;4</div>
+          </div>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-3">
+              <p>
+                2).Stair Climbing
+              </p>
+            </div>
+            <div class="col-lg-1"><input type="radio" [(ngModel)]="patient.womac_Stair" (click)="womacstairChange($event)" name="patient.womac_Stair"
+                value="0">&nbsp;0</div>
+            <div class="col-lg-1"><input type="radio" [(ngModel)]="patient.womac_Stair" (click)="womacstairChange($event)" name="patient.womac_Stair"
+                value="1">&nbsp;1</div>
+            <div class="col-lg-1"><input type="radio" [(ngModel)]="patient.womac_Stair" (click)="womacstairChange($event)" name="patient.womac_Stair"
+                value="2">&nbsp;2</div>
+            <div class="col-lg-1"><input type="radio" [(ngModel)]="patient.womac_Stair" (click)="womacstairChange($event)" name="patient.womac_Stair"
+                value="3">&nbsp;3</div>
+            <div class="col-lg-1"><input type="radio" [(ngModel)]="patient.womac_Stair" (click)="womacstairChange($event)" name="patient.womac_Stair"
+                value="4">&nbsp;4</div>
+          </div>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-3">
+              <p>
+                3).Nocturnal
+              </p>
+            </div>
+            <div class="col-lg-1"><input type="radio" [(ngModel)]="patient.womac_nocturnal" (click)="womacnocturnalChange($event)" name="patient.womac_nocturnal"
+                value="0">&nbsp;0</div>
+            <div class="col-lg-1"><input type="radio" [(ngModel)]="patient.womac_nocturnal" (click)="womacnocturnalChange($event)" name="patient.womac_nocturnal"
+                value="1">&nbsp;1</div>
+            <div class="col-lg-1"><input type="radio" [(ngModel)]="patient.womac_nocturnal" (click)="womacnocturnalChange($event)" name="patient.womac_nocturnal"
+                value="2">&nbsp;2</div>
+            <div class="col-lg-1"><input type="radio" [(ngModel)]="patient.womac_nocturnal" (click)="womacnocturnalChange($event)" name="patient.womac_nocturnal"
+                value="3">&nbsp;3</div>
+            <div class="col-lg-1"><input type="radio" [(ngModel)]="patient.womac_nocturnal" (click)="womacnocturnalChange($event)" name="patient.womac_nocturnal"
+                value="4">&nbsp;4</div>
+          </div>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-3">
+              <p>
+                4).Rest
+              </p>
+            </div>
+            <div class="col-lg-1"><input type="radio" [(ngModel)]="patient.womac_rest" (click)="womacrestChange($event)" name="patient.womac_rest"
+                value="0">&nbsp;0</div>
+            <div class="col-lg-1"><input type="radio" [(ngModel)]="patient.womac_rest" (click)="womacrestChange($event)" name="patient.womac_rest"
+                value="1">&nbsp;1</div>
+            <div class="col-lg-1"><input type="radio" [(ngModel)]="patient.womac_rest" (click)="womacrestChange($event)" name="patient.womac_rest"
+                value="2">&nbsp;2</div>
+            <div class="col-lg-1"><input type="radio" [(ngModel)]="patient.womac_rest" (click)="womacrestChange($event)" name="patient.womac_rest"
+                value="3">&nbsp;3</div>
+            <div class="col-lg-1"><input type="radio" [(ngModel)]="patient.womac_rest" (click)="womacrestChange($event)" name="patient.womac_rest"
+                value="4">&nbsp;4</div>
+          </div>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-3">
+              <p>
+                5).Weight Bearing
+              </p>
+            </div>
+            <div class="col-lg-1"><input type="radio" [(ngModel)]="patient.womac_weight" (click)="womacweightChange($event)" name="patient.womac_weight"
+                value="0">&nbsp;0</div>
+            <div class="col-lg-1"><input type="radio" [(ngModel)]="patient.womac_weight" (click)="womacweightChange($event)" name="patient.womac_weight"
+                value="1">&nbsp;1</div>
+            <div class="col-lg-1"><input type="radio" [(ngModel)]="patient.womac_weight" (click)="womacweightChange($event)" name="patient.womac_weight"
+                value="2">&nbsp;2</div>
+            <div class="col-lg-1"><input type="radio" [(ngModel)]="patient.womac_weight" (click)="womacweightChange($event)" name="patient.womac_weight"
+                value="3">&nbsp;3</div>
+            <div class="col-lg-1"><input type="radio" [(ngModel)]="patient.womac_weight" (click)="womacweightChange($event)" name="patient.womac_weight"
+                value="4">&nbsp;4</div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-3">
+              <p>
+                Total Score:
+              </p>
+            </div>
+            <div class="col-lg-1"><input type="text" [(ngModel)]="patient.totalwomacscore" class="form-control" readonly name="patient.totalwomacscore"></div>
+             <div class="col-lg-1">/96 &nbsp;&nbsp; = </div>
+              <div class="col-lg-3">
+                 <div class="input-group date form_datetime" data-link-field="inputLastSeen">
+            <input type="text"class="form-control" [(ngModel)]="patient.totaldivide" name="patient.totaldivide" readonly placeholder="*Enter age" >
+            <span class="input-group-addon">
+                  %
+              </span>
+          </div>
+              </div>
+            
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="submit" data-dismiss="modal" class="btn btn-primary" (click)="addwomacscore(patient)">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--womacscore end -->
+
+  <!--kujalascore start -->
+  <div class="modal fade" id="myModalkujalascore" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color:blue;color:white;">
+          <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+          <div class="row">
+            <div class="col-md-4">
+              <b> Name :</b> {{patientname}}<br>
+              <b>Age : </b>{{patientage}}<br>
+              <b>Sex : </b>{{patientsex}}</div>
+            <div class="col-md-4">
+              <p style="text-align:center;font-size:25px;">Kujala Score</p>
+            </div>
+            <div class="col-md-4">
+              <span id="circle" style="float:right; color:#555;">
+                <span  style=" font-size: 20px; width: 50px; float: right; font-weight: bold;">{{patient.totalkujalascore}}
+			         </span></span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-body" style="height:400px;overflow: scroll;">
+          <div class="row">
+            <div class="col-lg-12">
+              <h1>Kujala Score</h1>
+              <input type="hidden" class="form-control" name="patient.patientId" [(ngModel)]="patient.patientId">
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-3">
+              <p>
+                1). Limp
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.kujalascore_limp" (click)="kujalascorelimpChange($event)" name="patient.kujalascore_limp"
+                value="5">&nbsp;None (5)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_limp" (click)="kujalascorelimpChange($event)" name="patient.kujalascore_limp"
+                value="3">&nbsp;Slight or periodical (3)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_limp" (click)="kujalascorelimpChange($event)" name="patient.kujalascore_limp"
+                value="0">&nbsp;Constant (0)<br>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-3">
+              <p>
+                2). Support
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.kujalascore_support" (click)="kujalascoresupportChange($event)" name="patient.kujalascore_support"
+                value="5">&nbsp;Full support without pain (5)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_support" (click)="kujalascoresupportChange($event)" name="patient.kujalascore_support"
+                value="3">&nbsp;Painful (3)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_support" (click)="kujalascoresupportChange($event)" name="patient.kujalascore_support"
+                value="0">&nbsp;Weight bearing impossible (0)<br>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-3">
+              <p>
+                3). Walking
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.kujalascore_walking" (click)="kujalascorewalkingChange($event)" name="patient.kujalascore_walking"
+                value="5">&nbsp;Unlimited (5)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_walking" (click)="kujalascorewalkingChange($event)" name="patient.kujalascore_walking"
+                value="3">&nbsp;More than 2 km (3)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_walking" (click)="kujalascorewalkingChange($event)" name="patient.kujalascore_walking"
+                value="2">&nbsp;1-2 km (2)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_walking" (click)="kujalascorewalkingChange($event)" name="patient.kujalascore_walking"
+                value="0">&nbsp;Unable(0)<br>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-3">
+              <p>
+                4). Stairs
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.kujalascore_stairs" (click)="kujalascorestairsChange($event)" name="patient.kujalascore_stairs"
+                value="10">&nbsp;No difficulty (10)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_stairs" (click)="kujalascorestairsChange($event)" name="patient.kujalascore_stairs"
+                value="8">&nbsp;Slight pain when descending (8)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_stairs" (click)="kujalascorestairsChange($event)" name="patient.kujalascore_stairs"
+                value="5">&nbsp;Pain both when descending and ascending (5)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_stairs" (click)="kujalascorestairsChange($event)" name="patient.kujalascore_stairs"
+                value="0">&nbsp;Unable(0)<br>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-3">
+              <p>
+                5). Squatting
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.kujalascore_squatting" (click)="kujalascoresquattingChange($event)" name="patient.kujalascore_squatting"
+                value="5">&nbsp;No difficulty (5)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_squatting" (click)="kujalascoresquattingChange($event)" name="patient.kujalascore_squatting"
+                value="4">&nbsp;Repeated squatting painful (4)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_squatting" (click)="kujalascoresquattingChange($event)" name="patient.kujalascore_squatting"
+                value="3">&nbsp;Painful each time (3)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_squatting" (click)="kujalascoresquattingChange($event)" name="patient.kujalascore_squatting"
+                value="2">&nbsp;Possible with partial weight bearing (2)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_squatting" (click)="kujalascoresquattingChange($event)" name="patient.kujalascore_squatting"
+                value="0">&nbsp;Unable(0)<br>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-3">
+              <p>
+                6). Running
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.kujalascore_running" (click)="kujalascorerunningChange($event)" name="patient.kujalascore_running"
+                value="10">&nbsp;No difficulty (10)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_running" (click)="kujalascorerunningChange($event)" name="patient.kujalascore_running"
+                value="8">&nbsp;Pain after more than 2 km (8)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_running" (click)="kujalascorerunningChange($event)" name="patient.kujalascore_running"
+                value="6">&nbsp;Slight pain from start (6)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_running" (click)="kujalascorerunningChange($event)" name="patient.kujalascore_running"
+                value="3">&nbsp;Severe pain (3)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_running" (click)="kujalascorerunningChange($event)" name="patient.kujalascore_running"
+                value="0">&nbsp;Unable(0)<br>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-3">
+              <p>
+                7). Jumping
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.kujalascore_jumping" (click)="kujalascorejumpingChange($event)" name="patient.kujalascore_jumping"
+                value="10">&nbsp;No difficulty (10)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_jumping" (click)="kujalascorejumpingChange($event)" name="patient.kujalascore_jumping"
+                value="7">&nbsp;Slight difficulty (7)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_jumping" (click)="kujalascorejumpingChange($event)" name="patient.kujalascore_jumping"
+                value="2">&nbsp;Constant pain (2)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_jumping" (click)="kujalascorejumpingChange($event)" name="patient.kujalascore_jumping"
+                value="0">&nbsp;Unable(0)<br>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-3">
+              <p>
+                8). Prolonged sitting with the knees flexed
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.kujalascore_prolonged" (click)="kujalascoreprolongedChange($event)" name="patient.kujalascore_prolonged"
+                value="10">&nbsp;No difficulty (10)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_prolonged" (click)="kujalascoreprolongedChange($event)" name="patient.kujalascore_prolonged"
+                value="8">&nbsp;Pain after exercise (8)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_prolonged" (click)="kujalascoreprolongedChange($event)" name="patient.kujalascore_prolonged"
+                value="6">&nbsp;Constant pain (6)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_prolonged" (click)="kujalascoreprolongedChange($event)" name="patient.kujalascore_prolonged"
+                value="4">&nbsp;Pain forces to extend knees temporarily (4)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_prolonged" (click)="kujalascoreprolongedChange($event)" name="patient.kujalascore_prolonged"
+                value="0">&nbsp;Unable(0)<br>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-3">
+              <p>
+                9). Pain
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.kujalascore_pain" (click)="kujalascorepainChange($event)" name="patient.kujalascore_pain"
+                value="10">&nbsp;None (10)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_pain" (click)="kujalascorepainChange($event)" name="patient.kujalascore_pain"
+                value="8">&nbsp;Slight and occasional (8)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_pain" (click)="kujalascorepainChange($event)" name="patient.kujalascore_pain"
+                value="6">&nbsp;Interferes with sleep (6)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_pain" (click)="kujalascorepainChange($event)" name="patient.kujalascore_pain"
+                value="3">&nbsp;Occasionally severe (3)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_pain" (click)="kujalascorepainChange($event)" name="patient.kujalascore_pain"
+                value="0">&nbsp;Constant and severe (0)<br>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-3">
+              <p>
+                10). Swelling
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.kujalascore_swelling" (click)="kujalascoreswellingChange($event)" name="patient.kujalascore_swelling"
+                value="10">&nbsp;None (10)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_swelling" (click)="kujalascoreswellingChange($event)" name="patient.kujalascore_swelling"
+                value="8">&nbsp;After severe exertion (8)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_swelling" (click)="kujalascoreswellingChange($event)" name="patient.kujalascore_swelling"
+                value="6">&nbsp;After daily activities (6)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_swelling" (click)="kujalascoreswellingChange($event)" name="patient.kujalascore_swelling"
+                value="4">&nbsp;Every evening (4)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_swelling" (click)="kujalascoreswellingChange($event)" name="patient.kujalascore_swelling"
+                value="0">&nbsp;Constant (0)<br>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-3">
+              <p>
+                11). Abnormal painful kneecap (patellar) movements (subluxations)
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.kujalascore_painful" (click)="kujalascorepainfulChange($event)" name="patient.kujalascore_painful"
+                value="10">&nbsp;None (10)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_painful" (click)="kujalascorepainfulChange($event)" name="patient.kujalascore_painful"
+                value="6">&nbsp;Occasionally in sports activities (6)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_painful" (click)="kujalascorepainfulChange($event)" name="patient.kujalascore_painful"
+                value="4">&nbsp;Occasionally in daily activities (4)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_painful" (click)="kujalascorepainfulChange($event)" name="patient.kujalascore_painful"
+                value="2">&nbsp;At least one documented dislocation (2)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_painful" (click)="kujalascorepainfulChange($event)" name="patient.kujalascore_painful"
+                value="0">&nbsp;More than two dislocations (0)<br>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-3">
+              <p>
+                12). Atrophy of thigh
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.kujalascore_atrophy" (click)="kujalascoreatrophyChange($event)" name="patient.kujalascore_atrophy"
+                value="5">&nbsp;None (5)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_atrophy" (click)="kujalascoreatrophyChange($event)" name="patient.kujalascore_atrophy"
+                value="3">&nbsp;Slight (3)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_atrophy" (click)="kujalascoreatrophyChange($event)" name="patient.kujalascore_atrophy"
+                value="0">&nbsp;Severe (0)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-3">
+              <p>
+                13). Flexion deficiency
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.kujalascore_flexion" (click)="kujalascoreflexionChange($event)" name="patient.kujalascore_flexion"
+                value="5">&nbsp;None (5)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_flexion" (click)="kujalascoreflexionChange($event)" name="patient.kujalascore_flexion"
+                value="3">&nbsp;Slight (3)<br>
+              <input type="radio" [(ngModel)]="patient.kujalascore_flexion" (click)="kujalascoreflexionChange($event)" name="patient.kujalascore_flexion"
+                value="0">&nbsp;Severe (0)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-12">Comments / Interpretation (to be completed by therapist only) :</div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" data-dismiss="modal" class="btn btn-primary" (click)="addkujalascore(patient)">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- kujala scor end -->
+
+  <!-- scoring modal windows end  -->
 </app-tab-content>
 <!-- End preoperative form-->
+
+
 <app-tab-content *ngIf="patient_radiology">
   <form #radiologyForm="ngForm" (ngSubmit)="addPatientRadiology(patient)" novalidate>
     <div class="row">

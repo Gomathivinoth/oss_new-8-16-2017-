@@ -216,7 +216,7 @@ module.exports = (router) => {
     });
 
     router.post('/surgeon_AddPatientPreoperative', (req, res) => {
-        console.log(req.body);
+        //console.log(req.body);
         if (!req.body.patientId) {
             res.json({ success: false, message: 'No patient Id was provided!' });
         } else {
@@ -237,7 +237,18 @@ module.exports = (router) => {
                             varus: req.body.varus,
                             flexion: req.body.flexion,
                             joint: req.body.joint,
-                            symptoms: req.body.symptoms
+                            symptoms: req.body.symptoms,
+                            symptomaggravated: req.body.symptomaggravated,
+                            Comorbidities: req.body.Comorbidities,
+                            Previouskneesurgeries: req.body.Previouskneesurgeries,
+                            steroid: req.body.steroid,
+                            viscosupplement: req.body.viscosupplement,
+                            flexiondeformity: req.body.flexiondeformity,
+                            hyperextension: req.body.hyperextension,
+                            patellartracking: req.body.patellartracking,
+                            quadricepspower: req.body.quadricepspower,
+                            filename: req.body.filename,
+                            filetype: req.body.filetype
                         };
                         patient.preoperative = preoperativeDetails;
                         patient.save((err) => {
@@ -380,6 +391,118 @@ module.exports = (router) => {
             });
         }
     });
+
+       router.post('/surgeon_Patientkneescoure', (req, res) => {
+        if (!req.body.patientId) {
+            res.json({ success: false, message: 'No patient Id was provided!' });
+        } else {
+            req.body.patientId = mongoose.Types.ObjectId(req.body.patientId);
+            Patient.findOne({ _id: req.body.patientId }, (err, patient) => {
+                if (err) {
+                    res.json({ success: false, message: 'Not a valid patient Id' });
+                } else {
+                    if (!patient) {
+                        res.json({ success: false, message: 'patient Id was not found' });
+                    } else {
+                        // patient.preoperative.push({
+                        const kneescoreDetails = {
+                            kneescore_walking: req.body.kneescore_walking,
+                            kneescore_stairs: req.body.kneescore_stairs,
+                            totalkneescore: req.body.totalkneescore                          
+                        };
+                        patient.preoperative.prekneescore =kneescoreDetails;
+                        patient.save((err) => {
+                            if (err) {
+                                res.json({ success: false, message: err });
+                            } else {
+                                res.json({ success: true, message: 'Patient score Updated!' });
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    });
+
+     router.post('/surgeon_Patientwomacscoure', (req, res) => {
+        if (!req.body.patientId) {
+            res.json({ success: false, message: 'No patient Id was provided!' });
+        } else {
+            req.body.patientId = mongoose.Types.ObjectId(req.body.patientId);
+            Patient.findOne({ _id: req.body.patientId }, (err, patient) => {
+                if (err) {
+                    res.json({ success: false, message: 'Not a valid patient Id' });
+                } else {
+                    if (!patient) {
+                        res.json({ success: false, message: 'patient Id was not found' });
+                    } else {
+                        // patient.preoperative.push({
+                        const womacscoreDetails = {
+                            womac_walking: req.body.womac_walking,
+                            womac_Stair: req.body.womac_Stair,
+                            womac_nocturnal: req.body.womac_nocturnal,
+                            womac_rest: req.body.womac_rest, 
+                            womac_weight: req.body.womac_weight, 
+                            totalwomacscore: req.body.totalwomacscore                          
+                        };
+                        patient.preoperative.prewomacscore =womacscoreDetails;
+                        patient.save((err) => {
+                            if (err) {
+                                res.json({ success: false, message: err });
+                            } else {
+                                res.json({ success: true, message: 'Patient score Updated!' });
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    });
+
+    router.post('/surgeon_Patientkujalascoure', (req, res) => {
+        if (!req.body.patientId) {
+            res.json({ success: false, message: 'No patient Id was provided!' });
+        } else {
+            req.body.patientId = mongoose.Types.ObjectId(req.body.patientId);
+            Patient.findOne({ _id: req.body.patientId }, (err, patient) => {
+                if (err) {
+                    res.json({ success: false, message: 'Not a valid patient Id' });
+                } else {
+                    if (!patient) {
+                        res.json({ success: false, message: 'patient Id was not found' });
+                    } else {
+                        // patient.preoperative.push({
+                        const kujalascoreDetails = {
+                            kujalascore_limp: req.body.kujalascore_limp,
+                            kujalascore_support: req.body.kujalascore_support,
+                            kujalascore_walking: req.body.kujalascore_walking,
+                            kujalascore_stairs: req.body.kujalascore_stairs, 
+                            kujalascore_running: req.body.kujalascore_running, 
+                            kujalascore_squatting: req.body.kujalascore_squatting, 
+                            kujalascore_jumping: req.body.kujalascore_jumping, 
+                            kujalascore_prolonged: req.body.kujalascore_prolonged, 
+                            kujalascore_pain: req.body.kujalascore_pain, 
+                            kujalascore_swelling: req.body.kujalascore_swelling, 
+                            kujalascore_painful: req.body.kujalascore_painful, 
+                            kujalascore_atrophy: req.body.kujalascore_atrophy, 
+                            kujalascore_flexion: req.body.kujalascore_flexion, 
+                            totalkujalascore: req.body.totalkujalascore                         
+                        };
+                        patient.preoperative.prekujalascore =kujalascoreDetails;
+                        patient.save((err) => {
+                            if (err) {
+                                res.json({ success: false, message: err });
+                            } else {
+                                res.json({ success: true, message: 'Patient score Updated!' });
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    });
+
+
 
 
 

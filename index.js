@@ -47,17 +47,17 @@ app.use('/hospitalAdmin',hospitalAdmin);
 app.use('/branchAdmin',branchAdmin);
 app.use('/surgeon',surgeon);
 
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+// app.use(function (req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   next();
+// });
 
 
 var storage = multer.diskStorage({
   // destino del fichero
   destination: function (req, file, cb) {
-    cb(null, './client/src/assets/uploads/')
+    cb(null, './client/uploads/')
   },
   // renombrar fichero
   filename: function (req, file, cb) {

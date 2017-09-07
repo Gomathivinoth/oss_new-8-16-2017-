@@ -46,8 +46,59 @@ const patientSchema = new Schema({
         symptoms: [{
             symptomsName: { type: String },
             selected: { type: Boolean, default: false }
-        }]
+        }],
+        symptomaggravated: [{
+            aggravatedName: { type: String },
+            selected: { type: Boolean, default: false }
+        }],
+        Comorbidities: [{
+            comorbiditiesName: { type: String },
+            selected: { type: Boolean, default: false }
+        }],
+        Previouskneesurgeries: [{
+            PreviouskneesurgeriesName: { type: String },
+            selected: { type: Boolean, default: false }
+        }],
+        steroid: { type: String },
+        viscosupplement: { type: String },
+        flexiondeformity: { type: String },
+        hyperextension: { type: String },
+        patellartracking: { type: String },
+        quadricepspower: { type: String },
+        filename: { type: String },
+        filetype: { type: String },
+        prekneescore: {
+            kneescore_walking: { type: String },
+            kneescore_stairs: { type: String },
+            totalkneescore: { type: String }
+        },
+        prewomacscore: {
+            womac_walking: { type: String },
+            womac_Stair: { type: String },
+            womac_nocturnal: { type: String },
+            womac_rest: { type: String },
+            womac_weight: { type: String },
+            totalwomacscore: { type: String }
+        },
+        prekujalascore: {
+            kujalascore_limp: { type: String },
+            kujalascore_support: { type: String },
+            kujalascore_walking: { type: String },
+            kujalascore_stairs: { type: String },
+            kujalascore_running: { type: String },
+            kujalascore_squatting: { type: String },
+            kujalascore_jumping: { type: String },
+            kujalascore_prolonged: { type: String },
+            kujalascore_pain: { type: String },
+            kujalascore_swelling: { type: String },
+            kujalascore_painful: { type: String },
+            kujalascore_atrophy: { type: String },
+            kujalascore_flexion: { type: String },
+            totalkujalascore: { type: String }
+        }
     },
+
+
     radiology: {
         implantsitu: [{
             implantsituName: { type: String },
