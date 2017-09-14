@@ -6,6 +6,8 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class BranchAdminService {
   options;
+  authToken;
+  user;
   domain = this.hospitalService.domain;
   constructor(
     private hospitalService: HospitalService,
@@ -22,6 +24,17 @@ export class BranchAdminService {
         'authorization': this.hospitalService.authToken // Attach token
       })
     });
+  }
+
+  logout() {
+    this.authToken = null; // Set token to null
+    this.user = null; // Set user to null
+    localStorage.clear(); // Clear local storage
+  }
+
+  uploadImage(formData){
+    return this.http.post('http://localhost:3000/upload',formData)
+                .map(files => files.json())
   }
 
   getHospitalBranchInfo(id) {

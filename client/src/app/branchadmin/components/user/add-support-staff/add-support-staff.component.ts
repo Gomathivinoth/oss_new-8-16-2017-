@@ -113,13 +113,6 @@ showSurgeonName(id){
 
 
   addSupport(supportStaff) {
-    const formData: any = new FormData();
-    const files: Array<File> = this.filesToUpload;
-    formData.append("uploads[]", files[0], files[0]['name']);
-    
-    this.http.post('http://localhost:3000/upload', formData)
-      .map(files => files.json())
-      .subscribe(files => console.log('files', files))
     this.branchAdminService.branch_AddSupportStaff(supportStaff).subscribe(data => {
       console.log(data);
       this.supportStaff.name = '';
@@ -139,10 +132,18 @@ showSurgeonName(id){
   }
 
   fileChangeEvent(fileInput: any) {
-    this.filesToUpload = <Array<File>>fileInput.target.files;
-    var dt = new Date().toJSON().slice(0, 10).replace(/-/g, '-')
-    this.supportStaff.filename = dt + "-" + fileInput.target.files[0]['name'];
+
+      let age = new Date();
+      this.supportStaff.filename = "supportstaff_" + Number(age) + fileInput.target.files[0]['name'];
     this.supportStaff.filetype = fileInput.target.files[0]['type'];
+    const formData: any = new FormData();
+    const files: Array<File> = <Array<File>>fileInput.target.files;
+    formData.append("Name", "supportstaff_");
+    formData.append("Age", Number(age));
+    formData.append("uploads[]", files[0], files[0]['name']);
+
+    this.branchAdminService.uploadImage(formData).subscribe(data => {
+    });
   }
 
    deleteSupportStaff(staff) {
@@ -177,10 +178,18 @@ showSurgeonName(id){
   }
 
    editFileChangeEvent(fileInput: any) {
-    this.filesToUpload = <Array<File>>fileInput.target.files;
-    var dt = new Date().toJSON().slice(0, 10).replace(/-/g, '-')
-    this.editSupport.editfilename = dt + "-" + fileInput.target.files[0]['name'];
+
+     let age = new Date();
+    this.editSupport.editfilename = "supportstaff_" + Number(age) + fileInput.target.files[0]['name'];
     this.editSupport.editfiletype = fileInput.target.files[0]['type'];
+    const formData: any = new FormData();
+    const files: Array<File> = <Array<File>>fileInput.target.files;
+    formData.append("Name", "supportstaff_");
+    formData.append("Age", Number(age));
+    formData.append("uploads[]", files[0], files[0]['name']);
+
+    this.branchAdminService.uploadImage(formData).subscribe(data => {
+    });
 
   }
 

@@ -202,9 +202,11 @@
               <tr *ngFor="let branch of branchLists">
                 <td>{{branch.branchName}}</td>
                 <td>{{branch.branchEmail}}</td>
-                <td><button type="button" class="btn btn-primary btn-xs" (click)="editBranchFromSelectHospital(branch._id,branch.hospitalId)">Edit</button></td>
-                <td><button type="button" class="btn btn-danger btn-xs" (click)="deleteBranchFromSelectHospital(branch._id,branch.hospitalId)">Delete</button></td>
-                <td><button type="button" class="btn btn-warning btn-xs" (click)="toggleStatus1(branch._id,branch.hospitalId)">{{branch.statusText}}</button></td>
+                <td><button type="button" class="btn btn-primary btn-xs" (click)="editBranchFromSelectHospital(branch._id,branch.hospitalId)">
+				<span class="glyphicon glyphicon-edit"></span>  Edit</button></td>
+                <td><button type="button" class="btn btn-danger btn-xs" (click)="deleteBranchFromSelectHospital(branch._id,branch.hospitalId)">
+				<span class="glyphicon glyphicon-trash"></span>  Delete</button></td>
+                <td><button type="button" class="btn btn-warning btn-xs" (click)="toggleStatus1(branch._id,branch.hospitalId)"><span class="glyphicon glyphicon-check"></span> {{branch.statusText}}</button></td>
               </tr>
             </tbody>
           </table>
@@ -469,7 +471,7 @@
     </div>
         <div class="form-group">
           <input type="hidden" class="form-control" name="newBranch.filename" [(ngModel)]="newBranch.filename">
-          <img src="../../../assets/uploads/{{newBranch.filename}}" width="100px" height="100px">
+          <img src="http://localhost:3000/uploads/{{newBranch.filename}}" width="100px" height="100px">
         </div>
         <div class="form-group">
           <label>Upload Image</label>
@@ -568,7 +570,7 @@
         </div>
         <div class="form-group">
           <input type="hidden" class="form-control" name="newBranchEdit.filename" [(ngModel)]="newBranchEdit.filename">
-          <img src="../../../assets/uploads/{{newBranchEdit.filename}}" width="100px" height="100px">
+          <img src="http://localhost:3000/uploads/{{newBranchEdit.filename}}" width="100px" height="100px">
         </div>
         <div class="form-group">
           <label>Upload Image</label>

@@ -83,7 +83,10 @@ export class HospitalService {
       this.createAuthenticationHeaders(); // Create headers
       return this.http.put(this.domain + 'authentication/updateHospital/' , hospital , this.options).map(res => res.json());
   }
-
+  uploadImage(formData){
+    return this.http.post('http://localhost:3000/upload',formData)
+                .map(files => files.json())
+  }
   deleteHospital(id){
       //console.log(id);
       this.createAuthenticationHeaders(); // Create headers

@@ -8,6 +8,8 @@ import 'rxjs/add/operator/map';
 export class HospitalAdminService {
 
   options;
+  authToken;
+  user;
   domain = this.hospitalService.domain;
   constructor(
     private hospitalService: HospitalService,
@@ -26,6 +28,12 @@ export class HospitalAdminService {
         'authorization': this.hospitalService.authToken // Attach token
       })
     });
+  }
+
+  logout() {
+    this.authToken = null; // Set token to null
+    this.user = null; // Set user to null
+    localStorage.clear(); // Clear local storage
   }
 
   getHospitalInfo(id) {
@@ -97,6 +105,11 @@ export class HospitalAdminService {
     this.createAuthenticationHeaders(); // Create headers
     return this.http.get(this.domain + 'hospitalAdmin/getSingleUserDetail/'+id , this.options).map(res => res.json());
   
+  }
+
+   uploadImage(formData){
+    return this.http.post('http://localhost:3000/upload',formData)
+                .map(files => files.json())
   }
 
   updateUserDetail(user){

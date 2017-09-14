@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { HospitalService } from '../../../services/hospital.service';
+import { HospitalAdminService } from '../../../services/hospital-admin.service';
 
 @Component({
   selector: 'app-navbar',
@@ -11,11 +11,11 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     private router:Router,
-    private hospitalService:HospitalService
+    private hospitalAdminService:HospitalAdminService
   ) { }
 
   logout(){
-    this.hospitalService.logout();
+    this.hospitalAdminService.logout();
     this.router.navigateByUrl('http://localhost:4200');
   }
 

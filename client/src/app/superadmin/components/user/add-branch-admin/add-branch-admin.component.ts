@@ -101,13 +101,6 @@ export class AddBranchAdminComponent implements OnInit {
     });
   }
   addBranchAdmin(branchAdmin) {
-    const formData: any = new FormData();
-    const files: Array<File> = this.filesToUpload;
-    formData.append("uploads[]", files[0], files[0]['name']);
-
-    this.http.post('http://localhost:3000/upload', formData)
-      .map(files => files.json())
-      .subscribe(files => console.log('files', files))
     this.hospitalService.addBranchAdmin(branchAdmin).subscribe(data => {
       //  console.log(data.data);
       this.branchAdmin.name = '';
@@ -134,10 +127,17 @@ export class AddBranchAdminComponent implements OnInit {
 
 
   fileChangeEvent(fileInput: any) {
-    this.filesToUpload = <Array<File>>fileInput.target.files;
-    var dt = new Date().toJSON().slice(0, 10).replace(/-/g, '-')
-    this.branchAdmin.filename = dt + "-" + fileInput.target.files[0]['name'];
+    let age = new Date();
+    this.branchAdmin.filename = "branchadmin_" + Number(age) + fileInput.target.files[0]['name'];
     this.branchAdmin.filetype = fileInput.target.files[0]['type'];
+    const formData: any = new FormData();
+    const files: Array<File> = <Array<File>>fileInput.target.files;
+    formData.append("Name", "branchadmin_");
+    formData.append("Age", Number(age));
+    formData.append("uploads[]", files[0], files[0]['name']);
+
+    this.hospitalService.uploadImage(formData).subscribe(data => {
+    });
   }
 
   deleteBranchAdmin(id) {
@@ -167,16 +167,7 @@ export class AddBranchAdminComponent implements OnInit {
   }
 
   updateBranchAdmin(editAdmin) {
-    if (editAdmin.editfilename) {
-      const formData: any = new FormData();
-      const files: Array<File> = this.filesToUpload;
-      // console.log(files);
-      formData.append("uploads[]", files[0], files[0]['name']);
 
-      this.http.post('http://localhost:3000/upload', formData)
-        .map(files => files.json())
-        .subscribe(files => console.log('files', files))
-    }
     this.hospitalService.updateHospitalAdmin(editAdmin).subscribe(data => {
       this.showForm = true;
       const id = editAdmin.edithospitalId + "-" + editAdmin.editbranchid;
@@ -186,10 +177,17 @@ export class AddBranchAdminComponent implements OnInit {
     });
   }
   editFileChangeEvent(fileInput: any) {
-    this.filesToUpload = <Array<File>>fileInput.target.files;
-    var dt = new Date().toJSON().slice(0, 10).replace(/-/g, '-')
-    this.editAdmin.editfilename = dt + "-" + fileInput.target.files[0]['name'];
+    let age = new Date();
+    this.editAdmin.editfilename = "branchadmin_" + Number(age) + fileInput.target.files[0]['name'];
     this.editAdmin.editfiletype = fileInput.target.files[0]['type'];
+    const formData: any = new FormData();
+    const files: Array<File> = <Array<File>>fileInput.target.files;
+    formData.append("Name", "branchadmin_");
+    formData.append("Age", Number(age));
+    formData.append("uploads[]", files[0], files[0]['name']);
+
+    this.hospitalService.uploadImage(formData).subscribe(data => {
+    });
 
   }
 

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { BranchAdminService } from '../../../services/branch-admin.service';
 
 @Component({
   selector: 'app-navbar',
@@ -7,7 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor() { }
+constructor(
+    private router:Router,
+    private branchAdminService:BranchAdminService
+  ) { }
+
+  logout(){
+    this.branchAdminService.logout();
+    this.router.navigateByUrl('http://localhost:4200');
+  }
 
   ngOnInit() {
   }

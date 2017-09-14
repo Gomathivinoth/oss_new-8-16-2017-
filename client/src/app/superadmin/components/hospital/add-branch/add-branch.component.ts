@@ -136,14 +136,6 @@ export class AddBranchComponent implements OnInit {
   }
 
   addBranch(branch) {
-    //console.log(branch);
-    const formData: any = new FormData();
-    const files: Array<File> = this.filesToUpload;
-    formData.append("uploads[]", files[0], files[0]['name']);
-
-    this.http.post('http://localhost:3000/upload', formData)
-      .map(files => files.json())
-      .subscribe(files => console.log('files', files))
     this.hospitalService.addBranch(branch).subscribe(data => {
       // console.log(data.message);
       this.branch.branchAlias = '';
@@ -169,10 +161,17 @@ export class AddBranchComponent implements OnInit {
   }
 
   fileChangeEvent(fileInput: any) {
-    this.filesToUpload = <Array<File>>fileInput.target.files;
-    var dt = new Date().toJSON().slice(0, 10).replace(/-/g, '-')
-    this.branch.filename = dt + "-" + fileInput.target.files[0]['name'];
+    let age = new Date();
+    this.branch.filename = "branch_" + Number(age) + fileInput.target.files[0]['name'];
     this.branch.filetype = fileInput.target.files[0]['type'];
+    const formData: any = new FormData();
+    const files: Array<File> = <Array<File>>fileInput.target.files;
+    formData.append("Name", "branch_");
+    formData.append("Age", Number(age));
+    formData.append("uploads[]", files[0], files[0]['name']);
+
+    this.hospitalService.uploadImage(formData).subscribe(data => {
+    });
   }
   editBranch(id) {
     this.newBranch.hospitalId = this.currentUrl.id;
@@ -200,16 +199,7 @@ export class AddBranchComponent implements OnInit {
   }
 
   updateBranch(newBranch) {
-    if (newBranch.newfilename) {
-      const formData: any = new FormData();
-      const files: Array<File> = this.filesToUpload;
-      // console.log(files);
-      formData.append("uploads[]", files[0], files[0]['name']);
 
-      this.http.post('http://localhost:3000/upload', formData)
-        .map(files => files.json())
-        .subscribe(files => console.log('files', files))
-    }
 
     this.hospitalService.updateBranch(newBranch).subscribe(data => {
       if (data.success) {
@@ -221,10 +211,17 @@ export class AddBranchComponent implements OnInit {
     });
   }
   editFileChangeEvent(fileInput: any) {
-    this.filesToUpload = <Array<File>>fileInput.target.files;
-    var dt = new Date().toJSON().slice(0, 10).replace(/-/g, '-')
-    this.newBranch.newfilename = dt + "-" + fileInput.target.files[0]['name'];
+    let age = new Date();
+    this.newBranch.newfilename = "branch_" + Number(age) + fileInput.target.files[0]['name'];
     this.newBranch.newfiletype = fileInput.target.files[0]['type'];
+    const formData: any = new FormData();
+    const files: Array<File> = <Array<File>>fileInput.target.files;
+    formData.append("Name", "branch_");
+    formData.append("Age", Number(age));
+    formData.append("uploads[]", files[0], files[0]['name']);
+
+    this.hospitalService.uploadImage(formData).subscribe(data => {
+    });
 
   }
 
@@ -281,16 +278,6 @@ export class AddBranchComponent implements OnInit {
 
   updateBranchEdit(newBranchEdit) {
     //console.log(newBranchEdit);
-    if (newBranchEdit.newfilename) {
-      const formData: any = new FormData();
-      const files: Array<File> = this.filesToUpload;
-      //console.log(files);
-      formData.append("uploads[]", files[0], files[0]['name']);
-
-      this.http.post('http://localhost:3000/upload', formData)
-        .map(files => files.json())
-        .subscribe(files => console.log('files', files))
-    }
 
     this.hospitalService.updateBranch(newBranchEdit).subscribe(data => {
       //console.log(data.message);
@@ -307,10 +294,17 @@ export class AddBranchComponent implements OnInit {
   }
 
   editBranchFileChangeEvent(fileInput: any) {
-    this.filesToUpload = <Array<File>>fileInput.target.files;
-    var dt = new Date().toJSON().slice(0, 10).replace(/-/g, '-')
-    this.newBranchEdit.newfilename = dt + "-" + fileInput.target.files[0]['name'];
+    let age = new Date();
+    this.newBranchEdit.newfilename = "branch_" + Number(age) + fileInput.target.files[0]['name'];
     this.newBranchEdit.newfiletype = fileInput.target.files[0]['type'];
+    const formData: any = new FormData();
+    const files: Array<File> = <Array<File>>fileInput.target.files;
+    formData.append("Name", "branch_");
+    formData.append("Age", Number(age));
+    formData.append("uploads[]", files[0], files[0]['name']);
+
+    this.hospitalService.uploadImage(formData).subscribe(data => {
+    });
 
   }
 

@@ -111,13 +111,6 @@ export class AddBranchComponent implements OnInit {
 
   addBranch(branch) {
     // console.log(branch);
-    const formData: any = new FormData();
-    const files: Array<File> = this.filesToUpload;
-    formData.append("uploads[]", files[0], files[0]['name']);
-
-    this.http.post('http://localhost:3000/upload', formData)
-      .map(files => files.json())
-      .subscribe(files => console.log('files', files))
     this.hospitalAdminService.hospital_AddBranch(branch).subscribe(data => {
       // console.log(data);
       this.branch.branchType = '';
@@ -142,10 +135,17 @@ export class AddBranchComponent implements OnInit {
   }
 
   fileChangeEvent(fileInput: any) {
-    this.filesToUpload = <Array<File>>fileInput.target.files;
-    var dt = new Date().toJSON().slice(0, 10).replace(/-/g, '-')
-    this.branch.filename = dt + "-" + fileInput.target.files[0]['name'];
+     let age = new Date();
+    this.branch.filename = "branch_" + Number(age) + fileInput.target.files[0]['name'];
     this.branch.filetype = fileInput.target.files[0]['type'];
+    const formData: any = new FormData();
+    const files: Array<File> = <Array<File>>fileInput.target.files;
+    formData.append("Name", "branch_");
+    formData.append("Age", Number(age));
+    formData.append("uploads[]", files[0], files[0]['name']);
+
+    this.hospitalAdminService.uploadImage(formData).subscribe(data => {
+    });
   }
 
   editBranch(branchId, hospitalId) {
@@ -174,16 +174,7 @@ export class AddBranchComponent implements OnInit {
 
   updateBranch(editbranch) {
     //  console.log(editbranch);
-    if (editbranch.editfilename) {
-      const formData: any = new FormData();
-      const files: Array<File> = this.filesToUpload;
-      //console.log(files);
-      formData.append("uploads[]", files[0], files[0]['name']);
-
-      this.http.post('http://localhost:3000/upload', formData)
-        .map(files => files.json())
-        .subscribe(files => console.log('files', files))
-    }
+   
     this.showForm = true;
     this.hospitalAdminService.hospital_UpdateBranch(this.editbranch).subscribe(data => {
       //console.log(data);
@@ -194,10 +185,18 @@ export class AddBranchComponent implements OnInit {
 
 
   editFileChangeEvent(fileInput: any) {
-    this.filesToUpload = <Array<File>>fileInput.target.files;
-    var dt = new Date().toJSON().slice(0, 10).replace(/-/g, '-')
-    this.editbranch.editfilename = dt + "-" + fileInput.target.files[0]['name'];
+
+     let age = new Date();
+    this.editbranch.editfilename = "branch_" + Number(age) + fileInput.target.files[0]['name'];
     this.editbranch.editfiletype = fileInput.target.files[0]['type'];
+    const formData: any = new FormData();
+    const files: Array<File> = <Array<File>>fileInput.target.files;
+    formData.append("Name", "branch_");
+    formData.append("Age", Number(age));
+    formData.append("uploads[]", files[0], files[0]['name']);
+
+    this.hospitalAdminService.uploadImage(formData).subscribe(data => {
+    });
 
   }
   deleteBranch(branchId, hospitalId) {

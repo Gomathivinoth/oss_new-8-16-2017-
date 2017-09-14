@@ -85,13 +85,6 @@ export class AddHospitalComponent implements OnInit {
   ) { }
 
   addHospital(hospital) {
-    // console.log(hospital);
-    const formData: any = new FormData();
-    const files: Array<File> = this.filesToUpload;
-    formData.append("uploads[]", files[0], files[0]['name']);
-
-    this.http.post('http://localhost:3000/upload', formData).map(files => files.json())
-      .subscribe(files => console.log('files', files))
 
     this.hospitalService.addHospital(hospital).subscribe(data => {
       this.getHospitals();
@@ -119,11 +112,18 @@ export class AddHospitalComponent implements OnInit {
     });
   }
 
-  fileChangeEvent(fileInput: any) {
-    this.filesToUpload = <Array<File>>fileInput.target.files;
-    var dt = new Date().toJSON().slice(0, 10).replace(/-/g, '-')
-    this.hospital.filename = dt + "-" + fileInput.target.files[0]['name'];
+  fileChangeEvent(fileInput: any) {    
+    let age = new Date();
+    this.hospital.filename = "hospital_" + Number(age)+ fileInput.target.files[0]['name'];
     this.hospital.filetype = fileInput.target.files[0]['type'];
+     const formData: any = new FormData();
+    const files: Array<File> = <Array<File>>fileInput.target.files;
+    formData.append("Name", "hospital_");
+    formData.append("Age", Number(age));
+    formData.append("uploads[]", files[0], files[0]['name']);
+
+    this.hospitalService.uploadImage(formData).subscribe(data => {
+    });
   }
 
 
@@ -159,18 +159,7 @@ export class AddHospitalComponent implements OnInit {
   }
 
   updateHospital(hospital) {
-    //console.log(hospital);
-    if (hospital.newfilename) {
-      const formData: any = new FormData();
-      const files: Array<File> = this.filesToUpload;
-      //console.log(files);
-      formData.append("uploads[]", files[0], files[0]['name']);
-
-      this.http.post('http://localhost:3000/upload', formData)
-        .map(files => files.json())
-        .subscribe(files => console.log('files', files))
-    }
-
+  
     this.hospitalService.updateHospital(hospital).subscribe(data => {
       this.showForm = true;
       this.getHospitals();
@@ -178,10 +167,17 @@ export class AddHospitalComponent implements OnInit {
   }
 
   editFileChangeEvent(fileInput: any) {
-    this.filesToUpload = <Array<File>>fileInput.target.files;
-    var dt = new Date().toJSON().slice(0, 10).replace(/-/g, '-')
-    this.newHospital.newfilename = dt + "-" + fileInput.target.files[0]['name'];
+    let age = new Date();
+    this.newHospital.newfilename = "hospital_" + Number(age)+ fileInput.target.files[0]['name'];
     this.newHospital.newfiletype = fileInput.target.files[0]['type'];
+      const formData: any = new FormData();
+    const files: Array<File> = <Array<File>>fileInput.target.files;    
+    formData.append("Name", "hospital_");
+    formData.append("Age", Number(age));
+    formData.append("uploads[]", files[0], files[0]['name']);
+
+    this.hospitalService.uploadImage(formData).subscribe(data => {
+    });
 
   }
 

@@ -111,13 +111,6 @@ export class AddSupportStaffComponent implements OnInit {
 
   addSupportStaff(supportStaff) {
     //console.log(supportStaff);
-    const formData: any = new FormData();
-    const files: Array<File> = this.filesToUpload;
-    formData.append("uploads[]", files[0], files[0]['name']);
-
-    this.http.post('http://localhost:3000/upload', formData)
-      .map(files => files.json())
-      .subscribe(files => console.log('files', files))
     this.hospitalService.addSupportStaff(supportStaff).subscribe(data => {
       //console.log(data.message);
       this.supportStaff.name = '';
@@ -142,10 +135,17 @@ export class AddSupportStaffComponent implements OnInit {
   }
 
   fileChangeEvent(fileInput: any) {
-    this.filesToUpload = <Array<File>>fileInput.target.files;
-    var dt = new Date().toJSON().slice(0, 10).replace(/-/g, '-')
-    this.supportStaff.filename = dt + "-" + fileInput.target.files[0]['name'];
+     let age = new Date();
+    this.supportStaff.filename = "supportstaff_" + Number(age) + fileInput.target.files[0]['name'];
     this.supportStaff.filetype = fileInput.target.files[0]['type'];
+    const formData: any = new FormData();
+    const files: Array<File> = <Array<File>>fileInput.target.files;
+    formData.append("Name", "supportstaff_");
+    formData.append("Age", Number(age));
+    formData.append("uploads[]", files[0], files[0]['name']);
+
+    this.hospitalService.uploadImage(formData).subscribe(data => {
+    });
   }
 
   deleteSupportStaff(id) {
@@ -176,16 +176,7 @@ export class AddSupportStaffComponent implements OnInit {
   }
 
   updateSupportStaff(editAdmin) {
-    if (editAdmin.editfilename) {
-      const formData: any = new FormData();
-      const files: Array<File> = this.filesToUpload;
-      // console.log(files);
-      formData.append("uploads[]", files[0], files[0]['name']);
-
-      this.http.post('http://localhost:3000/upload', formData)
-        .map(files => files.json())
-        .subscribe(files => console.log('files', files))
-    }
+   
     this.hospitalService.updateHospitalAdmin(editAdmin).subscribe(data => {
       this.showAddSupportStaff1 = false;
       this.showForm = true;
@@ -196,10 +187,17 @@ export class AddSupportStaffComponent implements OnInit {
     });
   }
   editFileChangeEvent(fileInput: any) {
-    this.filesToUpload = <Array<File>>fileInput.target.files;
-    var dt = new Date().toJSON().slice(0, 10).replace(/-/g, '-')
-    this.editAdmin.editfilename = dt + "-" + fileInput.target.files[0]['name'];
+    let age = new Date();
+    this.editAdmin.editfilename = "supportstaff_" + Number(age) + fileInput.target.files[0]['name'];
     this.editAdmin.editfiletype = fileInput.target.files[0]['type'];
+    const formData: any = new FormData();
+    const files: Array<File> = <Array<File>>fileInput.target.files;
+    formData.append("Name", "supportstaff_");
+    formData.append("Age", Number(age));
+    formData.append("uploads[]", files[0], files[0]['name']);
+
+    this.hospitalService.uploadImage(formData).subscribe(data => {
+    });
 
   }
   toggleStatus(user) {

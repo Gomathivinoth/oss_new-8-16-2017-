@@ -194,12 +194,16 @@
       <tr *ngFor="let hospital of hospitalLists">
         <td>{{hospital.hospitalName}}</td>
         <td>{{hospital.hospitalEmail}}</td>
-        <td><button class="btn btn-warning btn-xs" (click)="manageBranch(hospital._id)">Manage</button>({{hospital.hasBranch}})</td>
+        <td><button class="btn btn-warning btn-xs" (click)="manageBranch(hospital._id)">
+		<span class="glyphicon glyphicon-cog"></span>  Manage</button>({{hospital.hasBranch}})</td>
         <td>{{hospital.noOfBranches}}</td>
         <td>{{hospital.hospitalAlias}}</td>
-        <td><button class="btn btn-primary btn-xs" (click)="editHospital(hospital._id)">Edit</button></td>
-        <td><button class="btn btn-danger btn-xs" (click)="deleteHospital(hospital._id)">Delete</button></td>
-        <td><button type="button" class="btn btn-warning btn-xs" (click)="toggleStatus(hospital)">{{hospital.statusText}}</button>          </td>
+        <td><button class="btn btn-primary btn-xs" (click)="editHospital(hospital._id)">
+		<span class="glyphicon glyphicon-edit"></span>  Edit</button></td>
+        <td><button class="btn btn-danger btn-xs" (click)="deleteHospital(hospital._id)">
+		<span class="glyphicon glyphicon-trash"></span>  Delete</button></td>
+        <td><button type="button" class="btn btn-warning btn-xs" (click)="toggleStatus(hospital)">
+		<span class="glyphicon glyphicon-check"></span> {{hospital.statusText}}</button>          </td>
       </tr>
     </tbody>
   </table>
@@ -275,7 +279,7 @@
     </div>
       <div class="form-group">
         <input type="hidden" class="form-control" name="newHospital.filename" [(ngModel)]="newHospital.filename">
-        <img src="../../../assets/uploads/{{newHospital.filename}}" width="100px" height="100px">
+        <img src="http://localhost:3000/uploads/{{newHospital.filename}}" width="100px" height="100px">
       </div>
       <div class="form-group">
         <label>Upload Image</label>

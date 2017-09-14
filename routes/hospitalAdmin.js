@@ -444,6 +444,8 @@ module.exports = (router) => {
                                             phoneno: req.body.phoneno,
                                             username: req.body.username,
                                             password: req.body.password,
+                                           fileName : req.body.filename,
+                                            filetype : req.body.filetype,
                                             usertype: 'supportstaff'
                                         });
                                         user.save((err) => {

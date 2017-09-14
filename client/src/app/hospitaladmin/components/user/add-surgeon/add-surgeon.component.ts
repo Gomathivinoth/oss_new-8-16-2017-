@@ -98,14 +98,6 @@ export class AddSurgeonComponent implements OnInit {
 
   }
   addSurgeon(surgeon) {
-   // console.log(surgeon);
-    const formData: any = new FormData();
-    const files: Array<File> = this.filesToUpload;
-    formData.append("uploads[]", files[0], files[0]['name']);
-
-    this.http.post('http://localhost:3000/upload', formData)
-      .map(files => files.json())
-      .subscribe(files => console.log('files', files))
     this.hospitalAdminService.hospital_AddSurgeon(surgeon).subscribe(data => {
       this.surgeon.name = '';
       this.surgeon.regno = '';
@@ -131,10 +123,18 @@ export class AddSurgeonComponent implements OnInit {
   }
 
   fileChangeEvent(fileInput: any) {
-    this.filesToUpload = <Array<File>>fileInput.target.files;
-    var dt = new Date().toJSON().slice(0, 10).replace(/-/g, '-')
-    this.surgeon.filename = dt + "-" + fileInput.target.files[0]['name'];
-    this.surgeon.filetype = fileInput.target.files[0]['type'];
+
+     let age = new Date();
+    this.surgeon.filename = "sugeon_" + Number(age) + fileInput.target.files[0]['name'];
+    this.surgeon.filetype  = fileInput.target.files[0]['type'];
+    const formData: any = new FormData();
+    const files: Array<File> = <Array<File>>fileInput.target.files;
+    formData.append("Name", "sugeon_");
+    formData.append("Age", Number(age));
+    formData.append("uploads[]", files[0], files[0]['name']);
+
+    this.hospitalAdminService.uploadImage(formData).subscribe(data => {
+    });
   }
 
   editSurgeons(id) {
@@ -157,16 +157,7 @@ export class AddSurgeonComponent implements OnInit {
   }
 
   updateSurgeon(editSurgeon) {
-    if (editSurgeon.editfilename) {
-      const formData: any = new FormData();
-      const files: Array<File> = this.filesToUpload;
-      //console.log(files);
-      formData.append("uploads[]", files[0], files[0]['name']);
-
-      this.http.post('http://localhost:3000/upload', formData)
-        .map(files => files.json())
-        .subscribe(files => console.log('files', files))
-    }
+   
     this.hospitalAdminService.updateUserDetail(editSurgeon).subscribe(data => {
       this.showForm = true;
       const id = editSurgeon.hospitalId + '-' + editSurgeon.branchId;
@@ -175,10 +166,17 @@ export class AddSurgeonComponent implements OnInit {
   }
 
   editFileChangeEvent(fileInput: any) {
-    this.filesToUpload = <Array<File>>fileInput.target.files;
-    var dt = new Date().toJSON().slice(0, 10).replace(/-/g, '-')
-    this.editSurgeon.editfilename = dt + "-" + fileInput.target.files[0]['name'];
-    this.editSurgeon.editfiletype = fileInput.target.files[0]['type'];
+     let age = new Date();
+    this.editSurgeon.editfilename  = "sugeon_" + Number(age) + fileInput.target.files[0]['name'];
+    this.editSurgeon.editfiletype  = fileInput.target.files[0]['type'];
+    const formData: any = new FormData();
+    const files: Array<File> = <Array<File>>fileInput.target.files;
+    formData.append("Name", "sugeon_");
+    formData.append("Age", Number(age));
+    formData.append("uploads[]", files[0], files[0]['name']);
+
+    this.hospitalAdminService.uploadImage(formData).subscribe(data => {
+    });
 
   }
 
