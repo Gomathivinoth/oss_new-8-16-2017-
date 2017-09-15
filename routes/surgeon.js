@@ -251,6 +251,69 @@ module.exports = (router) => {
                             hyperextension: req.body.hyperextension,
                             retropatellar: req.body.retropatellar,
                             patellartracking: req.body.patellartracking,
+                            quadricepspower: req.body.quadricepspower,
+                            diagnosis: req.body.diagnosis,
+                            diagnosisothername: req.body.diagnosisothername,
+                            causerevision: req.body.causerevision,
+                            prostheticType: req.body.prostheticType,
+                            precompany: req.body.precompany,
+                            predesign: req.body.predesign,
+                            indexsurgery: req.body.indexsurgery,
+                            revisionsurgeries: req.body.revisionsurgeries,
+                            previouskneesurgery: req.body.previouskneesurgery,
+                            painrest: req.body.painrest,
+                            previousscar: req.body.previousscar,
+                            sinustract: req.body.sinustract,
+                            previousflaps: req.body.previousflaps
+                        };
+                        patient.preoperative = preoperativeDetails;
+                        patient.save((err) => {
+                            if (err) {
+                                res.json({ success: false, message: err });
+                            } else {
+                                res.json({ success: true, message: 'Patient Updated!' });
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    });
+
+    router.post('/surgeon_AddkneeRevisionPreoperative', (req, res) => {
+        //console.log(req.body);
+        if (!req.body.patientId) {
+            res.json({ success: false, message: 'No patient Id was provided!' });
+        } else {
+            req.body.patientId = mongoose.Types.ObjectId(req.body.patientId);
+            Patient.findOne({ _id: req.body.patientId }, (err, patient) => {
+                if (err) {
+                    res.json({ success: false, message: 'Not a valid patient Id' });
+                } else {
+                    if (!patient) {
+                        res.json({ success: false, message: 'patient Id was not found' });
+                    } else {
+                        // patient.preoperative.push({
+                        const preoperativeDetails = {
+                            surgerydate: req.body.surgerydate,
+                            surgeonname: req.body.surgeonname,
+                            diagnosis: req.body.diagnosis,
+                            diagnosisothername: req.body.diagnosisothername,
+                            causerevision: req.body.causerevision,
+                            prostheticType: req.body.prostheticType,
+                            precompany: req.body.precompany,
+                            predesign: req.body.predesign,
+                            indexsurgery: req.body.indexsurgery,
+                            revisionsurgeries: req.body.revisionsurgeries,
+                            previouskneesurgery: req.body.previouskneesurgery,
+                            symptoms: req.body.symptoms,
+                            painrest: req.body.painrest,
+                            Comorbidities: req.body.Comorbidities,
+                            previousscar: req.body.previousscar,
+                            sinustract: req.body.sinustract,
+                            previousflaps: req.body.previousflaps,
+                            retropatellar: req.body.retropatellar,
+                            patellartracking: req.body.patellartracking,
                             quadricepspower: req.body.quadricepspower
                         };
                         patient.preoperative = preoperativeDetails;
@@ -266,6 +329,7 @@ module.exports = (router) => {
             });
         }
     });
+
 
     router.post('/deleteImage', (req, res) => {
         console.log(req.body);
@@ -344,6 +408,46 @@ module.exports = (router) => {
             });
         }
     });
+
+    router.post('/surgeon_AddPatientRevisionRadiology', (req, res) => {
+        if (!req.body.patientId) {
+            res.json({ success: false, message: 'No patient Id was provided!' });
+        } else {
+            req.body.patientId = mongoose.Types.ObjectId(req.body.patientId);
+            Patient.findOne({ _id: req.body.patientId }, (err, patient) => {
+                if (err) {
+                    res.json({ success: false, message: 'Not a valid patient Id' });
+                } else {
+                    if (!patient) {
+                        res.json({ success: false, message: 'patient Id was not found' });
+                    } else {
+                        // patient.preoperative.push({
+                        const radiologyDetails = {
+                            rad_patella: req.body.rad_patella,
+                            rad_femoralcomponent: req.body.rad_femoralcomponent,
+                            rad_tibialcomponent: req.body.rad_tibialcomponent,
+                            rad_femoralrotation: req.body.rad_femoralrotation,
+                            rad_tibialrotation: req.body.rad_tibialrotation,
+                            rad_availablemrict: req.body.rad_availablemrict,
+                            rad_esr: req.body.rad_esr,
+                            rad_crp: req.body.rad_crp,
+                            rad_vitaminD: req.body.rad_vitaminD,
+                            rad_vitaminB12: req.body.rad_vitaminB12
+                        };
+                        patient.radiology = radiologyDetails;
+                        patient.save((err) => {
+                            if (err) {
+                                res.json({ success: false, message: err });
+                            } else {
+                                res.json({ success: true, message: 'Patient Updated!' });
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    });
+
 
 
     router.post('/surgeon_AddPatientIntraoperative', (req, res) => {
@@ -440,6 +544,42 @@ module.exports = (router) => {
                             post_date: req.body.post_date,
                             post_side: req.body.post_side,
                             post_posteriorslope: req.body.post_posteriorslope,
+                            post_hipkneeankle: req.body.post_hipkneeankle,
+                            post_filename: req.body.post_filename,
+                            post_filetype: req.body.post_filetype
+                        };
+                        patient.postoperative.push(postoperativeDetails);
+                        patient.save((err) => {
+                            if (err) {
+                                res.json({ success: false, message: err });
+                            } else {
+                                res.json({ success: true, message: 'Patient Updated!' });
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    });
+
+     router.post('/surgeon_AddPatientRevisionPostoperative', (req, res) => {
+        if (!req.body.patientId) {
+            res.json({ success: false, message: 'No patient Id was provided!' });
+        } else {
+            req.body.patientId = mongoose.Types.ObjectId(req.body.patientId);
+            Patient.findOne({ _id: req.body.patientId }, (err, patient) => {
+                if (err) {
+                    res.json({ success: false, message: 'Not a valid patient Id' });
+                } else {
+                    if (!patient) {
+                        res.json({ success: false, message: 'patient Id was not found' });
+                    } else {
+                        // patient.preoperative.push({
+                        const postoperativeDetails = {
+                            post_date: req.body.post_date,
+                            post_side: req.body.post_side,
+                            post_posteriorslope: req.body.post_posteriorslope,
+                            post_notes: req.body.post_notes,
                             post_hipkneeankle: req.body.post_hipkneeankle,
                             post_filename: req.body.post_filename,
                             post_filetype: req.body.post_filetype

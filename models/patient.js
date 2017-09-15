@@ -69,6 +69,19 @@ const patientSchema = new Schema({
         retropatellar: { type: String },
         patellartracking: { type: String },
         quadricepspower: { type: String },
+        diagnosis: { type: String },
+        diagnosisothername: { type: String },
+        causerevision: { type: String },
+        prostheticType: { type: String },
+        precompany: { type: String },
+        predesign: { type: String },
+        indexsurgery: { type: String },
+        revisionsurgeries: { type: String },
+        previouskneesurgery: { type: String },
+        painrest: { type: String },
+        previousscar: { type: String },
+        sinustract: { type: String },
+        previousflaps: { type: String },
 
         prekneescore: {
             kneescore_walking: { type: String },
@@ -246,7 +259,14 @@ const patientSchema = new Schema({
         rad_availabilityct: { type: String },
         rad_availabilitymri: { type: String },
         rad_vitaminD: { type: String },
-        rad_vitaminB12: { type: String }
+        rad_vitaminB12: { type: String },
+        rad_femoralcomponent: { type: String },
+        rad_tibialcomponent: { type: String },
+        rad_femoralrotation: { type: String },
+        rad_tibialrotation: { type: String },
+        rad_availablemrict: { type: String },
+        rad_esr: { type: String },
+        rad_crp: { type: String }
     },
     intraoperative: {
         intra_procedure: { type: String },
@@ -320,12 +340,13 @@ const patientSchema = new Schema({
         post_date: { type: String },
         post_side: { type: String },
         post_posteriorslope: { type: String },
+        post_notes: { type: String },
         post_hipkneeankle: { type: String },
         post_filename: { type: String },
         post_filetype: { type: String }
     }],
     postoperativescores: {
-         postkneescore: {
+        postkneescore: {
             kneescore_walking: { type: String },
             kneescore_stairs: { type: String },
             kneescore_point: { type: String },

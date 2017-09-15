@@ -499,7 +499,11 @@ export class KneePrimaryComponent implements OnInit {
       'mechanicalName': String,
       'selected': Boolean,
     }],
-    
+    intra_pharmacological: [{
+      'pharmacologicalName': String,
+      'selected': Boolean,
+    }],
+    intra_information:'',
     // intra operative end
 
     // post operative start
@@ -638,6 +642,13 @@ export class KneePrimaryComponent implements OnInit {
     { 'mechanicalName': 'Calf pump', 'selected': false }
 
   ];
+   intrapharmacological: any = [
+    { 'pharmacologicalName': 'LMWH', 'selected': false },
+    { 'pharmacologicalName': 'Oral', 'selected': false },
+    { 'pharmacologicalName': 'Aspirin', 'selected': false },
+    { 'pharmacologicalName': 'Warfarin', 'selected': false }
+
+  ];
 
 
 
@@ -658,7 +669,7 @@ export class KneePrimaryComponent implements OnInit {
   tibialStem = false;
   cements = false;
   complication = false;
-  disable = false;
+  disable = true;
 
   totalkneescore = '0';
   totalwomacscore = '0';
@@ -1950,6 +1961,7 @@ export class KneePrimaryComponent implements OnInit {
     this.patient.intra_reconstruction = this.intrareconstruction;
     this.patient.intra_componentStability = this.intracomponentStability;
     this.patient.intra_mechanical = this.intramechanical;
+    this.patient.intra_pharmacological = this.intrapharmacological;
   }
 
 }

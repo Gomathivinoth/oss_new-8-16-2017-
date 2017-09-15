@@ -346,7 +346,7 @@
         </div>
         <input type="hidden" class="form-control" name="patient.type" [(ngModel)]="patient.type">
         <div class="text-center">
-          <button class="btn btn-primary" type="submit" [disabled]="!patientForm.form.valid" style="float:right;">Add Patient</button>
+          <button class="btn btn-primary" type="submit" [disabled]="!patientForm.form.valid" style="float:right;">Continue</button>
         </div>
       </div>
     </form>
@@ -1007,7 +1007,7 @@
     <div class="row">
       <div class="col-md-10">
         <div class="text-center">
-          <button class="btn btn-primary" type="submit" [disabled]="!preoperativeForm.form.valid" style="float:right;">Add Patient</button>
+          <button class="btn btn-primary" type="submit" [disabled]="!preoperativeForm.form.valid" style="float:right;">Continue</button>
         </div>
       </div>
     </div>
@@ -4945,10 +4945,45 @@ correction Angle)</label>
         </div>
       </div>
     </div>
+    <br>
+    <div class="row">
+      <div class="col-md-4"></div>
+      <div class="col-md-2">
+        <label> Pharmacological</label>
+      </div>
+      <div class="col-md-2" *ngFor="let pharmacological of patient.intra_pharmacological">
+        <label class="checkbox-inline"><input type="checkbox"  #refpharmacological="ngModel" required name="pharmacological" [(ngModel)]="pharmacological.selected">{{pharmacological.pharmacologicalName}}</label>
+      </div>
+      <div *ngIf="pharmacological">
+        <div *ngIf="refpharmacological.errors && (refpharmacological.dirty || refpharmacological.touched)" class="alert alert-danger">
+          <div [hidden]="!refpharmacological.errors.required">
+            select pharmacological
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+     <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label> Additional information</label>
+      </div>
+      <div class="col-md-6" >
+       <textarea #refinformation="ngModel" style="width: 100%;height:200px;" required name="patient.intra_information" [(ngModel)]="patient.intra_information" ></textarea>
+      </div>
+      <div *ngIf="information">
+        <div *ngIf="refinformation.errors && (refinformation.dirty || refinformation.touched)" class="alert alert-danger">
+          <div [hidden]="!refinformation.errors.required">
+            select information
+          </div>
+        </div>
+      </div>
+    </div>
+    <br><br>
     <div class="row">
       <div class="col-md-11">
         <div class="text-center">
-          <button class="btn btn-primary" type="submit" [disabled]="!intraoperativeForm.form.valid" style="float:right;">Add Patient</button>
+          <button class="btn btn-primary" type="submit" [disabled]="!intraoperativeForm.form.valid" style="float:right;">Continue</button>
         </div>
       </div>
     </div>
@@ -5091,7 +5126,7 @@ correction Angle)</label>
     <div class="row">
       <div class="col-md-11">
         <div class="text-center">
-          <button class="btn btn-primary" type="submit" [disabled]="!postoperativeForm.form.valid" style="float:right;">Add Patient</button>
+          <button class="btn btn-primary" type="submit" [disabled]="!postoperativeForm.form.valid" style="float:right;">Continue</button>
         </div>
       </div>
     </div>

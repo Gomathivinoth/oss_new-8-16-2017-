@@ -56,6 +56,13 @@ export class SurgeonService {
 
   }
 
+  surgeon_AddkneeRevisionPreoperative(patient) {
+    //  console.log(patient);
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.post(this.domain + 'surgeon/surgeon_AddkneeRevisionPreoperative/', patient, this.options).map(res => res.json());
+
+  }
+
   deleteImage(image) {
     console.log(image);
     this.createAuthenticationHeaders(); // Create headers
@@ -103,6 +110,11 @@ export class SurgeonService {
     return this.http.post(this.domain + 'surgeon/surgeon_AddPatientRadiology/', patient, this.options).map(res => res.json());
 
   }
+   surgeon_AddPatientRevisionRadiology(patient) {
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.post(this.domain + 'surgeon/surgeon_AddPatientRevisionRadiology/', patient, this.options).map(res => res.json());
+
+  }
   surgeon_AddPatientIntraoperative(patient) {
     this.createAuthenticationHeaders(); // Create headers
     return this.http.post(this.domain + 'surgeon/surgeon_AddPatientIntraoperative/', patient, this.options).map(res => res.json());
@@ -112,6 +124,12 @@ export class SurgeonService {
     console.log(patient);
     this.createAuthenticationHeaders(); // Create headers
     return this.http.post(this.domain + 'surgeon/surgeon_AddPatientPostoperative/', patient, this.options).map(res => res.json());
+
+  }
+   surgeon_AddPatientRevisionPostoperative(patient) {
+    console.log(patient);
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.post(this.domain + 'surgeon/surgeon_AddPatientRevisionPostoperative/', patient, this.options).map(res => res.json());
 
   }
 
