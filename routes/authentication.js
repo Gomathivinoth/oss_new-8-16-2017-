@@ -13,25 +13,27 @@ module.exports = (router) => {
             if (!req.body.password) {
                 res.json({ success: false, message: 'No password provided' });
             } else {
-                User.findOne({ username: req.body.username }, (err, user) => {
+                User.findOne({ username: req.body.username, password: req.body.password  }, (err, user) => {
                     if (err) {
                         res.json({ success: false, message: err });
                     } else {
                         if (!user) {
-                            res.json({ success: false, message: 'Invalid Username' });
+                            res.json({ success: false, message: 'Invalid Username and password' });
                         } else {
-                            User.findOne({ password: req.body.password }, (err, user) => {
-                                if (err) {
-                                    res.json({ success: false, message: err });
-                                } else {
-                                    if (!user) {
-                                        res.json({ success: false, message: 'Invalid Password' });
-                                    } else {
-                                        const token = jwt.sign({ userId: user._id }, config.secret, { expiresIn: '24h' }); // Create a token for client
-                                        res.json({ success: true, data:'Login success', message: user, token: token, user: { username: user.username } });
-                                    }
-                                }
-                            });
+                             const token = jwt.sign({ userId: user._id }, config.secret, { expiresIn: '24h' }); // Create a token for client
+                            res.json({ success: true, data:'Login success', message: user, token: token, user: { username: user.username } });
+                            // User.findOne({ password: req.body.password }, (err, user) => {
+                            //     if (err) {
+                            //         res.json({ success: false, message: err });
+                            //     } else {
+                            //         if (!user) {
+                            //             res.json({ success: false, message: 'Invalid Password' });
+                            //         } else {
+                            //             const token = jwt.sign({ userId: user._id }, config.secret, { expiresIn: '24h' }); // Create a token for client
+                            //             res.json({ success: true, data:'Login success', message: user, token: token, user: { username: user.username } });
+                            //         }
+                            //     }
+                            // });
                         }
                     }
                 });

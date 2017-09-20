@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import  {HospitalService } from '../services/hospital.service';
 
-import  { HospitalService } from '../services/hospital.service';
+
 
 @Component({
   selector: 'app-login',

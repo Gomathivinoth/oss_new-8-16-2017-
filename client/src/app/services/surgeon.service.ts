@@ -133,4 +133,11 @@ export class SurgeonService {
 
   }
 
+  surgeon_SinglePatientId(id){
+    console.log(id);
+  this.createAuthenticationHeaders(); // Create headers
+  return this.http.get(this.domain + 'authentication/surgeon_SinglePatientId/'+id , this.options).map(res => res.json());
+ 
+  }
+
 }

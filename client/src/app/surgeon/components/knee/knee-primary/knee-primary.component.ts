@@ -669,7 +669,7 @@ export class KneePrimaryComponent implements OnInit {
   tibialStem = false;
   cements = false;
   complication = false;
-  disable = true;
+  disable = false;
 
   totalkneescore = '0';
   totalwomacscore = '0';

@@ -1,0 +1,142 @@
+<div class="row">
+  <div class="col-md-2"></div>
+  <div class="col-md-7">
+    <div class="tabs-selection" *ngIf="disable">
+      <app-tab [style.background-color]="applyblue? '#bbb': 'green'" [style.color]="applyblue? 'black': 'white'" (click)="demographic()">Demographic</app-tab>
+      <app-tab style="cursor:not-allowed;">Pre-Operative</app-tab>
+      <app-tab style="cursor:not-allowed;">Radiology</app-tab>
+      <app-tab style="cursor:not-allowed;">Intra Operative</app-tab>
+      <app-tab style="cursor:not-allowed;">Post Operative</app-tab>
+      <app-tab style="cursor:not-allowed;">Post Operative scores</app-tab>
+    </div>
+    <div class="tabs-selection" *ngIf="!disable">
+      <app-tab style="cursor:not-allowed;">Demographic</app-tab>
+      <app-tab [style.background-color]="applypreoperative? '#bbb': 'green'" [style.color]="applypreoperative? 'black': 'white'"
+        (click)="patientPreOperative()">Pre-Operative</app-tab>
+      <app-tab [style.background-color]="applyradiology? '#bbb': 'green'" [style.color]="applyradiology? 'black': 'white'" (click)="radiology()">Radiology</app-tab>
+      <app-tab [style.background-color]="applyintraoperative? '#bbb': 'green'" [style.color]="applyintraoperative? 'black': 'white'"
+        (click)="intraoperative()">Intra Operative</app-tab>
+      <app-tab [style.background-color]="applypostoperative? '#bbb': 'green'" [style.color]="applypostoperative? 'black': 'white'"
+        (click)="postoperative()">Post Operative</app-tab>
+      <app-tab  [style.background-color]="applypostoperativescpre? '#bbb': 'green'" [style.color]="applypostoperativescpre? 'black': 'white'"
+      (click)="postoperativescore()">Post Operative scores</app-tab>
+    </div>
+  </div>
+</div>
+<br>
+<app-tab-content *ngIf="patient_postoperative">
+  <form #postoperativeForm="ngForm" (ngSubmit)="addPatientPostoperative(patient)" novalidate>
+    <div class="row">
+      <div class="col-md-8"></div>
+      <div class="col-md-4" style="font-size:14px;">
+        <b> Name :</b> {{patientname}}<br>
+        <b>Age : </b>{{patientage}}<br>
+        <b>Sex : </b>{{patientsex}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <h2>Postoperative radiographic assessment</h2>
+        <input type="hidden" class="form-control" name="patient.patientId" [(ngModel)]="patient.patientId">
+      </div>
+    </div><br><br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Date of input</label>
+      </div>
+      <div class="col-md-3">
+        <input type="date" #refdate="ngModel" required class="form-control" placeholder="*Enter date" name="patient.post_date" [(ngModel)]="patient.post_date">
+
+        <div *ngIf="dateinput">
+          <div *ngIf="refdate.errors && (refdate.dirty || refdate.touched)" class="alert alert-danger">
+            <div [hidden]="!refdate.errors.required">
+              Enter date
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+   
+     <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Notes</label>
+      </div>
+      <div class="col-md-3">
+        <input type="text" #refnotes="ngModel" required class="form-control" placeholder="*Enter Notes" name="patient.post_notes"
+          [(ngModel)]="patient.post_notes">
+
+        <div *ngIf="notes">
+          <div *ngIf="refnotes.errors && (refnotes.dirty || refnotes.touched)" class="alert alert-danger">
+            <div [hidden]="!refnotes.errors.required">
+              Enter Notes
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <h2>upload post operative images</h2>
+      </div>
+    </div><br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Browse Image</label>
+      </div>
+
+      <div class="col-md-3">
+        <input type="file" class="form-control" (change)="postfileChangeEvent($event)" ngModel>
+      </div>
+    </div>
+
+    <div class="row">
+      <br><br>
+      <div class="col-md-2"></div>
+      <div class="col-md-10">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <table class="table table-striped">
+              <tr>
+                <th>Thumbnail</th>
+                <th>Filename</th>
+                <th>FileType</th>
+                <th>Filesize</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+              <tbody *ngFor="let image of imageDetails">
+                <tr *ngIf="image.type == 'postoperativeimage'">
+                  <td><img src="http://localhost:3000/uploads/{{image.image}}" alt="Profile Pic" width="80px" height="55px" /></td>
+                  <td>{{image.imagename}}</td>
+                  <td>{{image.imagetype}}</td>
+                  <td>{{(image.imagesize / (1024*1024)).toFixed(2)}} MB</td>
+                  <td>SUCCESS</td>
+                  <!-- <td><button type="button" class="btn btn-primary btn-xs" (click)="editHospitalAdmin(hospitalAdmin._id)">Edit</button></td>-->
+                  <td><button type="button" class="btn btn-danger btn-xs" (click)="deleteImage(patient.patientId,image._id,image.image)">Delete</button></td>
+
+
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-11">
+        <div class="text-center">
+          <button class="btn btn-primary" type="submit" [disabled]="!postoperativeForm.form.valid" style="float:right;">Continue</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</app-tab-content>

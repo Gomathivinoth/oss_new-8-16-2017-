@@ -18,6 +18,9 @@ import { SpineComponent } from './components/spine/spine.component';
 import { SpinePrimaryComponent } from './components/spine/spine-primary/spine-primary.component';
 import { SpineRevisionComponent } from './components/spine/spine-revision/spine-revision.component';
 import { SpinePatientsComponent } from './components/spine/spine-patients/spine-patients.component';
+import { PreoperativeComponent } from './components/hip/preoperative/preoperative.component';
+import { PrimaryRadiologyComponent } from './components/hip/primary-radiology/primary-radiology.component';
+import { PrimaryPostoperativeComponent } from './components/hip/primary-postoperative/primary-postoperative.component';
 
 // Our Array of Angular 2 Routes
 const appRoutes: Routes = [
@@ -51,6 +54,22 @@ const appRoutes: Routes = [
           {
             path: 'hip-primary',
             component: HipPrimaryComponent
+          },
+          //  {
+          //   path: 'hip-primary-preoperative/:id',
+          //   component: PreoperativeComponent
+          // },
+           {
+            path: 'hip-primary-preoperative',
+            component: PreoperativeComponent
+          },
+            {
+            path: 'hip-primary-radiology',
+            component: PrimaryRadiologyComponent
+          },
+           {
+            path: 'hip-primary-postoperative',
+            component: PrimaryPostoperativeComponent
           },
           {
             path: 'hip-revision',

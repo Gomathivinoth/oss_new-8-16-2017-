@@ -1,0 +1,480 @@
+<div class="row">
+  <div class="col-md-2"></div>
+  <div class="col-md-7">
+    <div class="tabs-selection" *ngIf="disable">
+      <app-tab [style.background-color]="applyblue? '#bbb': 'green'" [style.color]="applyblue? 'black': 'white'" (click)="demographic()">Demographic</app-tab>
+      <app-tab style="cursor:not-allowed;">Pre-Operative</app-tab>
+      <app-tab style="cursor:not-allowed;">Radiology</app-tab>
+      <app-tab style="cursor:not-allowed;">Intra Operative</app-tab>
+      <app-tab style="cursor:not-allowed;">Post Operative</app-tab>
+      <app-tab style="cursor:not-allowed;">Post Operative scores</app-tab>
+    </div>
+    <div class="tabs-selection" *ngIf="!disable">
+      <app-tab style="cursor:not-allowed;">Demographic</app-tab>
+      <app-tab [style.background-color]="applypreoperative? '#bbb': 'green'" [style.color]="applypreoperative? 'black': 'white'"
+        (click)="patientPreOperative()">Pre-Operative</app-tab>
+      <app-tab [style.background-color]="applyradiology? '#bbb': 'green'" [style.color]="applyradiology? 'black': 'white'" (click)="radiology()">Radiology</app-tab>
+      <app-tab [style.background-color]="applyintraoperative? '#bbb': 'green'" [style.color]="applyintraoperative? 'black': 'white'"
+        (click)="intraoperative()">Intra Operative</app-tab>
+      <app-tab [style.background-color]="applypostoperative? '#bbb': 'green'" [style.color]="applypostoperative? 'black': 'white'"
+        (click)="postoperative()">Post Operative</app-tab>
+      <app-tab [style.background-color]="applypostoperativescpre? '#bbb': 'green'" [style.color]="applypostoperativescpre? 'black': 'white'"
+        (click)="postoperativescore()">Post Operative scores</app-tab>
+    </div>
+  </div>
+</div>
+<br>
+
+<app-tab-content *ngIf="patient_radiology">
+  <form #radiologyForm="ngForm" (ngSubmit)="addPatientRadiology(patient)" novalidate>
+    <div class="row">
+      <div class="col-md-8"></div>
+      <div class="col-md-4" style="font-size:14px;">
+        <b> Name :</b> {{patientname}}<br>
+        <b>Age : </b>{{patientage}}<br>
+        <b>Sex : </b>{{patientsex}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <h2>Radiological evaluations</h2>
+        <input type="hidden" class="form-control" name="patient.patientId" [(ngModel)]="patient.patientId">
+      </div>
+    </div><br><br>
+    <div class="row">
+      <div class="col-md-2"></div>
+
+      <div class="col-md-2" *ngFor="let grading of patient.rad_grading">
+        <label class="checkbox-inline"><input type="checkbox"  #refgrading="ngModel" required name="grading" [(ngModel)]="grading.selected">{{grading.gradingName}}</label>
+      </div>
+      <div *ngIf="grading">
+        <div *ngIf="refgrading.errors && (refgrading.dirty || refgrading.touched)" class="alert alert-danger">
+          <div [hidden]="!refgrading.errors.required">
+            select grading
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <label>Ficat and Arlet’s Staging</label>
+      </div>
+    </div><br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Stage</th>
+              <th>Symtoms</th>
+              <th>X-ray</th>
+              <th>Scintigraphy</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <input type="radio" #refpatellaouterbridgeclassification="ngModel" required [(ngModel)]="patient.rad_ficat" name="patient.rad_ficat"
+                  value="1">
+              </td>
+              <td> 0</td>
+              <td>None</td>
+              <td>Normal</td>
+              <td>Reduced capture</td>
+            </tr>
+            <tr>
+              <td>
+                <input type="radio" #refpatellaouterbridgeclassification="ngModel" required [(ngModel)]="patient.rad_ficat" name="patient.rad_ficat"
+                  value="2">
+              </td>
+              <td> 0</td>
+              <td>None to mild</td>
+              <td>Normal</td>
+              <td>Reduced capture</td>
+            </tr>
+            <tr>
+              <td>
+                <input type="radio" #refpatellaouterbridgeclassification="ngModel" required [(ngModel)]="patient.rad_ficat" name="patient.rad_ficat"
+                  value="3">
+              </td>
+              <td> 2</td>
+              <td>Mild</td>
+              <td>Change in density</td>
+              <td>Increased capture</td>
+            </tr>
+            <tr>
+              <td>
+                <input type="radio" #refpatellaouterbridgeclassification="ngModel" required [(ngModel)]="patient.rad_ficat" name="patient.rad_ficat"
+                  value="4">
+              </td>
+              <td> 2A</td>
+              <td></td>
+              <td>Sclerois or cysts</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <input type="radio" #refpatellaouterbridgeclassification="ngModel" required [(ngModel)]="patient.rad_ficat" name="patient.rad_ficat"
+                  value="5">
+              </td>
+              <td> 2B</td>
+              <td></td>
+              <td>Applanation (crescent sign)</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>
+                <input type="radio" #refpatellaouterbridgeclassification="ngModel" required [(ngModel)]="patient.rad_ficat" name="patient.rad_ficat"
+                  value="6">
+              </td>
+              <td> 3</td>
+              <td>Mild to moderate</td>
+              <td>Loss of sphericity</td>
+              <td>Increased capture</td>
+            </tr>
+            <tr>
+              <td>
+                <input type="radio" #refpatellaouterbridgeclassification="ngModel" required [(ngModel)]="patient.rad_ficat" name="patient.rad_ficat"
+                  value="7">
+              </td>
+              <td> 4</td>
+              <td>Moderate to serve and/or acetabular changes</td>
+              <td>Reductiuon of the articular space</td>
+              <td>Increased capture</td>
+            </tr>
+
+          </tbody>
+        </table>
+        <div *ngIf="aoriclassification">
+          <div *ngIf="refpatellaouterbridgeclassification.errors && (refpatellaouterbridgeclassification.dirty || refpatellaouterbridgeclassification.touched)"
+            class="alert alert-danger">
+            <div [hidden]="!refpatellaouterbridgeclassification.errors.required">
+              select Ficat and Arlet’s Staging
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+
+      <div class="col-md-2" *ngFor="let protrusio of patient.rad_protrusio">
+        <label class="checkbox-inline"><input type="checkbox"  #refprotrusio="ngModel" required name="protrusio" [(ngModel)]="protrusio.selected">{{protrusio.protrusioName}}</label>
+      </div>
+      <div *ngIf="grading">
+        <div *ngIf="refprotrusio.errors && (refprotrusio.dirty || refprotrusio.touched)" class="alert alert-danger">
+          <div [hidden]="!refprotrusio.errors.required">
+            select protrusio
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+
+      </div>
+
+      <div class="col-md-4">
+
+        <input type="radio" #regrade="ngModel" required [(ngModel)]="patient.rad_grade" name="patient.rad_grade" value="1">&nbsp;Grade&nbsp;1<br>
+        <input type="radio" #regrade="ngModel" required [(ngModel)]="patient.rad_grade" name="patient.rad_grade" value="2">&nbsp;Grade
+        2<br>
+        <input type="radio" #regrade="ngModel" required [(ngModel)]="patient.rad_grade" name="patient.rad_grade" value="3">&nbsp;Grade
+        3<br>
+        <input type="radio" #regrade="ngModel" required [(ngModel)]="patient.rad_grade" name="patient.rad_grade" value="4">&nbsp;Protrusio&nbsp;with&nbsp;superior&nbsp;migration
+
+      </div>
+
+      <div *ngIf="grade">
+        <div *ngIf="regrade.errors && (regrade.dirty || regrade.touched)" class="alert alert-danger">
+          <div [hidden]="!regrade.errors.required">
+            select grade
+          </div>
+        </div>
+      </div>
+    </div>
+    <br><br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Crowe&nbsp;Classification</label>
+      </div>
+      <div class="col-md-2">
+        <img src="../../../assets/images/newHipFirst1.jpg" width="150px" height="150px"><br>
+        <label class="radio-inline">
+         <input type="radio"  #refcroweclassification="ngModel" required  [(ngModel)]="patient.rat_croweclassification" name="patient.rat_croweclassification" value="1">&nbsp;Type 1
+      </label>
+      </div>
+      <div class="col-md-2">
+        <img src="../../../assets/images/newHipFirst2.jpg" width="150px" height="150px"><br>
+        <label class="radio-inline">
+         <input type="radio"  #refcroweclassification="ngModel" required  [(ngModel)]="patient.rat_croweclassification"  name="patient.rat_croweclassification" value="2">&nbsp;Type 2
+      </label>
+      </div>
+      <div class="col-md-2">
+        <img src="../../../assets/images/newHipFirst3.jpg" width="150px" height="150px"><br>
+        <label class="radio-inline">        
+         <input type="radio"  #refcroweclassification="ngModel" required  [(ngModel)]="patient.rat_croweclassification"  name="patient.rat_croweclassification" value="3">&nbsp;Type 3
+      </label>
+      </div>
+      <div class="col-md-2">
+        <img src="../../../assets/images/newHipFirst4.jpg" width="150px" height="150px"><br>
+        <label class="radio-inline">
+         <input type="radio"  #refcroweclassification="ngModel" required  [(ngModel)]="patient.rat_croweclassification"  name="patient.rat_croweclassification" value="4">&nbsp;Type 4
+      </label>
+      </div>
+      <div *ngIf="aoriclassification">
+        <div *ngIf="refcroweclassification.errors && (refcroweclassification.dirty || refcroweclassification.touched)" class="alert alert-danger">
+          <div [hidden]="!refcroweclassification.errors.required">
+            select Crowe classification
+          </div>
+        </div>
+      </div>
+    </div>
+     <br><br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Bone&nbsp;loss:Acetabulam&nbsp;<br>Paprosky&nbsp;Classification</label>
+      </div>
+      
+      <div class="col-md-1">
+        <img src="../../../assets/images/paproskyClassification1.jpg" width="100px" height="100px"><br>
+        <label class="radio-inline">
+         <input type="radio"  #refPaproskyclassification="ngModel" required  [(ngModel)]="patient.rat_paproskyclassification" name="patient.rat_paproskyclassification" value="1">&nbsp;Type 1
+      </label>
+      </div>
+      <div class="col-md-1">
+        <img src="../../../assets/images/paproskyClassification2a.jpg" width="100px" height="100px"><br>
+        <label class="radio-inline">
+         <input type="radio"  #refPaproskyclassification="ngModel" required  [(ngModel)]="patient.rat_paproskyclassification"  name="patient.rat_paproskyclassification" value="2">&nbsp;Type 2A
+      </label>
+      </div>
+      <div class="col-md-1">
+        <img src="../../../assets/images/paproskyClassification2b.jpg" width="100px" height="100px"><br>
+        <label class="radio-inline">        
+         <input type="radio"  #refPaproskyclassification="ngModel" required  [(ngModel)]="patient.rat_paproskyclassification"  name="patient.rat_paproskyclassification" value="3">&nbsp;Type 2B
+      </label>
+      </div>
+      <div class="col-md-1">
+        <img src="../../../assets/images/paproskyClassification2c.jpg" width="100px" height="100px"><br>
+        <label class="radio-inline">
+         <input type="radio"  #refPaproskyclassification="ngModel" required  [(ngModel)]="patient.rat_paproskyclassification"  name="patient.rat_paproskyclassification" value="4">&nbsp;Type 2C
+      </label>
+      </div>
+    <div class="col-md-1">
+        <img src="../../../assets/images/paproskyClassification3a.jpg" width="100px" height="100px"><br>
+        <label class="radio-inline">
+         <input type="radio"  #refPaproskyclassification="ngModel" required  [(ngModel)]="patient.rat_paproskyclassification"  name="patient.rat_paproskyclassification" value="5">&nbsp;Type 3A
+      </label>
+      </div>
+    <div class="col-md-1">
+        <img src="../../../assets/images/paproskyClassification3b.jpg" width="100px" height="100px"><br>
+        <label class="radio-inline">
+         <input type="radio"  #refPaproskyclassification="ngModel" required  [(ngModel)]="patient.rat_paproskyclassification"  name="patient.rat_paproskyclassification" value="6">&nbsp;Type 3B
+      </label>
+      </div>
+      <div *ngIf="aoriclassification">
+        <div *ngIf="refPaproskyclassification.errors && (refPaproskyclassification.dirty || refPaproskyclassification.touched)" class="alert alert-danger">
+          <div [hidden]="!refPaproskyclassification.errors.required">
+            select Paprosky classification
+          </div>
+        </div>
+      </div>
+    </div>
+    <br><br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Bone&nbsp;loss:Femur&nbsp;<br>Paprosky&nbsp;Classification</label>
+      </div>
+      
+      <div class="col-md-1">
+        <img src="../../../assets/images/femurPaproskyClassification1.jpg" width="100px" ><br>
+        <label class="radio-inline">
+         <input type="radio"  #refFemurclassification="ngModel" required  [(ngModel)]="patient.rat_femurclassification" name="patient.rat_femurclassification" value="1">&nbsp;Type 1
+      </label>
+      </div>
+      <div class="col-md-1">
+        <img src="../../../assets/images/femurPaproskyClassification2.jpg" width="100px"><br>
+        <label class="radio-inline">
+         <input type="radio"  #refFemurclassification="ngModel" required  [(ngModel)]="patient.rat_femurclassification"  name="patient.rat_femurclassification" value="2">&nbsp;Type 2A
+      </label>
+      </div>
+      <div class="col-md-1">
+        <img src="../../../assets/images/femurPaproskyClassification3a.jpg" width="100px" ><br>
+        <label class="radio-inline">        
+         <input type="radio"  #refFemurclassification="ngModel" required  [(ngModel)]="patient.rat_femurclassification"  name="patient.rat_femurclassification" value="3">&nbsp;Type 3A
+      </label>
+      </div>
+      <div class="col-md-1">
+        <img src="../../../assets/images/femurPaproskyClassification3b.jpg" width="100px" ><br>
+        <label class="radio-inline">
+         <input type="radio"  #refFemurclassification="ngModel" required  [(ngModel)]="patient.rat_femurclassification"  name="patient.rat_femurclassification" value="4">&nbsp;Type 3B
+      </label>
+      </div>
+    <div class="col-md-1">
+        <img src="../../../assets/images/femurPaproskyClassification4.jpg" width="100px" ><br>
+        <label class="radio-inline">
+         <input type="radio"  #refFemurclassification="ngModel" required  [(ngModel)]="patient.rat_femurclassification"  name="patient.rat_femurclassification" value="5">&nbsp;Type 4
+      </label>
+      </div>
+    
+      <div *ngIf="Femurclassification">
+        <div *ngIf="refFemurclassification.errors && (refFemurclassification.dirty || refFemurclassification.touched)" class="alert alert-danger">
+          <div [hidden]="!refFemurclassification.errors.required">
+            select Femur Paprosky classification
+          </div>
+        </div>
+      </div>
+    </div>
+    <br><br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Femur&nbsp;Morphotype&nbsp;<br>Dorr&nbsp;Classification</label>
+      </div>
+      
+      <div class="col-md-1">
+        <img src="../../../assets/images/newHipSeconda.jpg" width="100px" ><br>
+        <label class="radio-inline">
+         <input type="radio"  #refMorphotype="ngModel" required  [(ngModel)]="patient.rat_morphotype" name="patient.rat_morphotype" value="1">&nbsp;Type 1
+      </label>
+      </div>
+      <div class="col-md-1">
+        <img src="../../../assets/images/newHipSecondb.jpg" width="100px"><br>
+        <label class="radio-inline">
+         <input type="radio"  #refMorphotype="ngModel" required  [(ngModel)]="patient.rat_morphotype"  name="patient.rat_morphotype" value="2">&nbsp;Type 2A
+      </label>
+      </div>
+      <div class="col-md-1">
+        <img src="../../../assets/images/newHipSecondc.jpg" width="100px" ><br>
+        <label class="radio-inline">        
+         <input type="radio"  #refMorphotype="ngModel" required  [(ngModel)]="patient.rat_morphotype"  name="patient.rat_morphotype" value="3">&nbsp;Type 3A
+      </label>
+      </div>
+     
+    
+      <div *ngIf="Femurclassification">
+        <div *ngIf="refMorphotype.errors && (refMorphotype.dirty || refMorphotype.touched)" class="alert alert-danger">
+          <div [hidden]="!refMorphotype.errors.required">
+            select Morphotype
+          </div>
+        </div>
+      </div>
+    </div>
+    <br><br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Availability of</label>
+      </div>
+      <div class="col-md-2">
+        <label>CT</label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refct="ngModel" required  [(ngModel)]="patient.rad_availabilityct"  name="patient.rad_availabilityct" value="Yes">Yes
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refct="ngModel" required  [(ngModel)]="patient.rad_availabilityct"  name="patient.rad_availabilityct" value="No">No
+      </label>
+      </div>
+      <div *ngIf="availabilityct">
+        <div *ngIf="refct.errors && (refct.dirty || refct.touched)" class="alert alert-danger">
+          <div [hidden]="!refct.errors.required">
+            select Availability CT
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-4"></div>
+
+      <div class="col-md-2">
+        <label>MRI</label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refmri="ngModel" required  [(ngModel)]="patient.rad_availabilitymri"  name="patient.rad_availabilitymri" value="Yes">Yes
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refmri="ngModel" required  [(ngModel)]="patient.rad_availabilitymri"  name="patient.rad_availabilitymri" value="No">No
+      </label>
+      </div>
+      <div *ngIf="availabilitymri">
+        <div *ngIf="refmri.errors && (refmri.dirty || refmri.touched)" class="alert alert-danger">
+          <div [hidden]="!refmri.errors.required">
+            select Availability MRI
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Browse Image</label>
+      </div>
+
+      <div class="col-md-3">
+        <input type="file" class="form-control" (change)="radfileChangeEvent($event)" ngModel>
+      </div>
+    </div>
+    <div class="row">
+      <br><br>
+      <div class="col-md-2"></div>
+      <div class="col-md-10">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <table class="table table-striped">
+              <tr>
+                <th>Thumbnail</th>
+                <th>Filename</th>
+                <th>FileType</th>
+                <th>Filesize</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+              <tbody *ngFor="let image of imageDetails">
+                <tr *ngIf="image.type == 'radiologyimage'">
+                  <td><img src="http://localhost:3000/uploads/{{image.image}}" alt="Profile Pic" width="80px" height="55px" /></td>
+                  <td>{{image.imagename}}</td>
+                  <td>{{image.imagetype}}</td>
+                  <td>{{(image.imagesize / (1024*1024)).toFixed(2)}} MB</td>
+                  <td>SUCCESS</td>
+                  <!-- <td><button type="button" class="btn btn-primary btn-xs" (click)="editHospitalAdmin(hospitalAdmin._id)">Edit</button></td>-->
+                  <td><button type="button" class="btn btn-danger btn-xs" (click)="deleteImage(patient.patientId,image._id,image.image)">Delete</button></td>
+
+
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+    <div class="row">
+      <div class="col-md-11">
+        <div class="text-center">
+          <button class="btn btn-primary" type="submit" [disabled]="!radiologyForm.form.valid" style="float:right;">Add Patient</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</app-tab-content>

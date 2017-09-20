@@ -1,0 +1,1814 @@
+<div class="row">
+  <div class="col-md-2"></div>
+  <div class="col-md-7">
+    <div class="tabs-selection" *ngIf="disable">
+      <app-tab [style.background-color]="applyblue? '#bbb': 'green'" [style.color]="applyblue? 'black': 'white'" (click)="demographic()">Demographic</app-tab>
+      <app-tab style="cursor:not-allowed;">Pre-Operative</app-tab>
+      <app-tab style="cursor:not-allowed;">Radiology</app-tab>
+      <app-tab style="cursor:not-allowed;">Intra Operative</app-tab>
+      <app-tab style="cursor:not-allowed;">Post Operative</app-tab>
+      <app-tab style="cursor:not-allowed;">Post Operative scores</app-tab>
+    </div>
+    <div class="tabs-selection" *ngIf="!disable">
+      <app-tab style="cursor:not-allowed;">Demographic</app-tab>
+      <app-tab [style.background-color]="applypreoperative? '#bbb': 'green'" [style.color]="applypreoperative? 'black': 'white'"
+        (click)="patientPreOperative()">Pre-Operative</app-tab>
+      <app-tab [style.background-color]="applyradiology? '#bbb': 'green'" [style.color]="applyradiology? 'black': 'white'" (click)="radiology()">Radiology</app-tab>
+      <app-tab [style.background-color]="applyintraoperative? '#bbb': 'green'" [style.color]="applyintraoperative? 'black': 'white'"
+        (click)="intraoperative()">Intra Operative</app-tab>
+      <app-tab [style.background-color]="applypostoperative? '#bbb': 'green'" [style.color]="applypostoperative? 'black': 'white'"
+        (click)="postoperative()">Post Operative</app-tab>
+      <app-tab  [style.background-color]="applypostoperativescpre? '#bbb': 'green'" [style.color]="applypostoperativescpre? 'black': 'white'"
+      (click)="postoperativescore()">Post Operative scores</app-tab>
+    </div>
+  </div>
+</div>
+<br>
+<!-- start preoperative form-->
+<app-tab-content *ngIf="patient_preoperative">
+  <form #preoperativeForm="ngForm" (ngSubmit)="addPatientPreoperative(patient)" novalidate>
+    <div class="row">
+      <div class="col-md-8"></div>
+      <div class="col-md-4" style="font-size:14px;">
+        <b> Name :</b> {{patientname}}<br>
+        <b>Age : </b>{{patientage}}<br>
+        <b>Sex : </b>{{patientsex}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label>Date of Surgery</label>
+          <input type="hidden" class="form-control" name="patient.patientId" [(ngModel)]="patient.patientId">
+          <input type="date" #refdatesurgery="ngModel" required class="form-control" placeholder="*Enter surgery date" name="patient.surgerydate"
+            [(ngModel)]="patient.surgerydate">
+          <div *ngIf="surgerydate">
+            <div *ngIf="refdatesurgery.errors && (refdatesurgery.dirty || refdatesurgery.touched)" class="alert alert-danger">
+              <div [hidden]="!refdatesurgery.errors.required">
+                Enter surgery date
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label>Surgeon Name</label>
+          <input type="text" #refSurgeon="ngModel" required class="form-control" placeholder="*Enter surgery date" name="patient.surgeonname"
+            [(ngModel)]="patient.surgeonname">
+          <div *ngIf="surgeonname">
+            <div *ngIf="refSurgeon.errors && (refSurgeon.dirty || refSurgeon.touched)" class="alert alert-danger">
+              <div [hidden]="!refSurgeon.errors.required">
+                Enter surgery Name
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <h2>Preoperative Clinical Details</h2>
+      </div>
+    </div><br><br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Operated Hip</label>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <select disabled style="border-left:5px solid green;" class="form-control" name="patient.post_side" [(ngModel)]="patient.post_side">
+            <option value="Right">Right</option>
+            <option value="Left">Left</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <br>
+   <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Primary diagnosis</label>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <select #refdiagnosis="ngModel" required class="form-control" name="patient.diagnosis" [(ngModel)]="patient.diagnosis">
+            <option value="">--select one--</option>
+             <option value="Rheumatoid">Rheumatoid</option>
+          </select>
+          <div *ngIf="diagnosis">
+            <div *ngIf="refdiagnosis.errors && (refdiagnosis.dirty || refdiagnosis.touched)" class="alert alert-danger">
+              <div [hidden]="!refdiagnosis.errors.required">
+                Enter diagnosis
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <input type="text" [disabled]="!patient.diagnosis" class="form-control" name="patient.diagnosisothername" [(ngModel)]="patient.diagnosisothername">
+      </div>
+    </div>
+    <br>
+
+    
+  
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Current Symptoms</label>
+      </div>
+      <div class="col-md-2" *ngFor="let symptom of patient.symptoms">
+        <label class="checkbox-inline"><input type="checkbox"  #refsymptom="ngModel" required name="symptom" [(ngModel)]="symptom.selected">{{symptom.symptomsName}}</label>
+      </div>
+      <div *ngIf="joints">
+        <div *ngIf="refsymptom.errors && (refsymptom.dirty || refsymptom.touched)" class="alert alert-danger">
+          <div [hidden]="!refsymptom.errors.required">
+            select Current Symptoms
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Onset of Symptoms</label>
+      </div>
+
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refonsetsymptom="ngModel" required  (click)="yearChange($event)" [(ngModel)]="patient.onsetsymptom"  name="patient.onsetsymptom" value="1">&gt; 1 month
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+         <input type="radio"  #refonsetsymptom="ngModel" required (click)="yearChange($event)" [(ngModel)]="patient.onsetsymptom"  name="patient.onsetsymptom" value="2"> &gt; 6 months
+      </label>
+      </div>
+      <div class="col-md-2">
+        <label class="radio-inline">
+          <input type="radio"  #refonsetsymptom="ngModel" required (click)="oneyearChange($event)" [(ngModel)]="patient.onsetsymptom"  name="patient.onsetsymptom" value="3">&gt; 1 year
+      </label>
+      </div>
+      <div *ngIf="onsetsymptom">
+        <div *ngIf="refonsetsymptom.errors && (refonsetsymptom.dirty || refonsetsymptom.touched)" class="alert alert-danger">
+          <div [hidden]="!refonsetsymptom.errors.required">
+            select Onset of Symptoms
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="!oneyear">
+      <br>
+      <div class="col-md-4"></div>
+      <div class="col-md-2">
+        <label>Specify no. of years</label>
+      </div>
+
+      <div class="col-md-2">
+        <input type="text" #refyear="ngModel" class="form-control" required [(ngModel)]="patient.noyear" name="patient.noyear">
+        <div *ngIf="year">
+          <div *ngIf="refyear.errors && (refyear.dirty || refyear.touched)" class="alert alert-danger">
+            <div [hidden]="!refyear.errors.required">
+              Enter year
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+    <br>
+     
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Other joint involvement</label>
+      </div>
+      <div class="col-md-2" *ngFor="let joint of patient.joint">
+        <label class="checkbox-inline"><input type="checkbox"  #refJoint="ngModel" required name="joint" [(ngModel)]="joint.selected">{{joint.otherJointName}}</label>
+      </div>
+      <div *ngIf="joints">
+        <div *ngIf="refJoint.errors && (refJoint.dirty || refJoint.touched)" class="alert alert-danger">
+          <div [hidden]="!refJoint.errors.required">
+            select joint involvement
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Co morbidities</label>
+      </div>
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col-md-3 clearfix" *ngFor="let Comorbidities of patient.Comorbidities">
+            <label class="checkbox-inline"><input type="checkbox"  #refComorbidities="ngModel" required name="Comorbidities" [(ngModel)]="Comorbidities.selected">{{Comorbidities.comorbiditiesName}}</label>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="comorbidities">
+        <div *ngIf="refComorbidities.errors && (refComorbidities.dirty || refComorbidities.touched)" class="alert alert-danger">
+          <div [hidden]="!refComorbidities.errors.required">
+            select Co morbidities
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Previous Hip surgeries</label>
+      </div>
+      <div class="col-md-2" *ngFor="let kneesurgeries of patient.Previouskneesurgeries">
+        <label class="checkbox-inline"><input type="checkbox"  #refkneesurgeries="ngModel" required name="kneesurgeries" [(ngModel)]="kneesurgeries.selected">{{kneesurgeries.PreviouskneesurgeriesName}}</label>
+      </div>
+      <div *ngIf="kneesurgeries">
+        <div *ngIf="refkneesurgeries.errors && (refkneesurgeries.dirty || refkneesurgeries.touched)" class="alert alert-danger">
+          <div [hidden]="!refkneesurgeries.errors.required">
+            select Previous Hip surgeries
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+      <div class="row">
+      <div class="col-md-4"></div>
+      <div class="col-md-2">
+        <label>ORIF</label>
+      </div>
+      <div class="col-md-2" *ngFor="let hiporif of patient.hiporif ">
+        <label class="checkbox-inline"><input type="checkbox"  #refORIF="ngModel" required name="hiporif" [(ngModel)]="hiporif.selected">{{hiporif.hiporifName}}</label>
+      </div>
+      <div *ngIf="orif">
+        <div *ngIf="refORIF.errors && (refORIF.dirty || refORIF.touched)" class="alert alert-danger">
+          <div [hidden]="!refORIF.errors.required">
+            select ORIF
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+      <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Deformity</label>
+      </div>
+      <div class="col-md-2" *ngFor="let deformity of patient.deformity ">
+        <label class="checkbox-inline"><input type="checkbox"  #refdeformity="ngModel" required name="deformity" [(ngModel)]="deformity.selected">{{deformity.deformityName}}</label>
+      </div>
+      <div *ngIf="orif">
+        <div *ngIf="refdeformity.errors && (refdeformity.dirty || refdeformity.touched)" class="alert alert-danger">
+          <div [hidden]="!refdeformity.errors.required">
+            select Deformity
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <br>
+      <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Limb shortening</label>
+      </div>
+      <div class="col-md-2" *ngFor="let apparent of patient.apparent ">
+        <label class="checkbox-inline"><input type="checkbox"  #refdeformity="ngModel" required name="apparent" [(ngModel)]="apparent.selected">{{apparent.apparentName}}</label>
+      </div>
+      <div class="col-md-3">
+        <div class="input-group date form_datetime" data-link-field="inputLastSeen">
+            <input type="text" #refage="ngModel" required class="form-control"  name="patient.limp1" [(ngModel)]="patient.limp1">
+            <span class="input-group-addon">
+                  Cm
+              </span>
+          </div>
+      </div>
+      <div *ngIf="orif">
+        <div *ngIf="refdeformity.errors && (refdeformity.dirty || refdeformity.touched)" class="alert alert-danger">
+          <div [hidden]="!refdeformity.errors.required">
+            select Deformity
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-4"></div>
+      <div class="col-md-2" *ngFor="let limptrue of patient.limptrue ">
+        <label class="checkbox-inline"><input type="checkbox"  #refdeformity="ngModel" required name="limptrue" [(ngModel)]="limptrue.selected">{{limptrue.limptrueName}}</label>
+      </div>
+      <div class="col-md-3">
+        <div class="input-group date form_datetime" data-link-field="inputLastSeen">
+            <input type="text" #refage="ngModel" required class="form-control"  name="patient.limp2" [(ngModel)]="patient.limp2">
+            <span class="input-group-addon">
+                  Cm
+              </span>
+          </div>
+      </div>
+      <div *ngIf="orif">
+        <div *ngIf="refdeformity.errors && (refdeformity.dirty || refdeformity.touched)" class="alert alert-danger">
+          <div [hidden]="!refdeformity.errors.required">
+            select Deformity
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+   
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <h2>upload clinical images</h2>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Browse Image</label>
+      </div>
+
+      <div class="col-md-3">
+        <input type="file" class="form-control" (change)="prefileChangeEvent($event)" ngModel>
+      </div>
+    </div>
+
+    <div class="row">
+      <br><br>
+      <div class="col-md-2"></div>
+      <div class="col-md-10">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <table class="table table-striped">
+              <tr>
+                <th>Thumbnail</th>
+                <th>Filename</th>
+                <th>FileType</th>
+                <th>Filesize</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+              <tbody *ngFor="let image of imageDetails">
+                <tr *ngIf="image.type == 'preoperativeimage'">
+                  <td><img src="http://localhost:3000/uploads/{{image.image}}" alt="Profile Pic" width="80px" height="55px" /></td>
+                  <td>{{image.imagename}}</td>
+                  <td>{{image.imagetype}}</td>
+                  <td>{{(image.imagesize / (1024*1024)).toFixed(2)}} MB</td>
+                  <td>SUCCESS</td>
+                  <!-- <td><button type="button" class="btn btn-primary btn-xs" (click)="editHospitalAdmin(hospitalAdmin._id)">Edit</button></td>-->
+                  <td><button type="button" class="btn btn-danger btn-xs" (click)="deleteImage(patient.patientId,image._id,image.image)">Delete</button></td>
+
+
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <h2>Click for Other scoring systems</h2>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2">
+      </div>
+      <div class="col-md-3">
+        <a href="#" data-toggle="modal" data-target="#myModalharrishipscore">
+          <div class="panel panel-default clearfix dashboard-stats rounded">
+            <span class="glyphicon glyphicon-user" style="font-size:25px; color:blue;"></span>
+            <b> Harris Hip Score</b> : {{totalharrishipscore}}
+          </div>
+        </a>
+      </div>
+      <div class="col-md-3">
+        <a href="#" data-toggle="modal" data-target="#myModalSF36score">
+          <div class="panel panel-default clearfix dashboard-stats rounded">
+            <span class="glyphicon glyphicon-user" style="font-size:25px; color:blue;"></span>
+            <b> SF36 Score</b> : {{totalsf36score}}
+          </div>
+        </a>
+      </div>
+      
+    </div>
+    
+
+     <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Vitamin D Level</label>
+      </div>
+      <div class="col-md-3">
+        <div class="input-group date form_datetime" data-link-field="inputLastSeen">
+          <input type="text" #refvitamin="ngModel" required class="form-control" placeholder="*Enter vitamin D Level" name="patient.vitaminD"
+            [(ngModel)]="patient.rad_vitaminD">
+          <span class="input-group-addon">
+                Range
+              </span>
+        </div>
+        <div *ngIf="vitaminD">
+          <div *ngIf="refvitamin.errors && (refvitamin.dirty || refvitamin.touched)" class="alert alert-danger">
+            <div [hidden]="!refvitamin.errors.required">
+              Enter vitamin D Level
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2">
+        <label>Vitamin B12 Level</label>
+      </div>
+      <div class="col-md-3">
+        <div class="input-group date form_datetime" data-link-field="inputLastSeen">
+          <input type="text" #refvitaminb="ngModel" required class="form-control" placeholder="*Enter vitamin B12 Level" name="patient.vitaminB12"
+            [(ngModel)]="patient.rad_vitaminB12">
+          <span class="input-group-addon">
+                Range
+              </span>
+        </div>
+        <div *ngIf="vitaminB">
+          <div *ngIf="refvitaminb.errors && (refvitaminb.dirty || refvitaminb.touched)" class="alert alert-danger">
+            <div [hidden]="!refvitaminb.errors.required">
+              Enter vitamin B12 Level
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-10">
+        <div class="text-center">
+          <button class="btn btn-primary" type="submit" [disabled]="!preoperativeForm.form.valid" style="float:right;">Continue</button>
+        </div>
+      </div>
+    </div>
+
+  </form>
+  <!-- scoring modal windows start  -->
+  
+   <!-- harris hip score start-->
+
+  <div class="modal fade" id="myModalharrishipscore" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color:blue;color:white;">
+          <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+          <div class="row">
+            <div class="col-md-4">
+              <b> Name :</b> {{patientname}}<br>
+              <b>Age : </b>{{patientage}}<br>
+              <b>Sex : </b>{{patientsex}}</div>
+            <div class="col-md-4">
+              <p style="text-align:center;font-size:25px;">Harris hip Score</p>
+            </div>
+            <div class="col-md-4">
+              <span id="circle" style="float:right; color:#555;">
+                <span  style=" font-size: 20px; width: 50px; float: right; font-weight: bold;">{{patient.totalharrishipscore}}
+			         </span></span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-body" style="height:400px;overflow: scroll;">
+          <div class="row">
+            <div class="col-lg-12">
+              <h1>Harris hip Score</h1>
+              <input type="hidden" class="form-control" name="patient.patientId" [(ngModel)]="patient.patientId">
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-4">
+              <p>
+               pain
+              </p>
+            </div>
+             <div class="col-lg-6">
+               <input type="radio" [(ngModel)]="patient.harriship_pain" (click)="harrisscorepainChange($event)" name="patient.harriship_pain"
+                value="44">&nbsp;None, or ignores it <br>
+              <input type="radio" [(ngModel)]="patient.harriship_pain" (click)="harrisscorepainChange($event)" name="patient.harriship_pain"
+                value="40">&nbsp;Slight, occasional, no compromise in activity<br>
+              <input type="radio" [(ngModel)]="patient.harriship_pain" (click)="harrisscorepainChange($event)" name="patient.harriship_pain"
+                value="30">&nbsp;Mild pain, no effect on average activities, rarely moderate pain with unusual activity, may take aspirin<br>
+              <input type="radio" [(ngModel)]="patient.harriship_pain" (click)="harrisscorepainChange($event)" name="patient.harriship_pain"
+                value="20">&nbsp;Moderate pain, tolerable but makes concessions to pain. Some limitations of ordinary activity or work. May require occasional pain medication stronger than aspirin<br>
+              <input type="radio" [(ngModel)]="patient.harriship_pain" (click)="harrisscorepainChange($event)" name="patient.harriship_pain"
+                value="10">&nbsp;Marked pain, serious limitation of activities<br>
+              <input type="radio" [(ngModel)]="patient.harriship_pain" (click)="harrisscorepainChange($event)" name="patient.harriship_pain"
+                value="0">&nbsp;Totally disabled, crippled, pain in bed, bedridden
+            </div>
+          </div>
+
+          <br>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-4">
+              <p>
+               Distance walked
+              </p>
+            </div>
+             <div class="col-lg-6">
+               <input type="radio" [(ngModel)]="patient.harriship_walked" (click)="harrisscorewalkedChange($event)" name="patient.harriship_walked"
+                value="11">&nbsp;Unlimited <br>
+              <input type="radio" [(ngModel)]="patient.harriship_walked" (click)="harrisscorewalkedChange($event)" name="patient.harriship_walked"
+                value="8">&nbsp;Six blocks (30 minutes)<br>
+              <input type="radio" [(ngModel)]="patient.harriship_walked" (click)="harrisscorewalkedChange($event)" name="patient.harriship_walked"
+                value="5">&nbsp;Two or three blocks (10 - 15 minutes)<br>
+              <input type="radio" [(ngModel)]="patient.harriship_walked" (click)="harrisscorewalkedChange($event)" name="patient.harriship_walked"
+                value="2">&nbsp;Indoors only<br>
+              <input type="radio" [(ngModel)]="patient.harriship_walked" (click)="harrisscorewalkedChange($event)" name="patient.harriship_walked"
+                value="0">&nbsp;Bed and chair only
+            </div>
+          </div>
+           <br>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-4">
+              <p>
+               Activities - shoes, socks
+              </p>
+            </div>
+             <div class="col-lg-6">
+               <input type="radio" [(ngModel)]="patient.harriship_socks" (click)="harrisscoresocksChange($event)" name="patient.harriship_socks"
+                value="4">&nbsp;With ease <br>
+              <input type="radio" [(ngModel)]="patient.harriship_socks" (click)="harrisscoresocksChange($event)" name="patient.harriship_socks"
+                value="2">&nbsp;With difficulty<br>
+              <input type="radio" [(ngModel)]="patient.harriship_socks" (click)="harrisscoresocksChange($event)" name="patient.harriship_socks"
+                value="0">&nbsp;Unable to fit or tie
+            </div>
+          </div>
+           <br>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-4">
+              <p>
+              Public transportation
+              </p>
+            </div>
+             <div class="col-lg-6">
+               <input type="radio" [(ngModel)]="patient.harriship_transportation" (click)="harrisscoretransportationChange($event)" name="patient.harriship_transportation"
+                value="4">&nbsp;Able to use transportation (Bus) <br>
+              <input type="radio" [(ngModel)]="patient.harriship_transportation" (click)="harrisscoretransportationChange($event)" name="patient.harriship_transportation"
+                value="2">&nbsp;Unable to use public transportation (Bus)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-4">
+              <p>
+               Support
+              </p>
+            </div>
+             <div class="col-lg-6">
+               <input type="radio" [(ngModel)]="patient.harriship_support" (click)="harrisscoresupportChange($event)" name="patient.harriship_support"
+                value="11">&nbsp;None <br>
+              <input type="radio" [(ngModel)]="patient.harriship_support" (click)="harrisscoresupportChange($event)" name="patient.harriship_support"
+                value="7">&nbsp;Cane / Walking stick for long walks<br>
+              <input type="radio" [(ngModel)]="patient.harriship_support" (click)="harrisscoresupportChange($event)" name="patient.harriship_support"
+                value="5">&nbsp;Cane / Walking stick most of the time<br>
+              <input type="radio" [(ngModel)]="patient.harriship_support" (click)="harrisscoresupportChange($event)" name="patient.harriship_support"
+                value="3">&nbsp;One crutch<br>
+              <input type="radio" [(ngModel)]="patient.harriship_support" (click)="harrisscoresupportChange($event)" name="patient.harriship_support"
+                value="2">&nbsp;Two Canes / Walking sticks<br>
+                 <input type="radio" [(ngModel)]="patient.harriship_support" (click)="harrisscoresupportChange($event)" name="patient.harriship_support"
+                value="0">&nbsp;Two crutches or not able to walk
+            </div>
+          </div>
+           <br>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-4">
+              <p>
+               Limp
+              </p>
+            </div>
+             <div class="col-lg-6">
+               <input type="radio" [(ngModel)]="patient.harriship_limp" (click)="harrisscorelimpChange($event)" name="patient.harriship_limp"
+                value="11">&nbsp;None <br>
+              <input type="radio" [(ngModel)]="patient.harriship_limp" (click)="harrisscorelimpChange($event)" name="patient.harriship_limp"
+                value="8">&nbsp;Slight<br>
+              <input type="radio" [(ngModel)]="patient.harriship_limp" (click)="harrisscorelimpChange($event)" name="patient.harriship_limp"
+                value="5">&nbsp;Moderate<br>
+              <input type="radio" [(ngModel)]="patient.harriship_limp" (click)="harrisscorelimpChange($event)" name="patient.harriship_limp"
+                value="0">&nbsp;Severe or unable to walk
+            </div>
+          </div>
+            <br>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-4">
+              <p>
+              Stairs
+              </p>
+            </div>
+             <div class="col-lg-6">
+               <input type="radio" [(ngModel)]="patient.harriship_stairs" (click)="harrisscorestairsChange($event)" name="patient.harriship_stairs"
+                value="4">&nbsp;Normally without using a railing<br>
+              <input type="radio" [(ngModel)]="patient.harriship_stairs" (click)="harrisscorestairsChange($event)" name="patient.harriship_stairs"
+                value="2">&nbsp;Normally using a railing<br>
+              <input type="radio" [(ngModel)]="patient.harriship_stairs" (click)="harrisscorestairsChange($event)" name="patient.harriship_stairs"
+                value="1">&nbsp;In any manner<br>
+              <input type="radio" [(ngModel)]="patient.harriship_stairs" (click)="harrisscorestairsChange($event)" name="patient.harriship_stairs"
+                value="0">&nbsp;Unable to do stairs
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-4">
+              <p>
+             Sitting
+              </p>
+            </div>
+             <div class="col-lg-6">
+               <input type="radio" [(ngModel)]="patient.harriship_sitting" (click)="harrisscoresittingChange($event)" name="patient.harriship_sitting"
+                value="5">&nbsp;Comfortably, ordinary chair for one hour <br>
+              <input type="radio" [(ngModel)]="patient.harriship_sitting" (click)="harrisscoresittingChange($event)" name="patient.harriship_sitting"
+                value="3">&nbsp;On a high chair for 30 minutes<br>
+              <input type="radio" [(ngModel)]="patient.harriship_sitting" (click)="harrisscoresittingChange($event)" name="patient.harriship_sitting"
+                value="0">&nbsp;Unable to sit comfortably on any chair
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-12">To score this section all four must be 'yes', then get 4 points. Nb. Not 1 point for each four or nothing.</div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-12">Section 2 - Answer ALL 4 yes/no questions</div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-12">Does your patient have: -</div>
+          </div>
+           <br>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-4">
+              <p>
+             Less than 30degrees of fixed flexion
+              </p>
+            </div>
+             <div class="col-lg-2">
+               <input type="radio" [(ngModel)]="patient.harriship_30degrees" (click)="harrisscore30degreesChange($event)" name="patient.harriship_30degrees"
+                value="0">&nbsp;Yes 
+            </div>
+              <div class="col-lg-2">
+               <input type="radio" [(ngModel)]="patient.harriship_30degrees" (click)="harrisscore30degreesChange($event)" name="patient.harriship_30degrees"
+                value="1">&nbsp;No
+            </div>
+          </div>
+           <br>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-4">
+              <p>
+             Less than 10 degrees of fixed adduction
+              </p>
+            </div>
+             <div class="col-lg-2">
+               <input type="radio" [(ngModel)]="patient.harriship_10degrees" (click)="harrisscore10degreesChange($event)" name="patient.harriship_10degrees"
+                value="0">&nbsp;Yes 
+            </div>
+              <div class="col-lg-2">
+               <input type="radio" [(ngModel)]="patient.harriship_10degrees" (click)="harrisscore10degreesChange($event)" name="patient.harriship_10degrees"
+                value="1">&nbsp;No
+            </div>
+          </div>
+           <br>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-4">
+              <p>
+             Less than 10 degrees of fixed int rotation in extension
+              </p>
+            </div>
+             <div class="col-lg-2">
+               <input type="radio" [(ngModel)]="patient.harriship_10degreesextension" (click)="harrisscore10degreesextensionChange($event)" name="patient.harriship_10degreesextension"
+                value="0">&nbsp;Yes 
+            </div>
+              <div class="col-lg-2">
+               <input type="radio" [(ngModel)]="patient.harriship_10degreesextension" (click)="harrisscore10degreesextensionChange($event)" name="patient.harriship_10degreesextension"
+                value="1">&nbsp;No
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-4">
+              <p>
+            Limb length discrepancy less than 3.2 cm (1.5 inches)
+              </p>
+            </div>
+             <div class="col-lg-2">
+               <input type="radio" [(ngModel)]="patient.harriship_discrepancy" (click)="harrisscorediscrepancyChange($event)" name="patient.harriship_discrepancy"
+                value="0">&nbsp;Yes 
+            </div>
+              <div class="col-lg-2">
+               <input type="radio" [(ngModel)]="patient.harriship_discrepancy" (click)="harrisscorediscrepancyChange($event)" name="patient.harriship_discrepancy"
+                value="1">&nbsp;No
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-12">Section 3 - Motion</div>
+          </div>
+           <br>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-4">
+              <p>
+            Total degrees of Flexion
+              </p>
+            </div>
+             <div class="col-lg-1">
+               <input type="radio" [(ngModel)]="patient.harriship_flexion" (click)="harrisscoreflexionChange($event)" name="patient.harriship_flexion"
+                value="0">&nbsp;None
+            </div>
+              <div class="col-lg-1">
+               <input type="radio" [(ngModel)]="patient.harriship_flexion" (click)="harrisscoreflexionChange($event)" name="patient.harriship_flexion"
+                value="4">&nbsp;0 > 8
+            </div>
+              <div class="col-lg-1">
+               <input type="radio" [(ngModel)]="patient.harriship_flexion" (click)="harrisscoreflexionChange($event)" name="patient.harriship_flexion"
+                value="20">&nbsp;16 > 24 
+            </div>
+              <div class="col-lg-1">
+               <input type="radio" [(ngModel)]="patient.harriship_flexion" (click)="harrisscoreflexionChange($event)" name="patient.harriship_flexion"
+                value="28">&nbsp;24 > 32
+            </div>
+          </div>
+           <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-4">
+             
+            </div>
+             <div class="col-lg-1">
+               <input type="radio" [(ngModel)]="patient.harriship_flexion" (click)="harrisscoreflexionChange($event)" name="patient.harriship_flexion"
+                value="36">&nbsp;32 > 40
+            </div>
+              <div class="col-lg-1">
+               <input type="radio" [(ngModel)]="patient.harriship_flexion" (click)="harrisscoreflexionChange($event)" name="patient.harriship_flexion"
+                value="42.5">&nbsp;40 > 45
+            </div>
+              <div class="col-lg-1">
+               <input type="radio" [(ngModel)]="patient.harriship_flexion" (click)="harrisscoreflexionChange($event)" name="patient.harriship_flexion"
+                value="50">&nbsp;45 > 55
+            </div>
+              <div class="col-lg-1">
+               <input type="radio" [(ngModel)]="patient.harriship_flexion" (click)="harrisscoreflexionChange($event)" name="patient.harriship_flexion"
+                value="60">&nbsp;55 > 65
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-4">
+             
+            </div>
+             <div class="col-lg-1">
+               <input type="radio" [(ngModel)]="patient.harriship_flexion" (click)="harrisscoreflexionChange($event)" name="patient.harriship_flexion"
+                value="67.5">&nbsp;65 > 70 
+            </div>
+              <div class="col-lg-1">
+               <input type="radio" [(ngModel)]="patient.harriship_flexion" (click)="harrisscoreflexionChange($event)" name="patient.harriship_flexion"
+                value="72.5">&nbsp;70 > 75
+            </div>
+              <div class="col-lg-1">
+               <input type="radio" [(ngModel)]="patient.harriship_flexion" (click)="harrisscoreflexionChange($event)" name="patient.harriship_flexion"
+                value="77.5">&nbsp;75 > 80
+            </div>
+              <div class="col-lg-1">
+               <input type="radio" [(ngModel)]="patient.harriship_flexion" (click)="harrisscoreflexionChange($event)" name="patient.harriship_flexion"
+                value="85">&nbsp;80 > 90
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-4">
+             
+            </div>
+             <div class="col-lg-1">
+               <input type="radio" [(ngModel)]="patient.harriship_flexion" (click)="harrisscoreflexionChange($event)" name="patient.harriship_flexion"
+                value="95">90 > 100
+            </div>
+              <div class="col-lg-2">
+               <input type="radio" [(ngModel)]="patient.harriship_flexion" (click)="harrisscoreflexionChange($event)" name="patient.harriship_flexion"
+                value="105">&nbsp;100 > 110
+            </div>
+              
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-4">
+              <p>
+            Total degrees of Abduction
+              </p>
+            </div>
+             <div class="col-lg-1">
+               <input type="radio" [(ngModel)]="patient.harriship_abduction" (click)="harrisscoreabductionChange($event)" name="patient.harriship_abduction"
+                value="0">&nbsp;None
+            </div>
+              <div class="col-lg-1">
+               <input type="radio" [(ngModel)]="patient.harriship_abduction" (click)="harrisscoreabductionChange($event)" name="patient.harriship_abduction"
+                value="2.5">&nbsp;0 > 5
+            </div>
+              <div class="col-lg-1">
+               <input type="radio" [(ngModel)]="patient.harriship_abduction" (click)="harrisscoreabductionChange($event)" name="patient.harriship_abduction"
+                value="7.5">&nbsp;5 > 10 
+            </div>
+              <div class="col-lg-1">
+               <input type="radio" [(ngModel)]="patient.harriship_abduction" (click)="harrisscoreabductionChange($event)" name="patient.harriship_abduction"
+                value="12.5">&nbsp;10 > 15
+            </div>
+              <div class="col-lg-1">
+               <input type="radio" [(ngModel)]="patient.harriship_abduction" (click)="harrisscoreabductionChange($event)" name="patient.harriship_abduction"
+                value="17.5">&nbsp;15 > 20
+            </div>
+          </div>
+           <br>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-4">
+              <p>
+            Total degrees of Ext Rotation
+              </p>
+            </div>
+             <div class="col-lg-1">
+               <input type="radio" [(ngModel)]="patient.harriship_extRotation" (click)="harrisscoreextRotationChange($event)" name="patient.harriship_extRotation"
+                value="0">&nbsp;None
+            </div>
+              <div class="col-lg-1">
+               <input type="radio" [(ngModel)]="patient.harriship_extRotation" (click)="harrisscoreextRotationChange($event)" name="patient.harriship_extRotation"
+                value="2.5">&nbsp;0 > 5
+            </div>
+              <div class="col-lg-1">
+               <input type="radio" [(ngModel)]="patient.harriship_extRotation" (click)="harrisscoreextRotationChange($event)" name="patient.harriship_extRotation"
+                value="7.5">&nbsp;5 > 10 
+            </div>
+              <div class="col-lg-1">
+               <input type="radio" [(ngModel)]="patient.harriship_extRotation" (click)="harrisscoreextRotationChange($event)" name="patient.harriship_extRotation"
+                value="12.5">&nbsp;10 > 15
+            </div>
+              
+          </div>
+           <br>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-4">
+              <p>
+           Total degrees of Adduction
+              </p>
+            </div>
+             <div class="col-lg-1">
+               <input type="radio" [(ngModel)]="patient.harriship_adduction" (click)="harrisscoreadductionChange($event)" name="patient.harriship_adduction"
+                value="0">&nbsp;None
+            </div>
+              <div class="col-lg-1">
+               <input type="radio" [(ngModel)]="patient.harriship_adduction" (click)="harrisscoreadductionChange($event)" name="patient.harriship_adduction"
+                value="2.5">&nbsp;0 > 5
+            </div>
+              <div class="col-lg-1">
+               <input type="radio" [(ngModel)]="patient.harriship_adduction" (click)="harrisscoreadductionChange($event)" name="patient.harriship_adduction"
+                value="7.5">&nbsp;5 > 10 
+            </div>
+              <div class="col-lg-1">
+               <input type="radio" [(ngModel)]="patient.harriship_adduction" (click)="harrisscoreadductionChange($event)" name="patient.harriship_adduction"
+                value="12.5">&nbsp;10 > 15
+            </div>
+              
+          </div>
+            <br>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-4">
+              <p>
+          Range of motion
+              </p>
+            </div>
+             <div class="col-lg-3">
+               <input type="text" [(ngModel)]="patient.harriship_rangevalue" class="form-control" name="patient.harriship_rangevalue"
+                readonly>
+            </div>
+           
+              
+          </div>
+            <br>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-4">
+              <p>
+         The Harris Hip Score is: 
+              </p>
+            </div>
+             <div class="col-lg-3">
+               <input type="text" [(ngModel)]="patient.harriship_hipscore" class="form-control" name="patient.harriship_hipscore"
+                readonly>
+            </div>
+           
+              
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-12">Comments / Interpretation (to be completed by therapist only)</div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" data-dismiss="modal" class="btn btn-primary" (click)="addsf36score(patient)">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Harris hip score end-->
+
+
+  <!-- SF36 score start-->
+
+  <div class="modal fade" id="myModalSF36score" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color:blue;color:white;">
+          <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
+          <div class="row">
+            <div class="col-md-4">
+              <b> Name :</b> {{patientname}}<br>
+              <b>Age : </b>{{patientage}}<br>
+              <b>Sex : </b>{{patientsex}}</div>
+            <div class="col-md-4">
+              <p style="text-align:center;font-size:25px;">SF36 Score</p>
+            </div>
+            <div class="col-md-4">
+              <span id="circle" style="float:right; color:#555;">
+                <span  style=" font-size: 20px; width: 50px; float: right; font-weight: bold;">{{patient.totalsf36score}}
+			         </span></span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-body" style="height:400px;overflow: scroll;">
+          <div class="row">
+            <div class="col-lg-12">
+              <h1>SF36 Score</h1>
+              <input type="hidden" class="form-control" name="patient.patientId" [(ngModel)]="patient.patientId">
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                1. In general, would you say your health is:
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.sf36_generalhealth" (click)="sf36scorehealthChange($event)" name="patient.sf36_generalhealth"
+                value="100">&nbsp;Excellent (100)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_generalhealth" (click)="sf36scorehealthChange($event)" name="patient.sf36_generalhealth"
+                value="75">&nbsp;Very good (75)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_generalhealth" (click)="sf36scorehealthChange($event)" name="patient.sf36_generalhealth"
+                value="50">&nbsp;Good (50)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_generalhealth" (click)="sf36scorehealthChange($event)" name="patient.sf36_generalhealth"
+                value="25">&nbsp;Fair (25)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_generalhealth" (click)="sf36scorehealthChange($event)" name="patient.sf36_generalhealth"
+                value="0">&nbsp;Poor (0)
+            </div>
+          </div>
+
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                2. Compared to one year ago, how would your rate your health in general now?
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.sf36_ratehealth" (click)="sf36scorerateChange($event)" name="patient.sf36_ratehealth"
+                value="100">&nbsp;Much better now than one year ago (100)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_ratehealth" (click)="sf36scorerateChange($event)" name="patient.sf36_ratehealth"
+                value="75">&nbsp;Somewhat better now than one year ago (75)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_ratehealth" (click)="sf36scorerateChange($event)" name="patient.sf36_ratehealth"
+                value="50">&nbsp;About the same (50)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_ratehealth" (click)="sf36scorerateChange($event)" name="patient.sf36_ratehealth"
+                value="25">&nbsp;Somewhat worse now than one year ago (25)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_ratehealth" (click)="sf36scorerateChange($event)" name="patient.sf36_ratehealth"
+                value="0">&nbsp;Much worse now than one year ago (0)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-10"><label>The following items are about activities you might do during a typical day. Does your health now limit you in these activities? If so, how much?</label></div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                3. Vigorous activities, such as running, lifting heavy objects, participating in strenuous sports
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.sf36_vigorous" (click)="sf36scorevigorousChange($event)" name="patient.sf36_vigorous"
+                value="0">&nbsp;Yes, Limited a Lot (0)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_vigorous" (click)="sf36scorevigorousChange($event)" name="patient.sf36_vigorous"
+                value="50">&nbsp;Yes, Limited a Little (50)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_vigorous" (click)="sf36scorevigorousChange($event)" name="patient.sf36_vigorous"
+                value="100">&nbsp;No, Not limited at All (100)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                4. Moderate activities, such as moving a table, pushing a vacuum cleaner, bowling, or playing golf
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.sf36_moderate" (click)="sf36scoremoderateChange($event)" name="patient.sf36_moderate"
+                value="0">&nbsp;Yes, Limited a Lot (0)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_moderate" (click)="sf36scoremoderateChange($event)" name="patient.sf36_moderate"
+                value="50">&nbsp;Yes, Limited a Little (50)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_moderate" (click)="sf36scoremoderateChange($event)" name="patient.sf36_moderate"
+                value="100">&nbsp;No, Not limited at All (100)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                5. Lifting or carrying groceries
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.sf36_lifting" (click)="sf36scoreliftingChange($event)" name="patient.sf36_lifting"
+                value="0">&nbsp;Yes, Limited a Lot (0)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_lifting" (click)="sf36scoreliftingChange($event)" name="patient.sf36_lifting"
+                value="50">&nbsp;Yes, Limited a Little (50)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_lifting" (click)="sf36scoreliftingChange($event)" name="patient.sf36_lifting"
+                value="100">&nbsp;No, Not limited at All (100)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                6. Climbing several flights of stairs
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.sf36_severalflights" (click)="sf36scoreseveralflightsChange($event)" name="patient.sf36_severalflights"
+                value="0">&nbsp;Yes, Limited a Lot (0)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_severalflights" (click)="sf36scoreseveralflightsChange($event)" name="patient.sf36_severalflights"
+                value="50">&nbsp;Yes, Limited a Little (50)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_severalflights" (click)="sf36scoreseveralflightsChange($event)" name="patient.sf36_severalflights"
+                value="100">&nbsp;No, Not limited at All (100)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                7. Climbing one flight of stairs
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.sf36_oneflights" (click)="sf36scoreoneflightsChange($event)" name="patient.sf36_oneflights"
+                value="0">&nbsp;Yes, Limited a Lot (0)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_oneflights" (click)="sf36scoreoneflightsChange($event)" name="patient.sf36_oneflights"
+                value="50">&nbsp;Yes, Limited a Little (50)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_oneflights" (click)="sf36scoreoneflightsChange($event)" name="patient.sf36_oneflights"
+                value="100">&nbsp;No, Not limited at All (100)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                8. Bending, kneeling, or stooping
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.sf36_bending" (click)="sf36scorebendingChange($event)" name="patient.sf36_bending"
+                value="0">&nbsp;Yes, Limited a Lot (0)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_bending" (click)="sf36scorebendingChange($event)" name="patient.sf36_bending"
+                value="50">&nbsp;Yes, Limited a Little (50)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_bending" (click)="sf36scorebendingChange($event)" name="patient.sf36_bending"
+                value="100">&nbsp;No, Not limited at All (100)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                9. Walking more than a mile
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.sf36_walking" (click)="sf36scorewalkingChange($event)" name="patient.sf36_walking"
+                value="0">&nbsp;Yes, Limited a Lot (0)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_walking" (click)="sf36scorewalkingChange($event)" name="patient.sf36_walking"
+                value="50">&nbsp;Yes, Limited a Little (50)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_walking" (click)="sf36scorewalkingChange($event)" name="patient.sf36_walking"
+                value="100">&nbsp;No, Not limited at All (100)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                10. Walking several blocks
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.sf36_severalblocks" (click)="sf36scoreseveralblockChange($event)" name="patient.sf36_severalblocks"
+                value="0">&nbsp;Yes, Limited a Lot (0)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_severalblocks" (click)="sf36scoreseveralblockChange($event)" name="patient.sf36_severalblocks"
+                value="50">&nbsp;Yes, Limited a Little (50)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_severalblocks" (click)="sf36scoreseveralblockChange($event)" name="patient.sf36_severalblocks"
+                value="100">&nbsp;No, Not limited at All (100)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                11. Walking one block
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.sf36_oneblock" (click)="sf36scoreoneblockChange($event)" name="patient.sf36_oneblock"
+                value="0">&nbsp;Yes, Limited a Lot (0)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_oneblock" (click)="sf36scoreoneblockChange($event)" name="patient.sf36_oneblock"
+                value="50">&nbsp;Yes, Limited a Little (50)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_oneblock" (click)="sf36scoreoneblockChange($event)" name="patient.sf36_oneblock"
+                value="100">&nbsp;No, Not limited at All (100)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                12. Bathing or dressing yourself
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.sf36_dressing" (click)="sf36scoredressingChange($event)" name="patient.sf36_dressing"
+                value="0">&nbsp;Yes, Limited a Lot (0)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_dressing" (click)="sf36scoredressingChange($event)" name="patient.sf36_dressing"
+                value="50">&nbsp;Yes, Limited a Little (50)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_dressing" (click)="sf36scoredressingChange($event)" name="patient.sf36_dressing"
+                value="100">&nbsp;No, Not limited at All (100)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-10"><label> During the past 4 weeks, have you had any of the following problems with your work or other regular daily activities as a result of your physical health?</label></div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                13. Cut down the amount of time you spent on work or other activities
+              </p>
+            </div>
+            <div class="col-lg-1">
+              <input type="radio" [(ngModel)]="patient.sf36_spentactivities" (click)="sf36scorespentactivitiesChange($event)" name="patient.sf36_spentactivities"
+                value="0">&nbsp;Yes (0)</div>
+            <div class="col-lg-2">
+              <input type="radio" [(ngModel)]="patient.sf36_spentactivities" (click)="sf36scorespentactivitiesChange($event)" name="patient.sf36_spentactivities"
+                value="100">&nbsp;No (100)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                14. Accomplished less than you would like
+              </p>
+            </div>
+            <div class="col-lg-1">
+              <input type="radio" [(ngModel)]="patient.sf36_accomplished" (click)="sf36scorespentaccomplishedChange($event)" name="patient.sf36_accomplished"
+                value="0">&nbsp;Yes (0)</div>
+            <div class="col-lg-2">
+              <input type="radio" [(ngModel)]="patient.sf36_accomplished" (click)="sf36scorespentaccomplishedChange($event)" name="patient.sf36_accomplished"
+                value="100">&nbsp;No (100)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                15. Were limited in the kind of work or other activities
+              </p>
+            </div>
+            <div class="col-lg-1">
+              <input type="radio" [(ngModel)]="patient.sf36_workactivities" (click)="sf36scoreworkactivitiesChange($event)" name="patient.sf36_workactivities"
+                value="0">&nbsp;Yes (0)</div>
+            <div class="col-lg-2">
+              <input type="radio" [(ngModel)]="patient.sf36_workactivities" (click)="sf36scoreworkactivitiesChange($event)" name="patient.sf36_workactivities"
+                value="100">&nbsp;No (100)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                16. Had difficulty performing the work or other activities (for example, it took extra effort)
+              </p>
+            </div>
+            <div class="col-lg-1">
+              <input type="radio" [(ngModel)]="patient.sf36_performing" (click)="sf36scoreperformingChange($event)" name="patient.sf36_performing"
+                value="0">&nbsp;Yes (0)</div>
+            <div class="col-lg-2">
+              <input type="radio" [(ngModel)]="patient.sf36_performing" (click)="sf36scoreperformingChange($event)" name="patient.sf36_performing"
+                value="100">&nbsp;No (100)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-10"><label> During the past 4 weeks, have you had any of the following problems with your work or other regular daily activities as a result of any emotional problems (such as feeling depressed or anxious)?</label></div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                17. Cut down the amount of time you spent on work or other activities
+              </p>
+            </div>
+            <div class="col-lg-1">
+              <input type="radio" [(ngModel)]="patient.sf36_spentwork" (click)="sf36scorespentworkChange($event)" name="patient.sf36_spentwork"
+                value="0">&nbsp;Yes (0)</div>
+            <div class="col-lg-2">
+              <input type="radio" [(ngModel)]="patient.sf36_spentwork" (click)="sf36scorespentworkChange($event)" name="patient.sf36_spentwork"
+                value="100">&nbsp;No (100)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                18. Accomplished less than you would like
+              </p>
+            </div>
+            <div class="col-lg-1">
+              <input type="radio" [(ngModel)]="patient.sf36_accomplishedless" (click)="sf36scoreaccomplishedlessChange($event)" name="patient.sf36_accomplishedless"
+                value="0">&nbsp;Yes (0)</div>
+            <div class="col-lg-2">
+              <input type="radio" [(ngModel)]="patient.sf36_accomplishedless" (click)="sf36scoreaccomplishedlessChange($event)" name="patient.sf36_accomplishedless"
+                value="100">&nbsp;No (100)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                19. Didn't do work or other activities as carefully as usual
+              </p>
+            </div>
+            <div class="col-lg-1">
+              <input type="radio" [(ngModel)]="patient.sf36_carefully" (click)="sf36scorecarefullyChange($event)" name="patient.sf36_carefully"
+                value="0">&nbsp;Yes (0)</div>
+            <div class="col-lg-2">
+              <input type="radio" [(ngModel)]="patient.sf36_carefully" (click)="sf36scorecarefullyChange($event)" name="patient.sf36_carefully"
+                value="100">&nbsp;No (100)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                20. During the past 4 weeks, to what extent has your physical health or emotional problems interfered with your normal social
+                activities with family, friends, neighbors, or groups?
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.sf36_socialactivities" (click)="sf36scoresocialactivitiesChange($event)" name="patient.sf36_socialactivities"
+                value="100">&nbsp;Not at all (100)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_socialactivities" (click)="sf36scoresocialactivitiesChange($event)" name="patient.sf36_socialactivities"
+                value="75">&nbsp;Slightly (75)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_socialactivities" (click)="sf36scoresocialactivitiesChange($event)" name="patient.sf36_socialactivities"
+                value="50">&nbsp;Moderately (50)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_socialactivities" (click)="sf36scoresocialactivitiesChange($event)" name="patient.sf36_socialactivities"
+                value="25">&nbsp;Quite a bit (25)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_socialactivities" (click)="sf36scoresocialactivitiesChange($event)" name="patient.sf36_socialactivities"
+                value="0">&nbsp;Extremely (0)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                21. How much bodily pain have you had during the past 4 weeks?
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.sf36_bodilypain" (click)="sf36scorebodilypainChange($event)" name="patient.sf36_bodilypain"
+                value="100">&nbsp;None (100)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_bodilypain" (click)="sf36scorebodilypainChange($event)" name="patient.sf36_bodilypain"
+                value="80">&nbsp;Very mild (80)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_bodilypain" (click)="sf36scorebodilypainChange($event)" name="patient.sf36_bodilypain"
+                value="60">&nbsp;Mild (60)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_bodilypain" (click)="sf36scorebodilypainChange($event)" name="patient.sf36_bodilypain"
+                value="40">&nbsp;Moderate (40)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_bodilypain" (click)="sf36scorebodilypainChange($event)" name="patient.sf36_bodilypain"
+                value="20">&nbsp;Severe (20)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_bodilypain" (click)="sf36scorebodilypainChange($event)" name="patient.sf36_bodilypain"
+                value="0">&nbsp;Very severe (0)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                22. During the past 4 weeks, how much did pain interfere with your normal work (including both work outside the home and
+                housework)?
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.sf36_paininterfere" (click)="sf36scorepaininterfereChange($event)" name="patient.sf36_paininterfere"
+                value="100">&nbsp;Not at all (100)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_paininterfere" (click)="sf36scorepaininterfereChange($event)" name="patient.sf36_paininterfere"
+                value="75">&nbsp;Slightly (75)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_paininterfere" (click)="sf36scorepaininterfereChange($event)" name="patient.sf36_paininterfere"
+                value="50">&nbsp;Moderately (50)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_paininterfere" (click)="sf36scorepaininterfereChange($event)" name="patient.sf36_paininterfere"
+                value="25">&nbsp;Quite a bit (25)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_paininterfere" (click)="sf36scorepaininterfereChange($event)" name="patient.sf36_paininterfere"
+                value="0">&nbsp;Extremely (0)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-10"><label> These questions are about how you feel and how things have been with you during the past 4 weeks. For each question, please give the one answer that comes closest to the way you have been feeling.</label></div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                23. Did you feel full of pep?
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.sf36_feelfull" (click)="sf36scorefeelfullChange($event)" name="patient.sf36_feelfull"
+                value="100">&nbsp;All of the Time (100)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_feelfull" (click)="sf36scorefeelfullChange($event)" name="patient.sf36_feelfull"
+                value="80">&nbsp;Most of the Time (80)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_feelfull" (click)="sf36scorefeelfullChange($event)" name="patient.sf36_feelfull"
+                value="60">&nbsp;A Good Bit of the Time (60)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_feelfull" (click)="sf36scorefeelfullChange($event)" name="patient.sf36_feelfull"
+                value="40">&nbsp;Some of the Time (40)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_feelfull" (click)="sf36scorefeelfullChange($event)" name="patient.sf36_feelfull"
+                value="20">&nbsp;A Little of the Time (20)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_feelfull" (click)="sf36scorefeelfullChange($event)" name="patient.sf36_feelfull"
+                value="0">&nbsp;None of the Time (0)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                24. Have you been a very nervous person?
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.sf36_nervous" (click)="sf36scorenervousChange($event)" name="patient.sf36_nervous"
+                value="0">&nbsp;All of the Time (0)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_nervous" (click)="sf36scorenervousChange($event)" name="patient.sf36_nervous"
+                value="20">&nbsp;Most of the Time (20)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_nervous" (click)="sf36scorenervousChange($event)" name="patient.sf36_nervous"
+                value="40">&nbsp;A Good Bit of the Time (40)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_nervous" (click)="sf36scorenervousChange($event)" name="patient.sf36_nervous"
+                value="60">&nbsp;Some of the Time (60)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_nervous" (click)="sf36scorenervousChange($event)" name="patient.sf36_nervous"
+                value="80">&nbsp;A Little of the Time (80)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_nervous" (click)="sf36scorenervousChange($event)" name="patient.sf36_nervous"
+                value="100">&nbsp;None of the Time (100)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                25. Have you felt so down in the dumps that nothing could cheer you up?
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.sf36_dumps" (click)="sf36scoredumpsChange($event)" name="patient.sf36_dumps" value="0">&nbsp;All
+              of the Time (0)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_dumps" (click)="sf36scoredumpsChange($event)" name="patient.sf36_dumps" value="20">&nbsp;Most
+              of the Time (20)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_dumps" (click)="sf36scoredumpsChange($event)" name="patient.sf36_dumps" value="40">&nbsp;A
+              Good Bit of the Time (40)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_dumps" (click)="sf36scoredumpsChange($event)" name="patient.sf36_dumps" value="60">&nbsp;Some
+              of the Time (60)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_dumps" (click)="sf36scoredumpsChange($event)" name="patient.sf36_dumps" value="80">&nbsp;A
+              Little of the Time (80)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_dumps" (click)="sf36scoredumpsChange($event)" name="patient.sf36_dumps" value="100">&nbsp;None
+              of the Time (100)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                26. Have you felt calm and peaceful?
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.sf36_calm" (click)="sf36scorecalmChange($event)" name="patient.sf36_calm" value="100">&nbsp;All
+              of the Time (100)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_calm" (click)="sf36scorecalmChange($event)" name="patient.sf36_calm" value="80">&nbsp;Most
+              of the Time (80)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_calm" (click)="sf36scorecalmChange($event)" name="patient.sf36_calm" value="60">&nbsp;A
+              Good Bit of the Time (60)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_calm" (click)="sf36scorecalmChange($event)" name="patient.sf36_calm" value="40">&nbsp;Some
+              of the Time (40)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_calm" (click)="sf36scorecalmChange($event)" name="patient.sf36_calm" value="20">&nbsp;A
+              Little of the Time (20)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_calm" (click)="sf36scorecalmChange($event)" name="patient.sf36_calm" value="0">&nbsp;None
+              of the Time (0)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                27. Did you have a lot of energy?
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.sf36_energy" (click)="sf36scoreenergyChange($event)" name="patient.sf36_energy"
+                value="100">&nbsp;All of the Time (100)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_energy" (click)="sf36scoreenergyChange($event)" name="patient.sf36_energy"
+                value="80">&nbsp;Most of the Time (80)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_energy" (click)="sf36scoreenergyChange($event)" name="patient.sf36_energy"
+                value="60">&nbsp;A Good Bit of the Time (60)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_energy" (click)="sf36scoreenergyChange($event)" name="patient.sf36_energy"
+                value="40">&nbsp;Some of the Time (40)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_energy" (click)="sf36scoreenergyChange($event)" name="patient.sf36_energy"
+                value="20">&nbsp;A Little of the Time (20)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_energy" (click)="sf36scoreenergyChange($event)" name="patient.sf36_energy"
+                value="0">&nbsp;None of the Time (0)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                28. Have you felt downhearted and blue?
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.sf36_downhearted" (click)="sf36scoredownheartedChange($event)" name="patient.sf36_downhearted"
+                value="0">&nbsp;All of the Time (0)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_downhearted" (click)="sf36scoredownheartedChange($event)" name="patient.sf36_downhearted"
+                value="20">&nbsp;Most of the Time (20)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_downhearted" (click)="sf36scoredownheartedChange($event)" name="patient.sf36_downhearted"
+                value="40">&nbsp;A Good Bit of the Time (40)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_downhearted" (click)="sf36scoredownheartedChange($event)" name="patient.sf36_downhearted"
+                value="60">&nbsp;Some of the Time (60)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_downhearted" (click)="sf36scoredownheartedChange($event)" name="patient.sf36_downhearted"
+                value="80">&nbsp;A Little of the Time (80)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_downhearted" (click)="sf36scoredownheartedChange($event)" name="patient.sf36_downhearted"
+                value="100">&nbsp;None of the Time (100)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                29. Did you feel worn out?
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.sf36_feelworn" (click)="sf36scorefeelwornChange($event)" name="patient.sf36_feelworn"
+                value="0">&nbsp;All of the Time (0)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_feelworn" (click)="sf36scorefeelwornChange($event)" name="patient.sf36_feelworn"
+                value="20">&nbsp;Most of the Time (20)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_feelworn" (click)="sf36scorefeelwornChange($event)" name="patient.sf36_feelworn"
+                value="40">&nbsp;A Good Bit of the Time (40)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_feelworn" (click)="sf36scorefeelwornChange($event)" name="patient.sf36_feelworn"
+                value="60">&nbsp;Some of the Time (60)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_feelworn" (click)="sf36scorefeelwornChange($event)" name="patient.sf36_feelworn"
+                value="80">&nbsp;A Little of the Time (80)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_feelworn" (click)="sf36scorefeelwornChange($event)" name="patient.sf36_feelworn"
+                value="100">&nbsp;None of the Time (100)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                30. Have you been a happy person?
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.sf36_happyperson" (click)="sf36scorehappypersonChange($event)" name="patient.sf36_happyperson"
+                value="100">&nbsp;All of the Time (100)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_happyperson" (click)="sf36scorehappypersonChange($event)" name="patient.sf36_happyperson"
+                value="80">&nbsp;Most of the Time (80)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_happyperson" (click)="sf36scorehappypersonChange($event)" name="patient.sf36_happyperson"
+                value="60">&nbsp;A Good Bit of the Time (60)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_happyperson" (click)="sf36scorehappypersonChange($event)" name="patient.sf36_happyperson"
+                value="40">&nbsp;Some of the Time (40)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_happyperson" (click)="sf36scorehappypersonChange($event)" name="patient.sf36_happyperson"
+                value="20">&nbsp;A Little of the Time (20)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_happyperson" (click)="sf36scorehappypersonChange($event)" name="patient.sf36_happyperson"
+                value="0">&nbsp;None of the Time (0)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                31. Did you feel tired?
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.sf36_feeltired" (click)="sf36scorefeeltiredChange($event)" name="patient.sf36_feeltired"
+                value="0">&nbsp;All of the Time (0)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_feeltired" (click)="sf36scorefeeltiredChange($event)" name="patient.sf36_feeltired"
+                value="20">&nbsp;Most of the Time (20)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_feeltired" (click)="sf36scorefeeltiredChange($event)" name="patient.sf36_feeltired"
+                value="40">&nbsp;A Good Bit of the Time (40)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_feeltired" (click)="sf36scorefeeltiredChange($event)" name="patient.sf36_feeltired"
+                value="60">&nbsp;Some of the Time (60)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_feeltired" (click)="sf36scorefeeltiredChange($event)" name="patient.sf36_feeltired"
+                value="80">&nbsp;A Little of the Time (80)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_feeltired" (click)="sf36scorefeeltiredChange($event)" name="patient.sf36_feeltired"
+                value="100">&nbsp;None of the Time (100)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                32. During the past 4 weeks, how much of the time has your physical health or emotional problems interfered with your social
+                activities (like visiting with friends, relatives, etc.)?
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.sf36_physicalhealth" (click)="sf36scorephysicalhealthChange($event)" name="patient.sf36_physicalhealth"
+                value="0">&nbsp;All of the Time (0)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_physicalhealth" (click)="sf36scorephysicalhealthChange($event)" name="patient.sf36_physicalhealth"
+                value="25">&nbsp;Most of the Time (25)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_physicalhealth" (click)="sf36scorephysicalhealthChange($event)" name="patient.sf36_physicalhealth"
+                value="50">&nbsp;Some of the Time (50)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_physicalhealth" (click)="sf36scorephysicalhealthChange($event)" name="patient.sf36_physicalhealth"
+                value="75">&nbsp;A Little of the Time (75)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_physicalhealth" (click)="sf36scorephysicalhealthChange($event)" name="patient.sf36_physicalhealth"
+                value="100">&nbsp;None of the Time (100)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-10"><label> How TRUE or FALSE is each of the following statements for you?</label></div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                33. I seem to get sick a little easier than other people.
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.sf36_sick" (click)="sf36scoresickChange($event)" name="patient.sf36_sick" value="0">&nbsp;Definitely
+              true (0)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_sick" (click)="sf36scoresickChange($event)" name="patient.sf36_sick" value="25">&nbsp;Mostly
+              true (25)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_sick" (click)="sf36scoresickChange($event)" name="patient.sf36_sick" value="50">&nbsp;Don't
+              know (50)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_sick" (click)="sf36scoresickChange($event)" name="patient.sf36_sick" value="75">&nbsp;Mostly
+              false (75)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_sick" (click)="sf36scoresickChange($event)" name="patient.sf36_sick" value="100">&nbsp;Definitely
+              false (100)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                34. I am as healthy as anybody I know.
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.sf36_healthy" (click)="sf36scorehealthyChange($event)" name="patient.sf36_healthy"
+                value="100">&nbsp;Definitely true (100)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_healthy" (click)="sf36scorehealthyChange($event)" name="patient.sf36_healthy"
+                value="75">&nbsp;Mostly true (75)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_healthy" (click)="sf36scorehealthyChange($event)" name="patient.sf36_healthy"
+                value="50">&nbsp;Don't know (50)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_healthy" (click)="sf36scorehealthyChange($event)" name="patient.sf36_healthy"
+                value="25">&nbsp;Mostly false (25)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_healthy" (click)="sf36scorehealthyChange($event)" name="patient.sf36_healthy"
+                value="0">&nbsp;Definitely false (0)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                35. I expect my health to get worse.
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.sf36_getworse" (click)="sf36scoregetworseChange($event)" name="patient.sf36_getworse"
+                value="0">&nbsp;Definitely true (0)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_getworse" (click)="sf36scoregetworseChange($event)" name="patient.sf36_getworse"
+                value="25">&nbsp;Mostly true (25)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_getworse" (click)="sf36scoregetworseChange($event)" name="patient.sf36_getworse"
+                value="50">&nbsp;Don't know (50)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_getworse" (click)="sf36scoregetworseChange($event)" name="patient.sf36_getworse"
+                value="75">&nbsp;Mostly false (75)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_getworse" (click)="sf36scoregetworseChange($event)" name="patient.sf36_getworse"
+                value="100">&nbsp;Definitely false (100)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <p>
+                36. My health is excellent.
+              </p>
+            </div>
+            <div class="col-lg-6">
+              <input type="radio" [(ngModel)]="patient.sf36_excellent" (click)="sf36scoreexcellentChange($event)" name="patient.sf36_excellent"
+                value="100">&nbsp;Definitely true (100)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_excellent" (click)="sf36scoreexcellentChange($event)" name="patient.sf36_excellent"
+                value="75">&nbsp;Mostly true (75)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_excellent" (click)="sf36scoreexcellentChange($event)" name="patient.sf36_excellent"
+                value="50">&nbsp;Don't know (50)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_excellent" (click)="sf36scoreexcellentChange($event)" name="patient.sf36_excellent"
+                value="25">&nbsp;Mostly false (25)<br>
+              <input type="radio" [(ngModel)]="patient.sf36_excellent" (click)="sf36scoreexcellentChange($event)" name="patient.sf36_excellent"
+                value="0">&nbsp;Definitely false (0)
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-3">
+              <p>
+                Physical Functioning
+              </p>
+            </div>
+            <div class="col-lg-3">
+              <input type="text" readonly class="form-control" [(ngModel)]="patient.totalsf36score" name="patient.totalsf36score">
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-3">
+              <p>
+                Role limitation due to physical health
+              </p>
+            </div>
+            <div class="col-lg-3">
+              <input type="text" readonly class="form-control" [(ngModel)]="patient.sf36_rolelimitation" name="patient.sf36_rolelimitation">
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-3">
+              <p>
+                Role limitation due to emotional problem
+              </p>
+            </div>
+            <div class="col-lg-3">
+              <input type="text" readonly class="form-control" [(ngModel)]="patient.sf36_emotional" name="patient.sf36_emotional">
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-3">
+              <p>
+                Energy/fatigue
+              </p>
+            </div>
+            <div class="col-lg-3">
+              <input type="text" readonly class="form-control" [(ngModel)]="patient.sf36_energyfatigue" name="patient.sf36_energyfatigue">
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-3">
+              <p>
+                Emotional well-being
+              </p>
+            </div>
+            <div class="col-lg-3">
+              <input type="text" readonly class="form-control" [(ngModel)]="patient.sf36_wellbeing" name="patient.sf36_wellbeing">
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-3">
+              <p>
+                Social functioning
+              </p>
+            </div>
+            <div class="col-lg-3">
+              <input type="text" readonly class="form-control" [(ngModel)]="patient.sf36_Socialfunction" name="patient.sf36_Socialfunction">
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-3">
+              <p>
+                Pain
+              </p>
+            </div>
+            <div class="col-lg-3">
+              <input type="text" readonly class="form-control" [(ngModel)]="patient.sf36_pain" name="patient.sf36_pain">
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-3">
+              <p>
+                General health
+              </p>
+            </div>
+            <div class="col-lg-3">
+              <input type="text" readonly class="form-control" [(ngModel)]="patient.sf36_health" name="patient.sf36_health">
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-lg-12">Comments / Interpretation (to be completed by therapist only) :</div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" data-dismiss="modal" class="btn btn-primary" (click)="addsf36score(patient)">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SF36 score end-->
+
+  
+
+
+  
+
+  <!-- scoring modal windows end  -->
+</app-tab-content>
+<!-- End preoperative form-->

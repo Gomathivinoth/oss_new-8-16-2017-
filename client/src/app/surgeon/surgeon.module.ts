@@ -23,6 +23,9 @@ import { SpinePatientsComponent } from './components/spine/spine-patients/spine-
 import { DemographicComponent } from './components/demographic/demographic.component';
 import { TabComponent } from './components/tab/tab.component';
 import { TabContentComponent } from './components/tab-content/tab-content.component';
+import { PreoperativeComponent } from './components/hip/preoperative/preoperative.component';
+import { PrimaryRadiologyComponent } from './components/hip/primary-radiology/primary-radiology.component';
+import { PrimaryPostoperativeComponent } from './components/hip/primary-postoperative/primary-postoperative.component';
 
 
 
@@ -45,7 +48,10 @@ import { TabContentComponent } from './components/tab-content/tab-content.compon
     SpinePatientsComponent,
     DemographicComponent,
     TabComponent,
-    TabContentComponent
+    TabContentComponent,
+    PreoperativeComponent,
+    PrimaryRadiologyComponent,
+    PrimaryPostoperativeComponent
   ],
   imports: [
     AppRoutingModule,    

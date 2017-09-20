@@ -1,47 +1,352 @@
-<!-- <div class="row">
-  <div class="col-md-1"></div>
-  <div class="col-md-8">
-    <div class="alert alert-success">
-      <p style="font-size:27px;">{{hospitalName}}</p>
-      <p style="font-size:18px;">{{address}}</p>
+<div class="row">
+  <div class="col-md-2"></div>
+  <div class="col-md-7">
+    <div class="tabs-selection" *ngIf="disable">
+      <app-tab [style.background-color]="applyblue? '#bbb': 'green'" [style.color]="applyblue? 'black': 'white'" (click)="demographic()">Demographic</app-tab>
+      <app-tab style="cursor:not-allowed;">Pre-Operative</app-tab>
+      <app-tab style="cursor:not-allowed;">Radiology</app-tab>
+      <app-tab style="cursor:not-allowed;">Intra Operative</app-tab>
+      <app-tab style="cursor:not-allowed;">Post Operative</app-tab>
+      <app-tab style="cursor:not-allowed;">Post Operative scores</app-tab>
+    </div>
+    <div class="tabs-selection" *ngIf="!disable">
+      <app-tab [style.background-color]="applydemographic? '#bbb': 'green'" [style.color]="applydemographic? 'black': 'white'"
+        (click)="demographic()">Demographic</app-tab>
+      <app-tab [style.background-color]="applypreoperative? '#bbb': 'green'" [style.color]="applypreoperative? 'black': 'white'"
+        (click)="patientPreOperative()">Pre-Operative</app-tab>
+      <app-tab [style.background-color]="applyradiology? '#bbb': 'green'" [style.color]="applyradiology? 'black': 'white'" (click)="radiology()">Radiology</app-tab>
+      <app-tab [style.background-color]="applyintraoperative? '#bbb': 'green'" [style.color]="applyintraoperative? 'black': 'white'"
+        (click)="intraoperative()">Intra Operative</app-tab>
+      <app-tab [style.background-color]="applypostoperative? '#bbb': 'green'" [style.color]="applypostoperative? 'black': 'white'"
+        (click)="postoperative()">Post Operative</app-tab>
+      <app-tab  [style.background-color]="applypostoperativescpre? '#bbb': 'green'" [style.color]="applypostoperativescpre? 'black': 'white'"
+      (click)="postoperativescore()">Post Operative scores</app-tab>
     </div>
   </div>
-  <div class="col-md-3" style="font-weight:bold;">
-    <div class="row">
-      <div class="col-md-3">Surgeon</div>
-      <div class="col-md-6">Dr. {{surgeonName}}</div>
-    </div>
-    <div class="row">
-      <div class="col-md-3">Date</div>
-      <div class="col-md-6">{{todaydate}}</div>
-    </div>
+</div>
+<br>
+<app-tab-content *ngIf="patient_demographic">
+  <div class="row" >
+    <form #patientForm="ngForm" (ngSubmit)="addPatient(patient)" novalidate>
+      <div class="col-md-2"></div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <input type="hidden" class="form-control" placeholder="*Enter First Name" name="patient.hospitalId" [(ngModel)]="patient.hospitalId">
+          <input type="hidden" class="form-control" placeholder="*Enter First Name" name="patient.branchId" [(ngModel)]="patient.branchId">
+          <input type="hidden" class="form-control" placeholder="*Enter First Name" name="patient.surgeonId" [(ngModel)]="patient.surgeonId">
+          <label>First Name</label>
+          <input type="text" #reffName="ngModel" required class="form-control" placeholder="*Enter First Name" name="patient.firstname"
+            [(ngModel)]="patient.firstname">
+          <div *ngIf="firstname">
+            <div *ngIf="reffName.errors && (reffName.dirty || reffName.touched)" class="alert alert-danger">
+              <div [hidden]="!reffName.errors.required">
+                Enter First Name
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Middle Name</label>
+          <input type="text" #refMName="ngModel" required class="form-control" placeholder="*Enter Middle Name" name="patient.middlename"
+            [(ngModel)]="patient.middlename">
+          <div *ngIf="middlename">
+            <div *ngIf="refMName.errors && (refMName.dirty || refMName.touched)" class="alert alert-danger">
+              <div [hidden]="!refMName.errors.required">
+                Enter Middle Name
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" #refLName="ngModel" required class="form-control" placeholder="*Enter Last Name" name="patient.lastname"
+            [(ngModel)]="patient.lastname">
+          <div *ngIf="lastname">
+            <div *ngIf="refLName.errors && (refLName.dirty || refLName.touched)" class="alert alert-danger">
+              <div [hidden]="!refLName.errors.required">
+                Enter Middle Name
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>DOB(DD/MM/YYYY) </label>
+          <input type="date" #refdob="ngModel" (change)="datecheckvalue($event)" required class="form-control" placeholder="__/__/___"
+            name="patient.dob" [(ngModel)]="patient.dob">
+          <div *ngIf="dob">
+            <div *ngIf="refdob.errors && (refdob.dirty || refdob.touched)" class="alert alert-danger">
+              <div [hidden]="!refdob.errors.required">
+                Enter DOB
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Age</label>
+          <div class="input-group date form_datetime" data-link-field="inputLastSeen">
+            <input type="text" #refage="ngModel" required class="form-control" placeholder="*Enter age" name="patient.age" [(ngModel)]="patient.age">
+            <span class="input-group-addon">
+                  Yrs
+              </span>
+          </div>
+          <div *ngIf="age">
+            <div *ngIf="refage.errors && (refage.dirty || refage.touched)" class="alert alert-danger">
+              <div [hidden]="!refage.errors.required">
+                Enter Age
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Gender</label><br>
+          <label class="radio-inline">
+             <input type="radio"  #refgender="ngModel" required  [(ngModel)]="patient.gender"  name="patient.gender" value="Male">Male
+          </label>
+          <label class="radio-inline">
+             <input type="radio"  #refgender="ngModel" required  [(ngModel)]="patient.gender"  name="patient.gender" value="female">Female
+          </label>
+          <div *ngIf="gender">
+            <div *ngIf="refgender.errors && (refgender.dirty || refgender.touched)" class="alert alert-danger">
+              <div [hidden]="!refgender.errors.required">
+                Select gender
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Height</label>
+          <div class="input-group date form_datetime" data-link-field="inputLastSeen">
+            <input type="text" #refheight="ngModel" required (keyup)="onKey($event)" class="form-control" placeholder="*Enter height"
+              name="patient.height" [(ngModel)]="patient.height">
+            <span class="input-group-addon">
+                  Cm
+              </span>
+          </div>
+          <div *ngIf="height">
+            <div *ngIf="refheight.errors && (refheight.dirty || refheight.touched)" class="alert alert-danger">
+              <div [hidden]="!refheight.errors.required">
+                Enter height
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Weight</label>
+          <div class="input-group date form_datetime" data-link-field="inputLastSeen">
+            <input type="text" #refweight="ngModel" (keyup)="bmicalucation($event)" required class="form-control" placeholder="*Enter weight"
+              name="patient.weight" [(ngModel)]="patient.weight">
+            <span class="input-group-addon">
+                Kg
+              </span>
+          </div>
+          <div *ngIf="weight">
+            <div *ngIf="refweight.errors && (refweight.dirty || refweight.touched)" class="alert alert-danger">
+              <div [hidden]="!refweight.errors.required">
+                Enter weight
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>BMI</label>
+          <input type="text" #refbmi="ngModel" required class="form-control" readonly placeholder="*Enter BMI" name="patient.bmi" [(ngModel)]="patient.bmi">
+          <div *ngIf="bmi">
+            <div *ngIf="refbmi.errors && (refbmi.dirty || refbmi.touched)" class="alert alert-danger">
+              <div [hidden]="!refbmi.errors.required">
+                Enter BMI
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>UHID</label>
+          <input type="text" #refuhid="ngModel" required class="form-control" placeholder="*Enter UHID" name="patient.uhid" [(ngModel)]="patient.uhid">
+          <div *ngIf="uhid">
+            <div *ngIf="refuhid.errors && (refuhid.dirty || refuhid.touched)" class="alert alert-danger">
+              <div [hidden]="!refuhid.errors.required">
+                Enter UHID
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Study Id</label>
+          <input type="text" #refstudyid="ngModel" required class="form-control" placeholder="*Enter Study Id" name="patient.studyid"
+            [(ngModel)]="patient.studyid" readonly>
+          <div *ngIf="studyid">
+            <div *ngIf="refstudyid.errors && (refstudyid.dirty || refstudyid.touched)" class="alert alert-danger">
+              <div [hidden]="!refstudyid.errors.required">
+                Enter Study id
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label>Address</label>
+          <input type="text" #refaddress="ngModel" required class="form-control" placeholder="*Enter Address" name="patient.address"
+            [(ngModel)]="patient.address">
+          <div *ngIf="address">
+            <div *ngIf="refaddress.errors && (refaddress.dirty || refaddress.touched)" class="alert alert-danger">
+              <div [hidden]="!refaddress.errors.required">
+                Enter City
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>City</label>
+          <input type="text" #refcity="ngModel" required class="form-control" placeholder="*Enter city" name="patient.city" [(ngModel)]="patient.city">
+          <div *ngIf="city">
+            <div *ngIf="refcity.errors && (refcity.dirty || refcity.touched)" class="alert alert-danger">
+              <div [hidden]="!refcity.errors.required">
+                Enter City
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>State</label>
+          <input type="text" #refstate="ngModel" required class="form-control" placeholder="*Enter state" name="patient.state" [(ngModel)]="patient.state">
+          <div *ngIf="state">
+            <div *ngIf="refstate.errors && (refstate.dirty || refstate.touched)" class="alert alert-danger">
+              <div [hidden]="!refstate.errors.required">
+                Enter State
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Country</label>
+          <input type="text" #refcountry="ngModel" required class="form-control" placeholder="*Enter country" name="patient.country"
+            [(ngModel)]="patient.country">
+          <div *ngIf="country">
+            <div *ngIf="refcountry.errors && (refcountry.dirty || refcountry.touched)" class="alert alert-danger">
+              <div [hidden]="!refcountry.errors.required">
+                Enter Country
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Zipcode</label>
+          <input type="text" #refzipcode="ngModel" required pattern="[0-9]{6}" maxlength="6" class="form-control" placeholder="*Enter zipcode"
+            name="patient.zipcode" [(ngModel)]="patient.zipcode">
+          <div *ngIf="zipcode">
+            <div *ngIf="refzipcode.errors && (refzipcode.dirty || refzipcode.touched)" class="alert alert-danger">
+              <div [hidden]="!refzipcode.errors.required">
+                Enter zipcode
+              </div>
+              <div [hidden]="!refzipcode.errors.pattern">
+                Please enter 6 digits
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Telephone No</label>
+          <input type="text" #refTelephone="ngModel" pattern="[0-9]{11}" maxlength="11" required class="form-control" placeholder="*Enter Telephone Number"
+            name="patient.telephone" [(ngModel)]="patient.telephone">
+          <div *ngIf="telephone">
+            <div *ngIf="refTelephone.errors && (refTelephone.dirty || refTelephone.touched)" class="alert alert-danger">
+              <div [hidden]="!refTelephone.errors.required">
+                Enter Telephone Number
+              </div>
+              <div [hidden]="!refTelephone.errors.pattern">
+                Please enter 12 digits
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="text" #refPhone="ngModel" pattern="[789][0-9]{9}" maxlength="10" required class="form-control" placeholder="*Enter Mobile Number"
+            name="patient.phoneno" [(ngModel)]="patient.phoneno">
+          <div *ngIf="phoneno">
+            <div *ngIf="refPhone.errors && (refPhone.dirty || refPhone.touched)" class="alert alert-danger">
+              <div [hidden]="!refPhone.errors.required">
+                Enter Phone Number
+              </div>
+              <div [hidden]="!refPhone.errors.pattern">
+                Please enter 10 digits
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="text" #refEmail="ngModel" required class="form-control" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" placeholder="*Enter Email"
+            name="patient.email" [(ngModel)]="patient.email">
+          <div *ngIf="email">
+            <div *ngIf="refEmail.errors && (refEmail.dirty || refEmail.touched)" class="alert alert-danger">
+              <div [hidden]="!refEmail.errors.required">
+                Enter Email
+              </div>
+              <div [hidden]="!refEmail.errors.pattern">
+                Please enter valid emailid
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Hip Type</label><br>
+          <label class="radio-inline">
+             <input type="radio"  #reftype="ngModel" required  [(ngModel)]="patient.side"  name="patient.side"(change)="bilateralChange1($event)" value="Left">Left
+          </label>
+          <label class="radio-inline">
+             <input type="radio"  #reftype="ngModel" required  [(ngModel)]="patient.side"  name="patient.side" (change)="bilateralChange1($event)"value="Right">Right
+          </label>
+          <label class="radio-inline">
+             <input type="radio"  #reftype="ngModel" required  [(ngModel)]="patient.side"  (change)="bilateralChange($event)"  name="patient.side" value="BiLateral">BiLateral
+          </label>
+          <div *ngIf="type">
+            <div *ngIf="reftype.errors && (reftype.dirty || reftype.touched)" class="alert alert-danger">
+              <div [hidden]="!reftype.errors.required">
+                Select side
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" *ngIf="bilateral">
+          <label>Difficulty</label><br>
+          <label class="radio-inline">
+             <input type="radio"  #refbilateraltype="ngModel" required  [(ngModel)]="patient.bilateraltype" (change)="bilateraltypeChange($event)"  name="patient.bilateraltype" value="simultaneous">simultaneous
+          </label>
+          <label class="radio-inline">
+             <input type="radio"  #refbilateraltype="ngModel" required  [(ngModel)]="patient.bilateraltype" (change)="bilateraltypeChange($event)"  name="patient.bilateraltype" value="staggered">staggered
+          </label>
+          <div *ngIf="bilateraltype">
+            <div *ngIf="refbilateraltype.errors && (refbilateraltype.dirty || refbilateraltype.touched)" class="alert alert-danger">
+              <div [hidden]="!refbilateraltype.errors.required">
+                Select type
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" *ngIf="combinationvalue">
+          <label>Combination</label><br>
+          <label class="radio-inline">
+             <input type="radio"  #refcombination="ngModel" required  [(ngModel)]="patient.combination"  name="patient.combination" value="LR">LR
+          </label>
+          <label class="radio-inline">
+             <input type="radio"  #refcombination="ngModel" required  [(ngModel)]="patient.combination"  name="patient.combination" value="RL">RL
+          </label>
+          <div *ngIf="combination">
+            <div *ngIf="refcombination.errors && (refcombination.dirty || refcombination.touched)" class="alert alert-danger">
+              <div [hidden]="!refcombination.errors.required">
+                Select Combination
+              </div>
+            </div>
+          </div>
+        </div>
+        <input type="hidden" class="form-control" name="patient.type" [(ngModel)]="patient.type">
+        <div class="text-center">
+          <button class="btn btn-primary" type="submit" [disabled]="!patientForm.form.valid" style="float:right;">Continue</button>
+        </div>
+      </div>
+    </form>
   </div>
-</div> -->
-<style>
-   :host {
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .wrapper {
-      padding: 1rem;
-      background-color: #ddd;
-    }
-
-    .active {
-      background-color: #bbb;
-    }
-    
-    .unselectable {
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        -khtml-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-    }
-</style>
-<div class="wrapper unselectable" [ngClass]="{ active: active }">
-      <ng-content></ng-content>
-      
-    </div>
+</app-tab-content>
