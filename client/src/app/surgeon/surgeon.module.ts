@@ -26,6 +26,17 @@ import { TabContentComponent } from './components/tab-content/tab-content.compon
 import { PreoperativeComponent } from './components/hip/preoperative/preoperative.component';
 import { PrimaryRadiologyComponent } from './components/hip/primary-radiology/primary-radiology.component';
 import { PrimaryPostoperativeComponent } from './components/hip/primary-postoperative/primary-postoperative.component';
+import { KneeprimaryPreoperativeComponent } from './components/knee/kneeprimary-preoperative/kneeprimary-preoperative.component';
+import { KneeprimaryRadiologyComponent } from './components/knee/kneeprimary-radiology/kneeprimary-radiology.component';
+import { KneeprimaryIntraoperativeComponent } from './components/knee/kneeprimary-intraoperative/kneeprimary-intraoperative.component';
+import { KneeprimaryPostoperativeComponent } from './components/knee/kneeprimary-postoperative/kneeprimary-postoperative.component';
+import { KneeprimaryPostoperativescoreComponent } from './components/knee/kneeprimary-postoperativescore/kneeprimary-postoperativescore.component';
+import { KneerevisionPreoperativeComponent } from './components/knee/kneerevision-preoperative/kneerevision-preoperative.component';
+import { KneerevisionRadiologyComponent } from './components/knee/kneerevision-radiology/kneerevision-radiology.component';
+import { KneerevisionIntraoperativeComponent } from './components/knee//kneerevision-intraoperative/kneerevision-intraoperative.component';
+import { KneerevisionPostoperativeComponent } from './components/knee//kneerevision-postoperative/kneerevision-postoperative.component';
+import { KneerevisionPostoperativescoreComponent } from './components/knee/kneerevision-postoperativescore/kneerevision-postoperativescore.component';
+
 
 
 
@@ -51,7 +62,17 @@ import { PrimaryPostoperativeComponent } from './components/hip/primary-postoper
     TabContentComponent,
     PreoperativeComponent,
     PrimaryRadiologyComponent,
-    PrimaryPostoperativeComponent
+    PrimaryPostoperativeComponent,
+    KneeprimaryPreoperativeComponent,
+    KneeprimaryRadiologyComponent,
+    KneeprimaryIntraoperativeComponent,
+    KneeprimaryPostoperativeComponent,
+    KneeprimaryPostoperativescoreComponent,
+    KneerevisionPreoperativeComponent,
+    KneerevisionRadiologyComponent,
+    KneerevisionIntraoperativeComponent,
+    KneerevisionPostoperativeComponent,
+    KneerevisionPostoperativescoreComponent
   ],
   imports: [
     AppRoutingModule,    

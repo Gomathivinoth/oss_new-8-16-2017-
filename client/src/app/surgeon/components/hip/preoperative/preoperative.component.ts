@@ -17,16 +17,21 @@ export class PreoperativeComponent implements OnInit {
   ) { }
 
 
-  patientPreOperative(){
-      this.router.navigate(['surgeon/Hip/hip-primary-preoperative']);
-  }
-  
-  radiology(){
-      this.router.navigate(['surgeon/Hip/hip-primary-radiology']);
+   patientPreOperative() {
+    this.router.navigate(['surgeon/Hip/hip-primary-preoperative/',this.patient.patientId]);
   }
 
-  postoperative(){
-     this.router.navigate(['surgeon/Hip/hip-primary-postoperative']);
+  radiology() {
+    this.router.navigate(['surgeon/Hip/hip-primary-radiology/',this.patient.patientId]);
+  }
+
+  postoperative() {
+    this.router.navigate(['surgeon/Hip/hip-primary-postoperative/',this.patient.patientId]);
+  }
+  getinfosurgeon = {
+    hospitalId: '',
+    branchId: '',
+    surgeonId: ''
   }
   currentUrl;
   disable = false;
@@ -37,11 +42,15 @@ export class PreoperativeComponent implements OnInit {
   patientage;
   patientsex;
   imageDetails;
+  image = {
+    patientId: '',
+    imageId: ''
+  }
   oneyear = true;
-   patient = {
-     patientId :'',
-     post_side:'',
-     surgerydate: '',
+  patient = {
+    patientId: '',
+    post_side: '',
+    surgerydate: '',
     surgeonname: '',
     diagnosis: '',
     diagnosisothername: '',
@@ -59,55 +68,57 @@ export class PreoperativeComponent implements OnInit {
       'comorbiditiesName': String,
       'selected': Boolean,
     }],
-     Previouskneesurgeries: [{
+    Previouskneesurgeries: [{
       'PreviouskneesurgeriesName': String,
       'selected': Boolean,
     }],
-      hiporif: [{
+    hiporif: [{
       'hiporifName': String,
       'selected': Boolean,
     }],
-       deformity: [{
+    deformity: [{
       'deformityName': String,
       'selected': Boolean,
     }],
-     apparent: [{
+    apparent: [{
       'apparentName': String,
       'selected': Boolean,
     }],
-    limp1:'',
-     limptrue: [{
+    limp1: '',
+    limptrue: [{
       'limptrueName': String,
       'selected': Boolean,
     }],
-    limp2:'',
+    limp2: '',
     vitaminD: '',
     vitaminB12: '',
+    filename: '',
+    filetype: '',
+    filesize: '',
 
-     //harris hip score start
-     harriship_pain:0,
-     harriship_walked:0,
-     harriship_socks:0,
-     harriship_transportation:0,
-     harriship_support:0,
-     harriship_limp:0,
-     harriship_stairs:0,
-     harriship_sitting:0,
-     harriship_30degrees:0,
-     harriship_10degrees:0,
-     harriship_10degreesextension:0,
-     harriship_discrepancy:0,
-     harriship_flexion:0,
-     harriship_abduction:0,
-     harriship_extRotation:0,
-     harriship_adduction:0,
-     harriship_rangevalue:0,
-     harriship_hipscore:0,
-     totalharrishipscore:0,
+    //harris hip score start
+    harriship_pain: 0,
+    harriship_walked: 0,
+    harriship_socks: 0,
+    harriship_transportation: 0,
+    harriship_support: 0,
+    harriship_limp: 0,
+    harriship_stairs: 0,
+    harriship_sitting: 0,
+    harriship_30degrees: 0,
+    harriship_10degrees: 0,
+    harriship_10degreesextension: 0,
+    harriship_discrepancy: 0,
+    harriship_flexion: 0,
+    harriship_abduction: 0,
+    harriship_extRotation: 0,
+    harriship_adduction: 0,
+    harriship_hipscore: 0,
+    totalharrishipscore: 0,
 
-      //harris hip score start
+    //harris hip score start
 
-     //sf36 score start
+    //sf36 score start
     totalsf36score: 0,
     sf36_generalhealth: 0,
     generalhealth: 0,
@@ -188,12 +199,32 @@ export class PreoperativeComponent implements OnInit {
     sf36_wellbeing: 0,
     sf36_Socialfunction: 0,
     sf36_pain: 0,
-    sf36_health: 0
+    sf36_health: 0,
     // sf36 score end
-   }
-   totalsf36score ='0';
-   totalharrishipscore = '0';
-   jointInvolvement: any = [
+
+    //statification score start
+
+    statification_joint6month: 0,
+    statification_joint12month:0,
+    statification_regular6month:0,
+    statification_regular12month:0,
+    statification_sport6month:0,
+    statification_sport12month:0,
+    statification_meet6month:0,
+    statification_meet12month:0,
+    statification_scale6month:0,
+    statification_scale12month:0,
+    statification_operation6month:0,
+    statification_operation12month:0,
+    statification_recommend6month:0,
+    statification_recommend12month:0,
+    totalstatificationscore: 0
+    //statification score end
+  }
+  totalstatificationscore = '0';
+  totalsf36score = '0';
+  totalharrishipscore = '0';
+  jointInvolvement: any = [
     { 'otherJointName': 'Opposite side', 'selected': false },
     { 'otherJointName': 'knee', 'selected': false },
     { 'otherJointName': 'Spine', 'selected': false },
@@ -213,7 +244,7 @@ export class PreoperativeComponent implements OnInit {
     { 'symptomsName': 'Knee pain', 'selected': false }
   ];
 
- 
+
   Comorbidities: any = [
     { 'comorbiditiesName': 'Diabetes', 'selected': false },
     { 'comorbiditiesName': 'Hypertension', 'selected': false },
@@ -246,7 +277,7 @@ export class PreoperativeComponent implements OnInit {
     { 'hiporifName': 'Trochanteric', 'selected': false }
   ];
 
-   deformity: any = [
+  deformity: any = [
     { 'deformityName': 'Absent', 'selected': false },
     { 'deformityName': 'Flexion', 'selected': false },
     { 'deformityName': 'Abduction', 'selected': false },
@@ -255,11 +286,11 @@ export class PreoperativeComponent implements OnInit {
     { 'deformityName': ' Ext. Rotation', 'selected': false }
   ];
 
-   apparent: any = [
+  apparent: any = [
     { 'apparentName': 'Apparent', 'selected': false }
   ];
 
-   limptrue: any = [
+  limptrue: any = [
     { 'limptrueName': 'True', 'selected': false }
   ];
 
@@ -272,7 +303,6 @@ export class PreoperativeComponent implements OnInit {
 
 
   // getId() {
-  //  this.currentUrl = this.activatedRoute.snapshot.params;
   //   this.surgeonService.surgeon_SinglePatientId(this.currentUrl.id).subscribe(dataPatientId => {
   //     console.log(dataPatientId);
   //     this.patentId = dataPatientId.message[0].demography._id;
@@ -284,7 +314,167 @@ export class PreoperativeComponent implements OnInit {
   //     this.imageDetails = dataPatientId.message[0].imageupload;
   //   });
   // }
-   // sf36 scoring function start
+
+  //harris hip score function start
+
+  harrisscorepainChange(event: any) {
+    this.patient.harriship_pain = event.target.value;
+    this.patient.totalharrishipscore = +this.patient.harriship_pain + +this.patient.harriship_walked + + this.patient.harriship_socks +
+      +this.patient.harriship_transportation + +this.patient.harriship_support + + this.patient.harriship_limp + +this.patient.harriship_stairs +
+      +this.patient.harriship_sitting + + this.patient.harriship_30degrees + + this.patient.harriship_10degrees + +this.patient.harriship_10degreesextension +
+      +this.patient.harriship_discrepancy + +this.patient.harriship_flexion + +this.patient.harriship_abduction +
+      + this.patient.harriship_extRotation + +this.patient.harriship_adduction;
+  }
+
+  harrisscorewalkedChange(event: any) {
+    this.patient.harriship_walked = event.target.value;
+    this.patient.totalharrishipscore = +this.patient.harriship_pain + +this.patient.harriship_walked + + this.patient.harriship_socks +
+      +this.patient.harriship_transportation + +this.patient.harriship_support + + this.patient.harriship_limp + +this.patient.harriship_stairs +
+      +this.patient.harriship_sitting + + this.patient.harriship_30degrees + + this.patient.harriship_10degrees + +this.patient.harriship_10degreesextension +
+      +this.patient.harriship_discrepancy + +this.patient.harriship_flexion + +this.patient.harriship_abduction +
+      + this.patient.harriship_extRotation + +this.patient.harriship_adduction;
+  }
+
+  harrisscoresocksChange(event: any) {
+    this.patient.harriship_socks = event.target.value;
+    this.patient.totalharrishipscore = +this.patient.harriship_pain + +this.patient.harriship_walked + + this.patient.harriship_socks +
+      +this.patient.harriship_transportation + +this.patient.harriship_support + + this.patient.harriship_limp + +this.patient.harriship_stairs +
+      +this.patient.harriship_sitting + + this.patient.harriship_30degrees + + this.patient.harriship_10degrees + +this.patient.harriship_10degreesextension +
+      +this.patient.harriship_discrepancy + +this.patient.harriship_flexion + +this.patient.harriship_abduction +
+      + this.patient.harriship_extRotation + +this.patient.harriship_adduction;
+  }
+
+  harrisscoretransportationChange(event: any) {
+    this.patient.harriship_transportation = event.target.value;
+    this.patient.totalharrishipscore = +this.patient.harriship_pain + +this.patient.harriship_walked + + this.patient.harriship_socks +
+      +this.patient.harriship_transportation + +this.patient.harriship_support + + this.patient.harriship_limp + +this.patient.harriship_stairs +
+      +this.patient.harriship_sitting + + this.patient.harriship_30degrees + + this.patient.harriship_10degrees + +this.patient.harriship_10degreesextension +
+      +this.patient.harriship_discrepancy + +this.patient.harriship_flexion + +this.patient.harriship_abduction +
+      + this.patient.harriship_extRotation + +this.patient.harriship_adduction;
+  }
+
+  harrisscoresupportChange(event: any) {
+    this.patient.harriship_support = event.target.value;
+    this.patient.totalharrishipscore = +this.patient.harriship_pain + +this.patient.harriship_walked + + this.patient.harriship_socks +
+      +this.patient.harriship_transportation + +this.patient.harriship_support + + this.patient.harriship_limp + +this.patient.harriship_stairs +
+      +this.patient.harriship_sitting + + this.patient.harriship_30degrees + + this.patient.harriship_10degrees + +this.patient.harriship_10degreesextension +
+      +this.patient.harriship_discrepancy + +this.patient.harriship_flexion + +this.patient.harriship_abduction +
+      + this.patient.harriship_extRotation + +this.patient.harriship_adduction;
+  }
+
+  harrisscorelimpChange(event: any) {
+    this.patient.harriship_limp = event.target.value;
+    this.patient.totalharrishipscore = +this.patient.harriship_pain + +this.patient.harriship_walked + + this.patient.harriship_socks +
+      +this.patient.harriship_transportation + +this.patient.harriship_support + + this.patient.harriship_limp + +this.patient.harriship_stairs +
+      +this.patient.harriship_sitting + + this.patient.harriship_30degrees + + this.patient.harriship_10degrees + +this.patient.harriship_10degreesextension +
+      +this.patient.harriship_discrepancy + +this.patient.harriship_flexion + +this.patient.harriship_abduction +
+      + this.patient.harriship_extRotation + +this.patient.harriship_adduction;
+  }
+
+  harrisscorestairsChange(event: any) {
+    this.patient.harriship_stairs = event.target.value;
+    this.patient.totalharrishipscore = +this.patient.harriship_pain + +this.patient.harriship_walked + + this.patient.harriship_socks +
+      +this.patient.harriship_transportation + +this.patient.harriship_support + + this.patient.harriship_limp + +this.patient.harriship_stairs +
+      +this.patient.harriship_sitting + + this.patient.harriship_30degrees + + this.patient.harriship_10degrees + +this.patient.harriship_10degreesextension +
+      +this.patient.harriship_discrepancy + +this.patient.harriship_flexion + +this.patient.harriship_abduction +
+      + this.patient.harriship_extRotation + +this.patient.harriship_adduction;
+  }
+
+  harrisscoresittingChange(event: any) {
+    this.patient.harriship_sitting = event.target.value;
+    this.patient.totalharrishipscore = +this.patient.harriship_pain + +this.patient.harriship_walked + + this.patient.harriship_socks +
+      +this.patient.harriship_transportation + +this.patient.harriship_support + + this.patient.harriship_limp + +this.patient.harriship_stairs +
+      +this.patient.harriship_sitting + + this.patient.harriship_30degrees + + this.patient.harriship_10degrees + +this.patient.harriship_10degreesextension +
+      +this.patient.harriship_discrepancy + +this.patient.harriship_flexion + +this.patient.harriship_abduction +
+      + this.patient.harriship_extRotation + +this.patient.harriship_adduction;
+  }
+
+  harrisscore30degreesChange(event: any) {
+    this.patient.harriship_30degrees = event.target.value;
+    this.patient.totalharrishipscore = +this.patient.harriship_pain + +this.patient.harriship_walked + + this.patient.harriship_socks +
+      +this.patient.harriship_transportation + +this.patient.harriship_support + + this.patient.harriship_limp + +this.patient.harriship_stairs +
+      +this.patient.harriship_sitting + + this.patient.harriship_30degrees + + this.patient.harriship_10degrees + +this.patient.harriship_10degreesextension +
+      +this.patient.harriship_discrepancy + +this.patient.harriship_flexion + +this.patient.harriship_abduction +
+      + this.patient.harriship_extRotation + +this.patient.harriship_adduction;
+  }
+
+  harrisscore10degreesChange(event: any) {
+    this.patient.harriship_10degrees = event.target.value;
+    this.patient.totalharrishipscore = +this.patient.harriship_pain + +this.patient.harriship_walked + + this.patient.harriship_socks +
+      +this.patient.harriship_transportation + +this.patient.harriship_support + + this.patient.harriship_limp + +this.patient.harriship_stairs +
+      +this.patient.harriship_sitting + + this.patient.harriship_30degrees + + this.patient.harriship_10degrees + +this.patient.harriship_10degreesextension +
+      +this.patient.harriship_discrepancy + +this.patient.harriship_flexion + +this.patient.harriship_abduction +
+      + this.patient.harriship_extRotation + +this.patient.harriship_adduction;
+  }
+
+  harrisscore10degreesextensionChange(event: any) {
+    this.patient.harriship_10degreesextension = event.target.value;
+    this.patient.totalharrishipscore = +this.patient.harriship_pain + +this.patient.harriship_walked + + this.patient.harriship_socks +
+      +this.patient.harriship_transportation + +this.patient.harriship_support + + this.patient.harriship_limp + +this.patient.harriship_stairs +
+      +this.patient.harriship_sitting + + this.patient.harriship_30degrees + + this.patient.harriship_10degrees + +this.patient.harriship_10degreesextension +
+      +this.patient.harriship_discrepancy + +this.patient.harriship_flexion + +this.patient.harriship_abduction +
+      + this.patient.harriship_extRotation + +this.patient.harriship_adduction;
+  }
+
+  harrisscorediscrepancyChange(event: any) {
+    this.patient.harriship_discrepancy = event.target.value;
+    this.patient.totalharrishipscore = +this.patient.harriship_pain + +this.patient.harriship_walked + + this.patient.harriship_socks +
+      +this.patient.harriship_transportation + +this.patient.harriship_support + + this.patient.harriship_limp + +this.patient.harriship_stairs +
+      +this.patient.harriship_sitting + + this.patient.harriship_30degrees + + this.patient.harriship_10degrees + +this.patient.harriship_10degreesextension +
+      +this.patient.harriship_discrepancy + +this.patient.harriship_flexion + +this.patient.harriship_abduction +
+      + this.patient.harriship_extRotation + +this.patient.harriship_adduction;
+  }
+
+  harrisscoreflexionChange(event: any) {
+    this.patient.harriship_flexion = event.target.value;
+    this.patient.totalharrishipscore = +this.patient.harriship_pain + +this.patient.harriship_walked + + this.patient.harriship_socks +
+      +this.patient.harriship_transportation + +this.patient.harriship_support + + this.patient.harriship_limp + +this.patient.harriship_stairs +
+      +this.patient.harriship_sitting + + this.patient.harriship_30degrees + + this.patient.harriship_10degrees + +this.patient.harriship_10degreesextension +
+      +this.patient.harriship_discrepancy + +this.patient.harriship_flexion + +this.patient.harriship_abduction +
+      + this.patient.harriship_extRotation + +this.patient.harriship_adduction;
+  }
+
+  harrisscoreabductionChange(event: any) {
+    this.patient.harriship_abduction = event.target.value;
+    this.patient.totalharrishipscore = +this.patient.harriship_pain + +this.patient.harriship_walked + + this.patient.harriship_socks +
+      +this.patient.harriship_transportation + +this.patient.harriship_support + + this.patient.harriship_limp + +this.patient.harriship_stairs +
+      +this.patient.harriship_sitting + + this.patient.harriship_30degrees + + this.patient.harriship_10degrees + +this.patient.harriship_10degreesextension +
+      +this.patient.harriship_discrepancy + +this.patient.harriship_flexion + +this.patient.harriship_abduction +
+      + this.patient.harriship_extRotation + +this.patient.harriship_adduction;
+  }
+
+  harrisscoreextRotationChange(event: any) {
+    this.patient.harriship_extRotation = event.target.value;
+    this.patient.totalharrishipscore = +this.patient.harriship_pain + +this.patient.harriship_walked + + this.patient.harriship_socks +
+      +this.patient.harriship_transportation + +this.patient.harriship_support + + this.patient.harriship_limp + +this.patient.harriship_stairs +
+      +this.patient.harriship_sitting + + this.patient.harriship_30degrees + + this.patient.harriship_10degrees + +this.patient.harriship_10degreesextension +
+      +this.patient.harriship_discrepancy + +this.patient.harriship_flexion + +this.patient.harriship_abduction +
+      + this.patient.harriship_extRotation + +this.patient.harriship_adduction;
+  }
+
+  harrisscoreadductionChange(event: any) {
+    this.patient.harriship_adduction = event.target.value;
+    this.patient.totalharrishipscore = +this.patient.harriship_pain + +this.patient.harriship_walked + + this.patient.harriship_socks +
+      +this.patient.harriship_transportation + +this.patient.harriship_support + + this.patient.harriship_limp + +this.patient.harriship_stairs +
+      +this.patient.harriship_sitting + + this.patient.harriship_30degrees + + this.patient.harriship_10degrees + +this.patient.harriship_10degreesextension +
+      +this.patient.harriship_discrepancy + +this.patient.harriship_flexion + +this.patient.harriship_abduction +
+      + this.patient.harriship_extRotation + +this.patient.harriship_adduction;
+  }
+
+
+
+  addharrishipscore(score) {
+    console.log(score);
+    this.surgeonService.surgeon_Patientharrishipscoure(score).subscribe(data => {
+      this.surgeonService.surgeon_GetLastPatientId().subscribe(dataPatientId => {
+        this.totalharrishipscore = dataPatientId.message[0].preoperative.harrishipscore.totalharrishipscore;
+      });
+    });
+  }
+
+  //harris hip score function end
+
+  // sf36 scoring function start
 
 
   sf36scorevigorousChange(event: any) {
@@ -546,24 +736,223 @@ export class PreoperativeComponent implements OnInit {
     console.log(score);
     this.surgeonService.surgeon_Patientsf36scoure(score).subscribe(data => {
       this.surgeonService.surgeon_GetLastPatientId().subscribe(dataPatientId => {
-        this.totalsf36score = dataPatientId.message[0].preoperative.presf36score.sf36_physicalscore;       
+        this.totalsf36score = dataPatientId.message[0].preoperative.presf36score.sf36_physicalscore;
       });
     });
   }
   // sf36 scoring function end
+
+//statification scoring function start
+
+statificationscorejoint6Change(event: any) {
+    this.patient.statification_joint6month = event.target.value;
+    this.patient.totalstatificationscore = +this.patient.statification_joint6month + +this.patient.statification_joint12month + +this.patient.statification_regular6month +
+      +this.patient.statification_regular12month+ +this.patient.statification_sport6month + + this.patient.statification_sport12month+
+      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month+ 
+      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month+
+      +this.patient.statification_operation12month + + this.patient.statification_recommend6month+ + this.patient.statification_recommend12month;
+  }
+
+  statificationscorejoint12Change(event: any) {
+    this.patient.statification_joint12month = event.target.value;
+    this.patient.totalstatificationscore = +this.patient.statification_joint6month + +this.patient.statification_joint12month + +this.patient.statification_regular6month +
+      +this.patient.statification_regular12month+ +this.patient.statification_sport6month + + this.patient.statification_sport12month+
+      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month+ 
+      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month+
+      +this.patient.statification_operation12month + + this.patient.statification_recommend6month+ + this.patient.statification_recommend12month;
+  }
+
+  statificationscoreregular6Change(event: any) {
+    this.patient.statification_regular6month = event.target.value;
+    this.patient.totalstatificationscore = +this.patient.statification_joint6month + +this.patient.statification_joint12month + +this.patient.statification_regular6month +
+      +this.patient.statification_regular12month+ +this.patient.statification_sport6month + + this.patient.statification_sport12month+
+      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month+ 
+      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month+
+      +this.patient.statification_operation12month + + this.patient.statification_recommend6month+ + this.patient.statification_recommend12month;
+  }
+
+  statificationscoreregular12Change(event: any) {
+    this.patient.statification_regular12month = event.target.value;
+    this.patient.totalstatificationscore = +this.patient.statification_joint6month + +this.patient.statification_joint12month + +this.patient.statification_regular6month +
+      +this.patient.statification_regular12month+ +this.patient.statification_sport6month + + this.patient.statification_sport12month+
+      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month+ 
+      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month+
+      +this.patient.statification_operation12month + + this.patient.statification_recommend6month+ + this.patient.statification_recommend12month;
+  }
+
+  statificationscoresport6Change(event: any) {
+    this.patient.statification_sport6month = event.target.value;
+    this.patient.totalstatificationscore = +this.patient.statification_joint6month + +this.patient.statification_joint12month + +this.patient.statification_regular6month +
+      +this.patient.statification_regular12month+ +this.patient.statification_sport6month + + this.patient.statification_sport12month+
+      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month+ 
+      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month+
+      +this.patient.statification_operation12month + + this.patient.statification_recommend6month+ + this.patient.statification_recommend12month;
+  }
+
+  statificationscoresport12Change(event: any) {
+    this.patient.statification_sport12month = event.target.value;
+    this.patient.totalstatificationscore = +this.patient.statification_joint6month + +this.patient.statification_joint12month + +this.patient.statification_regular6month +
+      +this.patient.statification_regular12month+ +this.patient.statification_sport6month + + this.patient.statification_sport12month+
+      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month+ 
+      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month+
+      +this.patient.statification_operation12month + + this.patient.statification_recommend6month+ + this.patient.statification_recommend12month;
+  }
+
+  statificationscoremeet6Change(event: any) {
+    this.patient.statification_meet6month = event.target.value;
+    this.patient.totalstatificationscore = +this.patient.statification_joint6month + +this.patient.statification_joint12month + +this.patient.statification_regular6month +
+      +this.patient.statification_regular12month+ +this.patient.statification_sport6month + + this.patient.statification_sport12month+
+      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month+ 
+      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month+
+      +this.patient.statification_operation12month + + this.patient.statification_recommend6month+ + this.patient.statification_recommend12month;
+  }
+
+  statificationscoremeet12Change(event: any) {
+    this.patient.statification_meet12month = event.target.value;
+    this.patient.totalstatificationscore = +this.patient.statification_joint6month + +this.patient.statification_joint12month + +this.patient.statification_regular6month +
+      +this.patient.statification_regular12month+ +this.patient.statification_sport6month + + this.patient.statification_sport12month+
+      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month+ 
+      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month+
+      +this.patient.statification_operation12month + + this.patient.statification_recommend6month+ + this.patient.statification_recommend12month;
+  }
+
+  statificationscorescale6Change(event: any) {
+    this.patient.statification_scale6month = event.target.value;
+    this.patient.totalstatificationscore = +this.patient.statification_joint6month + +this.patient.statification_joint12month + +this.patient.statification_regular6month +
+      +this.patient.statification_regular12month+ +this.patient.statification_sport6month + + this.patient.statification_sport12month+
+      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month+ 
+      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month+
+      +this.patient.statification_operation12month + + this.patient.statification_recommend6month+ + this.patient.statification_recommend12month;
+  }
+
+  statificationscorescale12Change(event: any) {
+    this.patient.statification_scale12month = event.target.value;
+    this.patient.totalstatificationscore = +this.patient.statification_joint6month + +this.patient.statification_joint12month + +this.patient.statification_regular6month +
+      +this.patient.statification_regular12month+ +this.patient.statification_sport6month + + this.patient.statification_sport12month+
+      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month+ 
+      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month+
+      +this.patient.statification_operation12month + + this.patient.statification_recommend6month+ + this.patient.statification_recommend12month;
+  }
+
+  statificationscoreoperation6Change(event: any) {
+    this.patient.statification_operation6month = event.target.value;
+    this.patient.totalstatificationscore = +this.patient.statification_joint6month + +this.patient.statification_joint12month + +this.patient.statification_regular6month +
+      +this.patient.statification_regular12month+ +this.patient.statification_sport6month + + this.patient.statification_sport12month+
+      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month+ 
+      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month+
+      +this.patient.statification_operation12month + + this.patient.statification_recommend6month+ + this.patient.statification_recommend12month;
+  }
+
+  statificationscoreoperation12Change(event: any) {
+    this.patient.statification_operation12month = event.target.value;
+    this.patient.totalstatificationscore = +this.patient.statification_joint6month + +this.patient.statification_joint12month + +this.patient.statification_regular6month +
+      +this.patient.statification_regular12month+ +this.patient.statification_sport6month + + this.patient.statification_sport12month+
+      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month+ 
+      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month+
+      +this.patient.statification_operation12month + + this.patient.statification_recommend6month+ + this.patient.statification_recommend12month;
+  }
+
+  statificationscorerecommend6Change(event: any) {
+    this.patient.statification_recommend6month = event.target.value;
+    this.patient.totalstatificationscore = +this.patient.statification_joint6month + +this.patient.statification_joint12month + +this.patient.statification_regular6month +
+      +this.patient.statification_regular12month+ +this.patient.statification_sport6month + + this.patient.statification_sport12month+
+      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month+ 
+      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month+
+      +this.patient.statification_operation12month + + this.patient.statification_recommend6month+ + this.patient.statification_recommend12month;
+  }
+
+  statificationscorerecommend12Change(event: any) {
+    this.patient.statification_recommend12month = event.target.value;
+    this.patient.totalstatificationscore = +this.patient.statification_joint6month + +this.patient.statification_joint12month + +this.patient.statification_regular6month +
+      +this.patient.statification_regular12month+ +this.patient.statification_sport6month + + this.patient.statification_sport12month+
+      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month+ 
+      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month+
+      +this.patient.statification_operation12month + + this.patient.statification_recommend6month+ + this.patient.statification_recommend12month;
+  }
+
+   addstatificationscore(score) {
+    console.log(score);
+    this.surgeonService.surgeon_PatientStatificationscoure(score).subscribe(data => {
+      this.surgeonService.surgeon_GetLastPatientId().subscribe(dataPatientId => {
+        this.totalstatificationscore = dataPatientId.message[0].preoperative.statificationscore.totalstatificationscore;
+      });
+    });
+  }
+
+  
+
+//statification scoring function end
+  Surgeon_GetHospitalInfo() {
+    this.getinfosurgeon.hospitalId = JSON.parse(localStorage.getItem('hospitalId'));
+    this.getinfosurgeon.surgeonId = JSON.parse(localStorage.getItem('surgeonId'));
+    this.getinfosurgeon.branchId = JSON.parse(localStorage.getItem('branchId'));
+    this.surgeonService.surgeon_GetHospitalInfo(this.getinfosurgeon).subscribe(data => {
+      this.patient.surgeonname = data.data1.name;
+
+    });
+
+  }
+
+  profileChangeEvent(fileInput: any) {
+    this.patient.filetype = fileInput.target.files[0]['type'];
+    this.patient.filesize = fileInput.target.files[0]['size'];
+    this.patient.filename = fileInput.target.files[0]['name'];
+    const formData: any = new FormData();
+    const files: Array<File> = <Array<File>>fileInput.target.files;
+    let age = new Date();
+    formData.append("Name", "preoperative_");
+    formData.append("Type", "hipprimary_preoperativeimage");
+    formData.append("Age", Number(age));
+    formData.append("patientId", this.patient.patientId);
+    formData.append("Imagename", this.patient.filename);
+    formData.append("Imagetype", this.patient.filetype);
+    formData.append("Imagesize", this.patient.filesize);
+    formData.append("uploads[]", files[0], files[0]['name']);
+
+    this.surgeonService.uploadImage(formData).subscribe(data => {
+      this.imageDetails = data.data;
+      console.log(this.imageDetails);
+    });
+  }
+
+  deleteImage(patientId, imageId, image) {
+    this.image.patientId = patientId;
+    this.image.imageId = imageId;;
+    this.surgeonService.deleteImage(this.image).subscribe(data => {
+      this.imageDetails = data.data;
+    });
+  }
+
+  addPatientPreoperative(patient){
+    this.surgeonService.surgeon_AddHipPrimaryPreoperative(patient).subscribe(data => { 
+      this.router.navigate(['surgeon/Hip/hip-primary-radiology/',this.patient.patientId]);
+    });
+  }
+
   ngOnInit() {
-   // this.getId();
+    this.Surgeon_GetHospitalInfo();
     this.applypreoperative = true;
-    //this.currentUrl = this.activatedRoute.snapshot.params;
-   // console.log(this.currentUrl.id);
+    this.currentUrl = this.activatedRoute.snapshot.params;
+    //alert(this.currentUrl.id);
+    this.surgeonService.surgeon_SinglePatientId(this.currentUrl.id).subscribe(dataPatientId => {
+      console.log(dataPatientId);
+      console.log(dataPatientId.message.demography.firstname);
+      this.patentId = dataPatientId.message.demography._id;
+      this.patient.patientId = dataPatientId.message._id;
+      this.patientname = dataPatientId.message.demography.firstname + '' + dataPatientId.message.demography.middlename + '' + dataPatientId.message.demography.lastname;
+      this.patientage = dataPatientId.message.demography.age;
+      this.patientsex = dataPatientId.message.demography.gender;
+      this.patient.post_side = dataPatientId.message.demography.side;
+      this.imageDetails = dataPatientId.message.imageupload;
+    });
     this.patient.joint = this.jointInvolvement;
     this.patient.symptoms = this.currentSymptoms;
     this.patient.Comorbidities = this.Comorbidities;
-     this.patient.Previouskneesurgeries = this.Previouskneesurgeries;
-     this.patient.hiporif = this.hiporif;
-     this.patient.deformity = this.deformity;
-     this.patient.apparent = this.apparent;
-     this.patient.limptrue = this.limptrue;
+    this.patient.Previouskneesurgeries = this.Previouskneesurgeries;
+    this.patient.hiporif = this.hiporif;
+    this.patient.deformity = this.deformity;
+    this.patient.apparent = this.apparent;
+    this.patient.limptrue = this.limptrue;
   }
 
 }

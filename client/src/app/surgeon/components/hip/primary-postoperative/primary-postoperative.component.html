@@ -93,7 +93,7 @@
       </div>
 
       <div class="col-md-3">
-        <input type="file" class="form-control" (change)="postfileChangeEvent($event)" ngModel>
+        <input type="file" class="form-control" (change)="profileChangeEvent($event)" ngModel>
       </div>
     </div>
 
@@ -113,7 +113,7 @@
                 <th>Action</th>
               </tr>
               <tbody *ngFor="let image of imageDetails">
-                <tr *ngIf="image.type == 'postoperativeimage'">
+                <tr *ngIf="image.type == 'hipprimary_postoperativeimage'">
                   <td><img src="http://localhost:3000/uploads/{{image.image}}" alt="Profile Pic" width="80px" height="55px" /></td>
                   <td>{{image.imagename}}</td>
                   <td>{{image.imagetype}}</td>

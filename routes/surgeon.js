@@ -187,7 +187,7 @@ module.exports = (router) => {
     });
 
     router.get('/surgeon_CountValue/:id', (req, res) => {
-        console.log(req.params.id);
+        //console.log(req.params.id);
         if (!req.params.id) {
             res.json({ success: false, message: 'No hospital id was provided!!' });
         } else {
@@ -216,23 +216,23 @@ module.exports = (router) => {
 
     });
 
-     router.get('/surgeon_SinglePatientId/:id', (req, res) => {
+    router.get('/surgeon_SinglePatientId/:id', (req, res) => {
+        console.log(req.params.id);
         if (!req.params.id) {
-            res.json({ success: false, message: 'No patient id was provided!!' });
+            res.json({ success: false, message: 'No hospital id was provided!!' });
         } else {
-            Patient.findOne({ _id: req.params.id }, (err, patient) => {
+            Patient.findOne({ _id: req.params.id }, (err, hospital) => {
                 if (err) {
-                    res.json({ success: false, message: 'Not a valid patient id!!' });
+                    res.json({ success: false, message: 'Not a valid hospital id!!' });
                 } else {
-                    if (!patient) {
-                        res.json({ success: false, message: 'No patient found' });
+                    if (!hospital) {
+                        res.json({ success: false, message: 'No hospital found' });
                     } else {
-                        res.json({ success: true, message: patient });
+                        res.json({ success: true, message: hospital });
                     }
                 }
             });
         }
-
     });
 
     router.post('/surgeon_AddPatientPreoperative', (req, res) => {
@@ -349,9 +349,58 @@ module.exports = (router) => {
         }
     });
 
+    router.post('/surgeon_AddHipPrimaryPreoperative', (req, res) => {
+        //console.log(req.body);
+        if (!req.body.patientId) {
+            res.json({ success: false, message: 'No patient Id was provided!' });
+        } else {
+            req.body.patientId = mongoose.Types.ObjectId(req.body.patientId);
+            Patient.findOne({ _id: req.body.patientId }, (err, patient) => {
+                if (err) {
+                    res.json({ success: false, message: 'Not a valid patient Id' });
+                } else {
+                    if (!patient) {
+                        res.json({ success: false, message: 'patient Id was not found' });
+                    } else {
+                        // patient.preoperative.push({
+                        const preoperativeDetails = {
+                            surgerydate: req.body.surgerydate,
+                            surgeonname: req.body.surgeonname,
+                            diagnosis: req.body.diagnosis,
+                            diagnosisothername: req.body.diagnosisothername,
+                            joint: req.body.joint,
+                            symptoms: req.body.symptoms,
+                            onsetsymptom: req.body.onsetsymptom,
+                            noyear: req.body.noyear,
+                            Comorbidities: req.body.Comorbidities,
+                            Previouskneesurgeries: req.body.Previouskneesurgeries,
+                            hiporif: req.body.hiporif,
+                            deformity: req.body.deformity,
+                            apparent: req.body.apparent,
+                            limp1: req.body.limp1,
+                            limptrue: req.body.limptrue,
+                            limp2: req.body.limp2,
+                            vitaminD: req.body.vitaminD,
+                            vitaminB12: req.body.vitaminB12
+                        };
+                        patient.preoperative = preoperativeDetails;
+                        patient.save((err) => {
+                            if (err) {
+                                res.json({ success: false, message: err });
+                            } else {
+                                res.json({ success: true, message: 'Patient Updated!' });
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    });
+
+
 
     router.post('/deleteImage', (req, res) => {
-        console.log(req.body);
+        //console.log(req.body);
         if (!req.body.patientId) {
             res.json({ success: false, message: 'No patient id provided' });
         } else {
@@ -530,7 +579,12 @@ module.exports = (router) => {
                             intra_medialLaxity: req.body.intra_medialLaxity,
                             intra_patellarTracking: req.body.intra_patellarTracking,
                             intra_operativehour: req.body.intra_operativehour,
-                            intra_operativeminute: req.body.intra_operativeminute
+                            intra_operativeminute: req.body.intra_operativeminute,
+                            intra_bloodloss: req.body.intra_bloodloss,
+                            intra_drains: req.body.intra_drains,
+                            intra_mechanical: req.body.intra_mechanical,
+                            intra_pharmacological: req.body.intra_pharmacological,
+                            intra_information: req.body.intra_information
                         };
                         patient.intraoperative = intraoperativeDetails;
                         patient.save((err) => {
@@ -545,6 +599,87 @@ module.exports = (router) => {
             });
         }
     });
+
+    router.post('/surgeon_AddPatientRevisionIntraoperative', (req, res) => {
+        if (!req.body.patientId) {
+            res.json({ success: false, message: 'No patient Id was provided!' });
+        } else {
+            req.body.patientId = mongoose.Types.ObjectId(req.body.patientId);
+            Patient.findOne({ _id: req.body.patientId }, (err, patient) => {
+                if (err) {
+                    res.json({ success: false, message: 'Not a valid patient Id' });
+                } else {
+                    if (!patient) {
+                        res.json({ success: false, message: 'patient Id was not found' });
+                    } else {
+                        // patient.preoperative.push({
+                        const intraoperativeDetails = {
+                            intra_surgicalplan: req.body.intra_surgicalplan,
+                            intra_procedure: req.body.intra_procedure,
+                            intra_navigation: req.body.intra_navigation,
+                            intra_drapes: req.body.intra_drapes,
+                            intra_hoods: req.body.intra_hoods,
+                            intra_prophylactic: req.body.intra_prophylactic,
+                            intra_tranexamicoption: req.body.intra_tranexamicoption,
+                            intra_anaesthesia: req.body.intra_anaesthesia,
+                            intra_grade: req.body.intra_grade,
+                            intra_tourniquet: req.body.intra_tourniquet,
+                            intra_tourniquetpressure: req.body.intra_tourniquetpressure,
+                            intra_arthrotomy: req.body.intra_arthrotomy,
+                            intra_femoralcomp: req.body.intra_femoralcomp,
+                            intra_patellarstatus: req.body.intra_patellarstatus,
+                            intra_aoriclassification: req.body.intra_aoriclassification,
+                            intra_femoralDefect: req.body.intra_femoralDefect,
+                            intra_tibialsizing: req.body.intra_tibialsizing,
+                            intra_pattendon: req.body.intra_pattendon,
+                            intra_spacer: req.body.intra_spacer,
+                            intra_patellarretinaculum: req.body.intra_patellarretinaculum,
+                            intra_medialcollateral: req.body.intra_medialcollateral,
+                            intra_lateralcollateral: req.body.intra_lateralcollateral,
+                            intra_varus: req.body.intra_varus,
+                            intra_valgus: req.body.intra_valgus,
+                            intra_flexion: req.body.intra_flexion,
+                            intra_defectReconstruction: req.body.intra_defectReconstruction,
+                            intra_femoralstem: req.body.intra_femoralstem,
+                            intra_stem: req.body.intra_stem,
+                            intra_tibialstem: req.body.intra_tibialstem,
+                            intra_tstem: req.body.intra_tstem,
+                            intra_cement: req.body.intra_cement,
+                            intra_antibiotic: req.body.intra_antibiotic,
+                            intra_viscosity: req.body.intra_viscosity,
+                            intra_company: req.body.intra_company,
+                            intra_design: req.body.intra_design,
+                            intra_femoralSize: req.body.intra_femoralSize,
+                            intra_tibialSize: req.body.intra_tibialSize,
+                            intra_patellarSize: req.body.intra_patellarSize,
+                            intra_insertPoly: req.body.intra_insertPoly,
+                            intra_componentStability: req.body.intra_componentStability,
+                            intra_contracture: req.body.intra_contracture,
+                            intra_hyperextension: req.body.intra_hyperextension,
+                            intra_medialLaxity: req.body.intra_medialLaxity,
+                            intra_patellarTracking: req.body.intra_patellarTracking,
+                            intra_operativehour: req.body.intra_operativehour,
+                            intra_operativeminute: req.body.intra_operativeminute,
+                            intra_bloodloss: req.body.intra_bloodloss,
+                            intra_drains: req.body.intra_drains,
+                            intra_mechanical: req.body.intra_mechanical,
+                            intra_pharmacological: req.body.intra_pharmacological,
+                            intra_information: req.body.intra_information
+                        };
+                        patient.intraoperative = intraoperativeDetails;
+                        patient.save((err) => {
+                            if (err) {
+                                res.json({ success: false, message: err });
+                            } else {
+                                res.json({ success: true, message: 'Patient Updated!' });
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    });
+
 
     router.post('/surgeon_AddPatientPostoperative', (req, res) => {
         if (!req.body.patientId) {
@@ -581,7 +716,7 @@ module.exports = (router) => {
         }
     });
 
-     router.post('/surgeon_AddPatientRevisionPostoperative', (req, res) => {
+    router.post('/surgeon_AddPatientRevisionPostoperative', (req, res) => {
         if (!req.body.patientId) {
             res.json({ success: false, message: 'No patient Id was provided!' });
         } else {
@@ -602,6 +737,37 @@ module.exports = (router) => {
                             post_hipkneeankle: req.body.post_hipkneeankle,
                             post_filename: req.body.post_filename,
                             post_filetype: req.body.post_filetype
+                        };
+                        patient.postoperative.push(postoperativeDetails);
+                        patient.save((err) => {
+                            if (err) {
+                                res.json({ success: false, message: err });
+                            } else {
+                                res.json({ success: true, message: 'Patient Updated!' });
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    });
+
+    router.post('/surgeon_AddHipPrimaryPostoperative', (req, res) => {
+        if (!req.body.patientId) {
+            res.json({ success: false, message: 'No patient Id was provided!' });
+        } else {
+            req.body.patientId = mongoose.Types.ObjectId(req.body.patientId);
+            Patient.findOne({ _id: req.body.patientId }, (err, patient) => {
+                if (err) {
+                    res.json({ success: false, message: 'Not a valid patient Id' });
+                } else {
+                    if (!patient) {
+                        res.json({ success: false, message: 'patient Id was not found' });
+                    } else {
+                        // patient.preoperative.push({
+                        const postoperativeDetails = {
+                            post_date: req.body.post_date,
+                            post_notes: req.body.post_notes
                         };
                         patient.postoperative.push(postoperativeDetails);
                         patient.save((err) => {
@@ -646,49 +812,12 @@ module.exports = (router) => {
                             kneescore_functiondeductions: req.body.kneescore_functiondeductions,
                             totalfunctionscore: req.body.totalfunctionscore
                         };
-                        patient.preoperative.prekneescore = kneescoreDetails;
-                        patient.save((err) => {
-                            if (err) {
-                                res.json({ success: false, message: err });
-                            } else {
-                                res.json({ success: true, message: 'Patient score Updated!' });
-                            }
-                        });
-                    }
-                }
-            });
-        }
-    });
-    router.post('/surgeon_PatientPostkneescoure', (req, res) => {
-        if (!req.body.patientId) {
-            res.json({ success: false, message: 'No patient Id was provided!' });
-        } else {
-            req.body.patientId = mongoose.Types.ObjectId(req.body.patientId);
-            Patient.findOne({ _id: req.body.patientId }, (err, patient) => {
-                if (err) {
-                    res.json({ success: false, message: 'Not a valid patient Id' });
-                } else {
-                    if (!patient) {
-                        res.json({ success: false, message: 'patient Id was not found' });
-                    } else {
-                        // patient.preoperative.push({
-                        const postkneescoreDetails = {
-                            kneescore_walking: req.body.kneescore_walking,
-                            kneescore_stairs: req.body.kneescore_stairs,
-                            kneescore_point: req.body.kneescore_point,
-                            kneescore_lateral: req.body.kneescore_lateral,
-                            kneescore_posterior: req.body.kneescore_posterior,
-                            kneescore_extension: req.body.kneescore_extension,
-                            kneescore_flexion: req.body.kneescore_flexion,
-                            kneescore_malalignment: req.body.kneescore_malalignment,
-                            kneescore_rest: req.body.kneescore_rest,
-                            totalkneescore: req.body.totalkneescore,
-                            kneescore_functionwalk: req.body.kneescore_functionwalk,
-                            kneescore_functionstairs: req.body.kneescore_functionstairs,
-                            kneescore_functiondeductions: req.body.kneescore_functiondeductions,
-                            totalfunctionscore: req.body.totalfunctionscore
-                        };
-                        patient.postoperativescores.postkneescore = postkneescoreDetails;
+                        if (req.body.scoretype == 'postoperativescore') {
+                            patient.postoperativescores.kneescore = kneescoreDetails;
+                        } else {
+                            patient.preoperative.prekneescore = kneescoreDetails;
+                        }
+
                         patient.save((err) => {
                             if (err) {
                                 res.json({ success: false, message: err });
@@ -743,7 +872,12 @@ module.exports = (router) => {
                             totaldivide: req.body.totaldivide,
                             totalwomacscore: req.body.totalwomacscore
                         };
-                        patient.preoperative.prewomacscore = womacscoreDetails;
+                        if (req.body.scoretype == 'postoperativescore') {
+                            patient.postoperativescores.womacscore = womacscoreDetails;
+                        } else {
+                            patient.preoperative.prewomacscore = womacscoreDetails;
+                        }
+
                         patient.save((err) => {
                             if (err) {
                                 res.json({ success: false, message: err });
@@ -852,7 +986,13 @@ module.exports = (router) => {
                             sf36_pain: req.body.sf36_pain,
                             sf36_health: req.body.sf36_health
                         };
-                        patient.preoperative.presf36score = sf36scoreDetails;
+
+                        if (req.body.scoretype == 'postoperativescore') {
+                            patient.postoperativescores.sf36score = sf36scoreDetails;
+                        } else {
+                            patient.preoperative.presf36score = sf36scoreDetails;
+                        }
+
                         patient.save((err) => {
                             if (err) {
                                 res.json({ success: false, message: err });
@@ -895,7 +1035,12 @@ module.exports = (router) => {
                             kujalascore_flexion: req.body.kujalascore_flexion,
                             totalkujalascore: req.body.totalkujalascore
                         };
-                        patient.preoperative.prekujalascore = kujalascoreDetails;
+                        if (req.body.scoretype == 'postoperativescore') {
+                            patient.postoperativescores.kujalascore = kujalascoreDetails;
+                        } else {
+                            patient.preoperative.prekujalascore = kujalascoreDetails;
+                        }
+
                         patient.save((err) => {
                             if (err) {
                                 res.json({ success: false, message: err });
@@ -938,7 +1083,58 @@ module.exports = (router) => {
                             oxfordscore_stairs: req.body.oxfordscore_stairs,
                             totaloxfordscore: req.body.totaloxfordscore
                         };
-                        patient.preoperative.preoxfordscore = OxfordscoreDetails;
+                        if (req.body.scoretype == 'postoperativescore') {
+                            patient.postoperativescores.oxfordscore = OxfordscoreDetails;
+                        } else {
+                            patient.preoperative.preoxfordscore = OxfordscoreDetails;
+                        }
+
+                        patient.save((err) => {
+                            if (err) {
+                                res.json({ success: false, message: err });
+                            } else {
+                                res.json({ success: true, message: 'Patient score Updated!' });
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    });
+
+    router.post('/surgeon_Patientharrishipscoure', (req, res) => {
+        if (!req.body.patientId) {
+            res.json({ success: false, message: 'No patient Id was provided!' });
+        } else {
+            req.body.patientId = mongoose.Types.ObjectId(req.body.patientId);
+            Patient.findOne({ _id: req.body.patientId }, (err, patient) => {
+                if (err) {
+                    res.json({ success: false, message: 'Not a valid patient Id' });
+                } else {
+                    if (!patient) {
+                        res.json({ success: false, message: 'patient Id was not found' });
+                    } else {
+                        // patient.preoperative.push({
+                        const HarrishipscoreDetails = {
+                            harriship_pain: req.body.harriship_pain,
+                            harriship_walked: req.body.harriship_walked,
+                            harriship_socks: req.body.harriship_socks,
+                            harriship_transportation: req.body.harriship_transportation,
+                            harriship_support: req.body.harriship_support,
+                            harriship_limp: req.body.harriship_limp,
+                            harriship_stairs: req.body.harriship_stairs,
+                            harriship_sitting: req.body.harriship_sitting,
+                            harriship_30degrees: req.body.harriship_30degrees,
+                            harriship_10degrees: req.body.harriship_10degrees,
+                            harriship_10degreesextension: req.body.harriship_10degreesextension,
+                            harriship_discrepancy: req.body.harriship_discrepancy,
+                            harriship_flexion: req.body.harriship_flexion,
+                            harriship_abduction: req.body.harriship_abduction,
+                            harriship_extRotation: req.body.harriship_extRotation,
+                            harriship_adduction: req.body.harriship_adduction,
+                            totalharrishipscore: req.body.totalharrishipscore
+                        };
+                        patient.preoperative.harrishipscore = HarrishipscoreDetails;
                         patient.save((err) => {
                             if (err) {
                                 res.json({ success: false, message: err });
@@ -953,6 +1149,89 @@ module.exports = (router) => {
     });
 
 
+    router.post('/surgeon_PatientStatificationscoure', (req, res) => {
+        if (!req.body.patientId) {
+            res.json({ success: false, message: 'No patient Id was provided!' });
+        } else {
+            req.body.patientId = mongoose.Types.ObjectId(req.body.patientId);
+            Patient.findOne({ _id: req.body.patientId }, (err, patient) => {
+                if (err) {
+                    res.json({ success: false, message: 'Not a valid patient Id' });
+                } else {
+                    if (!patient) {
+                        res.json({ success: false, message: 'patient Id was not found' });
+                    } else {
+                        // patient.preoperative.push({
+                        const StatificationscoreDetails = {
+                            statification_joint6month: req.body.statification_joint6month,
+                            statification_joint12month: req.body.statification_joint12month,
+                            statification_regular6month: req.body.statification_regular6month,
+                            statification_regular12month: req.body.statification_regular12month,
+                            statification_sport6month: req.body.statification_sport6month,
+                            statification_sport12month: req.body.statification_sport12month,
+                            statification_meet6month: req.body.statification_meet6month,
+                            statification_meet12month: req.body.statification_meet12month,
+                            statification_scale6month: req.body.statification_scale6month,
+                            statification_scale12month: req.body.statification_scale12month,
+                            statification_operation6month: req.body.statification_operation6month,
+                            statification_operation12month: req.body.statification_operation12month,
+                            statification_recommend6month: req.body.statification_recommend6month,
+                            statification_recommend12month: req.body.statification_recommend12month,
+                            totalstatificationscore: req.body.totalstatificationscore
+                        };
+                        if (req.body.scoretype == 'postoperativescore') {
+                            patient.postoperativescores.statificationscore = StatificationscoreDetails;
+                        } else {
+                            patient.preoperative.statificationscore = StatificationscoreDetails;
+                        }
+
+                        patient.save((err) => {
+                            if (err) {
+                                res.json({ success: false, message: err });
+                            } else {
+                                res.json({ success: true, message: 'Patient score Updated!' });
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    });
+
+
+    router.post('/surgeon_AddPatientRevisionPostoperativescore', (req, res) => {
+        if (!req.body.patientId) {
+            res.json({ success: false, message: 'No patient Id was provided!' });
+        } else {
+            req.body.patientId = mongoose.Types.ObjectId(req.body.patientId);
+            Patient.findOne({ _id: req.body.patientId }, (err, patient) => {
+                if (err) {
+                    res.json({ success: false, message: 'Not a valid patient Id' });
+                } else {
+                    if (!patient) {
+                        res.json({ success: false, message: 'patient Id was not found' });
+                    } else {
+                        // patient.preoperative.push({
+                        const score = {
+                            month: req.body.month,
+                            year: req.body.year
+                        };
+
+                        patient.postoperativescores = score;
+
+
+                        patient.save((err) => {
+                            if (err) {
+                                res.json({ success: false, message: err });
+                            } else {
+                                res.json({ success: true, message: 'Patient score Updated!' });
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    });
 
 
     return router;

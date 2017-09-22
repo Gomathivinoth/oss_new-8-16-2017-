@@ -114,7 +114,7 @@ export class HipPrimaryComponent implements OnInit {
     this.surgeonService.surgeon_GetHospitalInfo(this.getinfosurgeon).subscribe(data => {
       this.alias = data.data.hospitalAlias;
       this.patient.surgeonname = data.data1.name;
-      console.log(this.getinfosurgeon.surgeonId);
+     // console.log(this.getinfosurgeon.surgeonId);
       this.surgeonService.surgeon_CountValue(this.getinfosurgeon.surgeonId).subscribe(data => {
         //console.log(data.message);
         var num = 10000000;
@@ -131,8 +131,8 @@ export class HipPrimaryComponent implements OnInit {
     this.surgeonService.surgeon_AddPatient(patient).subscribe(data => {
       this.surgeonService.surgeon_GetLastPatientId().subscribe(dataPatientId => {
         var id = dataPatientId.message[0]._id;
-        //this.router.navigate(['surgeon/Hip/hip-primary-preoperative/', id]);
-        this.router.navigate(['surgeon/Hip/hip-primary-preoperative']);
+        this.router.navigate(['surgeon/Hip/hip-primary-preoperative/', id]);
+        //this.router.navigate(['surgeon/Hip/hip-primary-preoperative']);
       });
 
     });

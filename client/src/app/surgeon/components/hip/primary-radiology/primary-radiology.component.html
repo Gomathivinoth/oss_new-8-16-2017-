@@ -167,7 +167,7 @@
       <div class="col-md-2" *ngFor="let protrusio of patient.rad_protrusio">
         <label class="checkbox-inline"><input type="checkbox"  #refprotrusio="ngModel" required name="protrusio" [(ngModel)]="protrusio.selected">{{protrusio.protrusioName}}</label>
       </div>
-      <div *ngIf="grading">
+      <div *ngIf="protrusio">
         <div *ngIf="refprotrusio.errors && (refprotrusio.dirty || refprotrusio.touched)" class="alert alert-danger">
           <div [hidden]="!refprotrusio.errors.required">
             select protrusio
@@ -431,7 +431,7 @@
       </div>
 
       <div class="col-md-3">
-        <input type="file" class="form-control" (change)="radfileChangeEvent($event)" ngModel>
+        <input type="file" class="form-control" (change)="profileChangeEvent($event)" ngModel>
       </div>
     </div>
     <div class="row">

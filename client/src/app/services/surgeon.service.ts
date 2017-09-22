@@ -24,9 +24,9 @@ export class SurgeonService {
     });
   }
 
-   uploadImage(formData){
-    return this.http.post('http://localhost:3000/upload',formData)
-                .map(files => files.json())
+  uploadImage(formData) {
+    return this.http.post('http://localhost:3000/upload', formData)
+      .map(files => files.json())
   }
 
   surgeon_GetHospitalInfo(id) {
@@ -63,6 +63,13 @@ export class SurgeonService {
 
   }
 
+  surgeon_AddHipPrimaryPreoperative(patient) {
+    //  console.log(patient);
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.post(this.domain + 'surgeon/surgeon_AddHipPrimaryPreoperative/', patient, this.options).map(res => res.json());
+
+  }
+
   deleteImage(image) {
     console.log(image);
     this.createAuthenticationHeaders(); // Create headers
@@ -87,7 +94,7 @@ export class SurgeonService {
     return this.http.post(this.domain + 'surgeon/surgeon_Patientwomacscoure/', score, this.options).map(res => res.json());
   }
 
-   surgeon_Patientsf36scoure(score) {
+  surgeon_Patientsf36scoure(score) {
     //  console.log(score);
     this.createAuthenticationHeaders(); // Create headers
     return this.http.post(this.domain + 'surgeon/surgeon_Patientsf36scoure/', score, this.options).map(res => res.json());
@@ -105,12 +112,23 @@ export class SurgeonService {
     this.createAuthenticationHeaders(); // Create headers
     return this.http.post(this.domain + 'surgeon/surgeon_Patientoxfordscoure/', score, this.options).map(res => res.json());
   }
+
+  surgeon_Patientharrishipscoure(score) {
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.post(this.domain + 'surgeon/surgeon_Patientharrishipscoure/', score, this.options).map(res => res.json());
+  }
+
+  surgeon_PatientStatificationscoure(score) {
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.post(this.domain + 'surgeon/surgeon_PatientStatificationscoure/', score, this.options).map(res => res.json());
+  }
+
   surgeon_AddPatientRadiology(patient) {
     this.createAuthenticationHeaders(); // Create headers
     return this.http.post(this.domain + 'surgeon/surgeon_AddPatientRadiology/', patient, this.options).map(res => res.json());
 
   }
-   surgeon_AddPatientRevisionRadiology(patient) {
+  surgeon_AddPatientRevisionRadiology(patient) {
     this.createAuthenticationHeaders(); // Create headers
     return this.http.post(this.domain + 'surgeon/surgeon_AddPatientRevisionRadiology/', patient, this.options).map(res => res.json());
 
@@ -120,24 +138,43 @@ export class SurgeonService {
     return this.http.post(this.domain + 'surgeon/surgeon_AddPatientIntraoperative/', patient, this.options).map(res => res.json());
 
   }
+
+    surgeon_AddPatientRevisionIntraoperative(patient) {
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.post(this.domain + 'surgeon/surgeon_AddPatientRevisionIntraoperative/', patient, this.options).map(res => res.json());
+
+  }
   surgeon_AddPatientPostoperative(patient) {
     console.log(patient);
     this.createAuthenticationHeaders(); // Create headers
     return this.http.post(this.domain + 'surgeon/surgeon_AddPatientPostoperative/', patient, this.options).map(res => res.json());
 
   }
-   surgeon_AddPatientRevisionPostoperative(patient) {
+  surgeon_AddPatientRevisionPostoperative(patient) {
     console.log(patient);
     this.createAuthenticationHeaders(); // Create headers
     return this.http.post(this.domain + 'surgeon/surgeon_AddPatientRevisionPostoperative/', patient, this.options).map(res => res.json());
 
   }
+surgeon_AddPatientRevisionPostoperativescore(patient) {
+    console.log(patient);
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.post(this.domain + 'surgeon/surgeon_AddPatientRevisionPostoperativescore/', patient, this.options).map(res => res.json());
 
-  surgeon_SinglePatientId(id){
-    console.log(id);
-  this.createAuthenticationHeaders(); // Create headers
-  return this.http.get(this.domain + 'authentication/surgeon_SinglePatientId/'+id , this.options).map(res => res.json());
- 
   }
+  
+   surgeon_AddHipPrimaryPostoperative(patient) {
+    console.log(patient);
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.post(this.domain + 'surgeon/surgeon_AddHipPrimaryPostoperative/', patient, this.options).map(res => res.json());
+
+  }
+
+  surgeon_SinglePatientId(id) {
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.get(this.domain + 'surgeon/surgeon_SinglePatientId/' + id, this.options).map(res => res.json());
+  }
+
+
 
 }
