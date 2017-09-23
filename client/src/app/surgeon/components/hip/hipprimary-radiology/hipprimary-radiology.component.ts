@@ -4,55 +4,96 @@ import { Http } from '@angular/http';
 import { SurgeonService } from '../../../../services/surgeon.service';
 
 @Component({
-  selector: 'app-primary-postoperative',
-  templateUrl: './primary-postoperative.component.html',
-  styleUrls: ['./primary-postoperative.component.css']
+  selector: 'app-hipprimary-radiology',
+  templateUrl: './hipprimary-radiology.component.html',
+  styleUrls: ['./hipprimary-radiology.component.css']
 })
-export class PrimaryPostoperativeComponent implements OnInit {
+export class HipprimaryRadiologyComponent implements OnInit {
 
   constructor(
-     private surgeonService: SurgeonService,
+    private surgeonService: SurgeonService,
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) { }
 
-
-   
-   patientPreOperative() {
-    this.router.navigate(['surgeon/Hip/hip-primary-preoperative/',this.patient.patientId]);
+  patientPreOperative() {
+    this.router.navigate(['surgeon/Hip/hip-primary-preoperative/', this.patient.patientId]);
   }
 
   radiology() {
-    this.router.navigate(['surgeon/Hip/hip-primary-radiology/',this.patient.patientId]);
+    this.router.navigate(['surgeon/Hip/hip-primary-radiology/', this.patient.patientId]);
   }
-
+  intraoperative() {
+    this.router.navigate(['surgeon/Hip/hip-primary-intraoperative/', this.patient.patientId]);
+  }
   postoperative() {
-    this.router.navigate(['surgeon/Hip/hip-primary-postoperative/',this.patient.patientId]);
+    this.router.navigate(['surgeon/Hip/hip-primary-postoperative/', this.patient.patientId]);
+  }
+  postoperativescore() {
+    this.router.navigate(['surgeon/Hip/hip-primary-postoperativescore/', this.patient.patientId]);
+  }
+  getinfosurgeon = {
+    hospitalId: '',
+    branchId: '',
+    surgeonId: ''
   }
 
-   currentUrl;
+
+  currentUrl;
   disable = false;
-   applypostoperative;
-  patient_postoperative = true;
+  applyradiology;
+  patient_radiology = true;
   patentId;
   patientname;
   patientage;
   patientsex;
   imageDetails;
-   image = {
+  image = {
     patientId: '',
     imageId: ''
   }
   patient = {
-     patientId :'',
-     post_notes:'',
-     post_date:'',
-     filename:'',
-     filetype:'',
-     filesize:''
+    patientId: '',
+    rad_ficat: '',
+    rad_grading: [{
+      'gradingName': String,
+      'selected': Boolean,
+    }],
+    rad_protrusio: [{
+      'protrusioName': String,
+      'selected': Boolean,
+    }],
+    rad_DDH: [{
+      'dDHName': String,
+      'selected': Boolean,
+    }],
+    rad_grade: '',
+    rat_croweclassification: '',
+    rat_paproskyclassification: '',
+    rat_femurclassification: '',
+    rat_morphotype: '',
+    rad_LLD:'',
+    rad_osteopenia:'',
+    filename: '',
+    filetype: '',
+    filesize: ''
   }
 
-   profileChangeEvent(fileInput: any) {
+  grading: any = [
+    { 'gradingName': 'Grading of AVN', 'selected': false }
+  ];
+
+  protrusio: any = [
+    { 'protrusioName': 'Grading of AVN', 'selected': false }
+  ];
+
+  DDH: any = [
+    { 'dDHName': 'DDH', 'selected': false }
+  ];
+
+  
+
+  profileChangeEvent(fileInput: any) {
     this.patient.filetype = fileInput.target.files[0]['type'];
     this.patient.filesize = fileInput.target.files[0]['size'];
     this.patient.filename = fileInput.target.files[0]['name'];
@@ -60,7 +101,7 @@ export class PrimaryPostoperativeComponent implements OnInit {
     const files: Array<File> = <Array<File>>fileInput.target.files;
     let age = new Date();
     formData.append("Name", "preoperative_");
-    formData.append("Type", "hipprimary_postoperativeimage");
+    formData.append("Type", "hipprimary_radiologyimage");
     formData.append("Age", Number(age));
     formData.append("patientId", this.patient.patientId);
     formData.append("Imagename", this.patient.filename);
@@ -82,13 +123,11 @@ export class PrimaryPostoperativeComponent implements OnInit {
     });
   }
 
-  addPatientPostoperative(patient){
-  this.surgeonService.surgeon_AddHipPrimaryPostoperative(patient).subscribe(data => { 
-      alert('success');
-    });
-  }
   ngOnInit() {
-    this.applypostoperative = true;
+    this.applyradiology = true;
+    this.patient.rad_grading = this.grading;
+    this.patient.rad_protrusio = this.protrusio;
+    this.patient.rad_DDH = this.DDH;
      this.currentUrl = this.activatedRoute.snapshot.params;
     //alert(this.currentUrl.id);
     this.surgeonService.surgeon_SinglePatientId(this.currentUrl.id).subscribe(dataPatientId => {

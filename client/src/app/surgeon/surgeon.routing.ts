@@ -18,9 +18,6 @@ import { SpineComponent } from './components/spine/spine.component';
 import { SpinePrimaryComponent } from './components/spine/spine-primary/spine-primary.component';
 import { SpineRevisionComponent } from './components/spine/spine-revision/spine-revision.component';
 import { SpinePatientsComponent } from './components/spine/spine-patients/spine-patients.component';
-import { PreoperativeComponent } from './components/hip/preoperative/preoperative.component';
-import { PrimaryRadiologyComponent } from './components/hip/primary-radiology/primary-radiology.component';
-import { PrimaryPostoperativeComponent } from './components/hip/primary-postoperative/primary-postoperative.component';
 import { KneeprimaryPreoperativeComponent } from './components/knee/kneeprimary-preoperative/kneeprimary-preoperative.component';
 import { KneeprimaryRadiologyComponent } from './components/knee/kneeprimary-radiology/kneeprimary-radiology.component';
 import { KneeprimaryIntraoperativeComponent } from './components/knee/kneeprimary-intraoperative/kneeprimary-intraoperative.component';
@@ -31,6 +28,16 @@ import { KneerevisionRadiologyComponent } from './components/knee/kneerevision-r
 import { KneerevisionIntraoperativeComponent } from './components/knee//kneerevision-intraoperative/kneerevision-intraoperative.component';
 import { KneerevisionPostoperativeComponent } from './components/knee//kneerevision-postoperative/kneerevision-postoperative.component';
 import { KneerevisionPostoperativescoreComponent } from './components/knee/kneerevision-postoperativescore/kneerevision-postoperativescore.component';
+import { HipprimaryPreoperativeComponent } from './components/hip/hipprimary-preoperative/hipprimary-preoperative.component';
+import { HipprimaryRadiologyComponent } from './components/hip/hipprimary-radiology/hipprimary-radiology.component';
+import { HipprimaryIntraoperativeComponent } from './components/hip/hipprimary-intraoperative/hipprimary-intraoperative.component';
+import { HipprimaryPostoperativeComponent } from './components/hip/hipprimary-postoperative/hipprimary-postoperative.component';
+import { HipprimaryPostoperativescoreComponent } from './components/hip/hipprimary-postoperativescore/hipprimary-postoperativescore.component';
+import { HiprevisionPreoperativeComponent } from './components/hip/hiprevision-preoperative/hiprevision-preoperative.component';
+import { HiprevisionRadiologyComponent } from './components/hip/hiprevision-radiology/hiprevision-radiology.component';
+import { HiprevisionIntraoperativeComponent } from './components/hip/hiprevision-intraoperative/hiprevision-intraoperative.component';
+import { HiprevisionPostoperativeComponent } from './components/hip/hiprevision-postoperative/hiprevision-postoperative.component';
+import { HiprevisionPostoperativescoreComponent } from './components/hip/hiprevision-postoperativescore/hiprevision-postoperativescore.component';
 
 // Our Array of Angular 2 Routes
 const appRoutes: Routes = [
@@ -107,23 +114,47 @@ const appRoutes: Routes = [
           },
           {
             path: 'hip-primary-preoperative/:id',
-            component: PreoperativeComponent
+            component: HipprimaryPreoperativeComponent
           },
-          //  {
-          //   path: 'hip-primary-preoperative',
-          //   component: PreoperativeComponent
-          // },
           {
             path: 'hip-primary-radiology/:id',
-            component: PrimaryRadiologyComponent
+            component: HipprimaryRadiologyComponent
+          },
+          {
+            path: 'hip-primary-intraoperative/:id',
+            component: HipprimaryIntraoperativeComponent
           },
           {
             path: 'hip-primary-postoperative/:id',
-            component: PrimaryPostoperativeComponent
+            component: HipprimaryPostoperativeComponent
+          },
+          {
+            path: 'hip-primary-postoperativescore/:id',
+            component: HipprimaryPostoperativescoreComponent
           },
           {
             path: 'hip-revision',
             component: HipRevisionComponent
+          },
+          {
+            path: 'hip-revision-preoperative/:id',
+            component: HiprevisionPreoperativeComponent
+          },
+          {
+            path: 'hip-revision-radiology/:id',
+            component: HiprevisionRadiologyComponent
+          },
+          {
+            path: 'hip-revision-intraoperative/:id',
+            component: HiprevisionIntraoperativeComponent
+          },
+          {
+            path: 'hip-revision-postoperative/:id',
+            component: HiprevisionPostoperativeComponent
+          },
+          {
+            path: 'hip-revision-postoperativescore/:id',
+            component: HiprevisionPostoperativescoreComponent
           },
           {
             path: 'hip-patients',

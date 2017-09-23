@@ -144,6 +144,12 @@ export class SurgeonService {
     return this.http.post(this.domain + 'surgeon/surgeon_AddPatientRevisionIntraoperative/', patient, this.options).map(res => res.json());
 
   }
+
+  surgeon_AddHipPrimaryIntraoperative(patient) {
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.post(this.domain + 'surgeon/surgeon_AddHipPrimaryIntraoperative/', patient, this.options).map(res => res.json());
+
+  }
   surgeon_AddPatientPostoperative(patient) {
     console.log(patient);
     this.createAuthenticationHeaders(); // Create headers

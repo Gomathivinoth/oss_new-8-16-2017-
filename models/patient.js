@@ -104,8 +104,171 @@ const patientSchema = new Schema({
         }],
         limp2: { type: String },
         vitaminD: { type: String },
-        vitaminB12: { type: String },
+        vitaminB12: { type: String }
+    },
 
+
+    radiology: {
+        implantsitu: [{
+            implantsituName: { type: String },
+            selected: { type: Boolean, default: false }
+        }],
+        rad_valgus: { type: String },
+        rad_varus: { type: String },
+        rad_patella: { type: String },
+        rad_stressfracture: [{
+            stressfractureName: { type: String },
+            selected: { type: Boolean, default: false }
+        }],
+        rad_vcaangle: { type: String },
+        rad_availabilityct: { type: String },
+        rad_availabilitymri: { type: String },
+        rad_vitaminD: { type: String },
+        rad_vitaminB12: { type: String },
+        rad_femoralcomponent: { type: String },
+        rad_tibialcomponent: { type: String },
+        rad_femoralrotation: { type: String },
+        rad_tibialrotation: { type: String },
+        rad_availablemrict: { type: String },
+        rad_esr: { type: String },
+        rad_crp: { type: String }
+    },
+    intraoperative: {
+        intra_surgicalplan: { type: String },
+        intra_procedure: { type: String },
+        intra_navigation: { type: String },
+        intra_drapes: { type: String },
+        intra_hoods: { type: String },
+        intra_prophylactic: { type: String },
+        intra_tranexamicoption: { type: String },
+        intra_anaesthesia: [{
+            anaesthesiaName: { type: String },
+            selected: { type: Boolean, default: false }
+        }],
+        intra_grade: { type: String },
+        intra_position: { type: String },
+        intra_approach: { type: String },
+        intra_softtissue: [{
+            softtissueName: { type: String },
+            selected: { type: Boolean, default: false }
+        }],
+        intra_STSO: { type: String },
+        intra_boneGraft: { type: String },
+        intra_impaction: [{
+            impactionName: { type: String },
+            selected: { type: Boolean, default: false }
+        }],
+        intra_bulk: [{
+            bulkName: { type: String },
+            selected: { type: Boolean, default: false }
+        }],
+        intra_tourniquet: { type: String },
+        intra_tourniquetpressure: { type: String },
+        intra_arthrotomy: { type: String },
+        intra_femoralcomp: { type: String },
+        intra_patellarstatus: { type: String },
+        intra_aoriclassification: { type: String },
+        intra_femoralDefect: { type: String },
+        intra_tibialsizing: { type: String },
+        intra_spacer: { type: String },
+        intra_patellarretinaculum: { type: String },
+        intra_medialcollateral: { type: String },
+        intra_lateralcollateral: { type: String },
+        intra_pattendon: { type: String },
+        intra_tibialdefect: { type: String },
+        intra_aoriclassification: { type: String },
+        intra_patellaouterbridgeclassification: { type: String },
+        intra_patellarthickness: { type: String },
+        intra_acl: { type: String },
+        intra_pcl: { type: String },
+        intra_mcl: { type: String },
+        intra_lcl: { type: String },
+        intra_varus: [{
+            varusName: { type: String },
+            selected: { type: Boolean, default: false }
+        }],
+        intra_valgus: [{
+            valgusName: { type: String },
+            selected: { type: Boolean, default: false }
+        }],
+        intra_flexion: [{
+            flexionName: { type: String },
+            selected: { type: Boolean, default: false }
+        }],
+        intra_distalfemoral: { type: String },
+        intra_resurfacing: { type: String },
+        intra_reconstruction: [{
+            reconstructionName: { type: String },
+            selected: { type: Boolean, default: false }
+        }],
+        intra_defectReconstruction: { type: String },
+        intra_femoralstem: { type: String },
+        intra_stem: { type: String },
+        intra_tibialstem: { type: String },
+        intra_tstem: { type: String },
+        intra_cement: { type: String },
+        intra_antibiotic: { type: String },
+        intra_viscosity: { type: String },
+        intra_uncement: { type: String },
+        intra_acetabular: { type: String },
+        intra_screws: { type: String },
+        intra_bearing: { type: String },
+        intra_acetabularliner: { type: String },
+        intra_femoralcement: { type: String },
+        intra_femoralantibiotic: { type: String },
+        intra_femoralviscosity: { type: String },
+        intra_femoraluncement: { type: String },
+        intra_femoralbearing: { type: String },
+        intra_cocktail: { type: String },
+        intra_complications: { type: String },
+        intra_complicationdetail: { type: String },
+        intra_company: { type: String },
+        intra_femoralcompany: { type: String },
+        intra_model: { type: String },
+        intra_femoralmodel: { type: String },
+        intra_design: { type: String },
+        intra_Size: { type: String },
+        intra_femoralSize: { type: String },
+        intra_femoralSize: { type: String },
+        intra_tibialSize: { type: String },
+        intra_patellarSize: { type: String },
+        intra_insertPoly: { type: String },
+        intra_componentStability: [{
+            componentStabilityName: { type: String },
+            selected: { type: Boolean, default: false }
+        }],
+        intra_contracture: { type: String },
+        intra_hyperextension: { type: String },
+        intra_medialLaxity: { type: String },
+        intra_patellarTracking: { type: String },
+        intra_posteriorclosure: { type: String },
+        intra_operativehour: { type: String },
+        intra_operativeminute: { type: String },
+        intra_bloodloss: { type: String },
+        intra_drains: { type: String },
+        intra_mechanical: [{
+            mechanicalName: { type: String },
+            selected: { type: Boolean, default: false }
+        }],
+        intra_pharmacological: [{
+            pharmacologicalName: { type: String },
+            selected: { type: Boolean, default: false }
+        }],
+        intra_information: { type: String },
+        intra_LLD: { type: String },
+        intra_prophylaxis: { type: String }
+    },
+    postoperative: [{
+        post_date: { type: String },
+        post_side: { type: String },
+        post_posteriorslope: { type: String },
+        post_notes: { type: String },
+        post_hipkneeankle: { type: String },
+        post_filename: { type: String },
+        post_filetype: { type: String }
+    }],
+    preoperativescores: {
+       
         prekneescore: {
             kneescore_walking: { type: String },
             kneescore_stairs: { type: String },
@@ -261,175 +424,50 @@ const patientSchema = new Schema({
             oxfordscore_felt: { type: String },
             oxfordscore_household: { type: String },
             oxfordscore_stairs: { type: String },
-            totaloxfordscore: { type: String }
+            totaloxfordscore: { type: String },
+        },
+         harrishipscore: {
+            harriship_pain: { type: String },
+            harriship_walked: { type: String },
+            harriship_socks: { type: String },
+            harriship_transportation: { type: String },
+            harriship_support: { type: String },
+            harriship_limp: { type: String },
+            harriship_stairs: { type: String },
+            harriship_sitting: { type: String },
+            harriship_30degrees: { type: String },
+            harriship_10degrees: { type: String },
+            harriship_10degreesextension: { type: String },
+            harriship_discrepancy: { type: String },
+            harriship_flexion: { type: String },
+            harriship_abduction: { type: String },
+            harriship_extRotation: { type: String },
+            harriship_adduction: { type: String },
+            totalharrishipscore: { type: String }
+        },
+         statificationscore: {
+            statification_joint6month: { type: String },
+            statification_joint12month: { type: String },
+            statification_regular6month: { type: String },
+            statification_regular12month: { type: String },
+            statification_sport6month: { type: String },
+            statification_sport12month: { type: String },
+            statification_meet6month: { type: String },
+            statification_meet12month: { type: String },
+            statification_scale6month: { type: String },
+            statification_scale12month: { type: String },
+            statification_operation6month: { type: String },
+            statification_operation12month: { type: String },
+            statification_recommend6month: { type: String },
+            statification_recommend12month: { type: String },
+            totalstatificationscore: { type: String }
         }
-        //  harrishipscore: {
-        //     harriship_pain: { type: String },
-        //     harriship_walked: { type: String },
-        //     harriship_socks: { type: String },
-        //     harriship_transportation: { type: String },
-        //     harriship_support: { type: String },
-        //     harriship_limp: { type: String },
-        //     harriship_stairs: { type: String },
-        //     harriship_sitting: { type: String },
-        //     harriship_30degrees: { type: String },
-        //     harriship_10degrees: { type: String },
-        //     harriship_10degreesextension: { type: String },
-        //     harriship_discrepancy: { type: String },
-        //     harriship_flexion: { type: String },
-        //     harriship_abduction: { type: String },
-        //     harriship_extRotation: { type: String },
-        //     harriship_adduction: { type: String },
-        //     totalharrishipscore: { type: String }
-        // },
-        //  statificationscore: {
-        //     statification_joint6month: { type: String },
-        //     statification_joint12month: { type: String },
-        //     statification_regular6month: { type: String },
-        //     statification_regular12month: { type: String },
-        //     statification_sport6month: { type: String },
-        //     statification_sport12month: { type: String },
-        //     statification_meet6month: { type: String },
-        //     statification_meet12month: { type: String },
-        //     statification_scale6month: { type: String },
-        //     statification_scale12month: { type: String },
-        //     statification_operation6month: { type: String },
-        //     statification_operation12month: { type: String },
-        //     statification_recommend6month: { type: String },
-        //     statification_recommend12month: { type: String },
-        //     totalstatificationscore: { type: String }
-        // }
     },
-
-
-    radiology: {
-        implantsitu: [{
-            implantsituName: { type: String },
-            selected: { type: Boolean, default: false }
-        }],
-        rad_valgus: { type: String },
-        rad_varus: { type: String },
-        rad_patella: { type: String },
-        rad_stressfracture: [{
-            stressfractureName: { type: String },
-            selected: { type: Boolean, default: false }
-        }],
-        rad_vcaangle: { type: String },
-        rad_availabilityct: { type: String },
-        rad_availabilitymri: { type: String },
-        rad_vitaminD: { type: String },
-        rad_vitaminB12: { type: String },
-        rad_femoralcomponent: { type: String },
-        rad_tibialcomponent: { type: String },
-        rad_femoralrotation: { type: String },
-        rad_tibialrotation: { type: String },
-        rad_availablemrict: { type: String },
-        rad_esr: { type: String },
-        rad_crp: { type: String }
-    },
-    intraoperative: {
-        intra_surgicalplan: { type: String },
-        intra_procedure: { type: String },
-        intra_navigation: { type: String },
-        intra_drapes: { type: String },
-        intra_hoods: { type: String },
-        intra_prophylactic: { type: String },
-        intra_tranexamicoption: { type: String },
-        intra_anaesthesia: [{
-            anaesthesiaName: { type: String },
-            selected: { type: Boolean, default: false }
-        }],
-        intra_grade: { type: String },
-        intra_tourniquet: { type: String },
-        intra_tourniquetpressure: { type: String },
-        intra_arthrotomy: { type: String },
-        intra_femoralcomp: { type: String },
-        intra_patellarstatus: { type: String },
-        intra_aoriclassification: { type: String },
-        intra_femoralDefect: { type: String },
-        intra_tibialsizing: { type: String },
-        intra_spacer: { type: String },
-        intra_patellarretinaculum: { type: String },
-        intra_medialcollateral: { type: String },
-        intra_lateralcollateral: { type: String },
-        intra_pattendon: { type: String },
-        intra_tibialdefect: { type: String },
-        intra_aoriclassification: { type: String },
-        intra_patellaouterbridgeclassification: { type: String },
-        intra_patellarthickness: { type: String },
-        intra_acl: { type: String },
-        intra_pcl: { type: String },
-        intra_mcl: { type: String },
-        intra_lcl: { type: String },
-        intra_varus: [{
-            varusName: { type: String },
-            selected: { type: Boolean, default: false }
-        }],
-        intra_valgus: [{
-            valgusName: { type: String },
-            selected: { type: Boolean, default: false }
-        }],
-        intra_flexion: [{
-            flexionName: { type: String },
-            selected: { type: Boolean, default: false }
-        }],
-        intra_distalfemoral: { type: String },
-        intra_resurfacing: { type: String },
-        intra_reconstruction: [{
-            reconstructionName: { type: String },
-            selected: { type: Boolean, default: false }
-        }],
-        intra_defectReconstruction: { type: String },
-        intra_femoralstem: { type: String },
-        intra_stem: { type: String },
-        intra_tibialstem: { type: String },
-        intra_tstem: { type: String },
-        intra_cement: { type: String },
-        intra_antibiotic: { type: String },
-        intra_viscosity: { type: String },
-        intra_cocktail: { type: String },
-        intra_complications: { type: String },
-        intra_complicationdetail: { type: String },
-        intra_company: { type: String },
-        intra_design: { type: String },
-        intra_femoralSize: { type: String },
-        intra_tibialSize: { type: String },
-        intra_patellarSize: { type: String },
-        intra_insertPoly: { type: String },
-        intra_componentStability: [{
-            componentStabilityName: { type: String },
-            selected: { type: Boolean, default: false }
-        }],
-        intra_contracture: { type: String },
-        intra_hyperextension: { type: String },
-        intra_medialLaxity: { type: String },
-        intra_patellarTracking: { type: String },
-        intra_operativehour: { type: String },
-        intra_operativeminute: { type: String },
-        intra_bloodloss: { type: String },
-        intra_drains: { type: String },
-        intra_mechanical: [{
-            mechanicalName: { type: String },
-            selected: { type: Boolean, default: false }
-        }],
-        intra_pharmacological: [{
-            pharmacologicalName: { type: String },
-            selected: { type: Boolean, default: false }
-        }],
-        intra_information: { type: String }
-    },
-    postoperative: [{
-        post_date: { type: String },
-        post_side: { type: String },
-        post_posteriorslope: { type: String },
-        post_notes: { type: String },
-        post_hipkneeankle: { type: String },
-        post_filename: { type: String },
-        post_filetype: { type: String }
-    }],
-    postoperativescores: {
+    postoperativedetail: {
         month: { type: String },
         year: { type: String },
+    },
+    postoperativescores: {
 
         kneescore: {
             kneescore_walking: { type: String },
@@ -604,26 +642,26 @@ const patientSchema = new Schema({
             statification_recommend6month: { type: String },
             statification_recommend12month: { type: String },
             totalstatificationscore: { type: String }
-        }
-        //  harrishipscore: {
-        //     harriship_pain: { type: String },
-        //     harriship_walked: { type: String },
-        //     harriship_socks: { type: String },
-        //     harriship_transportation: { type: String },
-        //     harriship_support: { type: String },
-        //     harriship_limp: { type: String },
-        //     harriship_stairs: { type: String },
-        //     harriship_sitting: { type: String },
-        //     harriship_30degrees: { type: String },
-        //     harriship_10degrees: { type: String },
-        //     harriship_10degreesextension: { type: String },
-        //     harriship_discrepancy: { type: String },
-        //     harriship_flexion: { type: String },
-        //     harriship_abduction: { type: String },
-        //     harriship_extRotation: { type: String },
-        //     harriship_adduction: { type: String },
-        //     totalharrishipscore: { type: String }
-        // },
+        },
+         harrishipscore: {
+            harriship_pain: { type: String },
+            harriship_walked: { type: String },
+            harriship_socks: { type: String },
+            harriship_transportation: { type: String },
+            harriship_support: { type: String },
+            harriship_limp: { type: String },
+            harriship_stairs: { type: String },
+            harriship_sitting: { type: String },
+            harriship_30degrees: { type: String },
+            harriship_10degrees: { type: String },
+            harriship_10degreesextension: { type: String },
+            harriship_discrepancy: { type: String },
+            harriship_flexion: { type: String },
+            harriship_abduction: { type: String },
+            harriship_extRotation: { type: String },
+            harriship_adduction: { type: String },
+            totalharrishipscore: { type: String }
+        },
 
     },
 

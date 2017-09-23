@@ -2,30 +2,17 @@
   <div class="col-md-2"></div>
   <div class="col-md-7">
     <div class="tabs-selection" *ngIf="disable">
-      <app-tab [style.background-color]="applyblue? '#bbb': 'green'" [style.color]="applyblue? 'black': 'white'" (click)="demographic()">Demographic</app-tab>
-      <app-tab style="cursor:not-allowed;">Pre-Operative</app-tab>
+      <app-tab [style.background-color]="applydemographic? '#bbb': 'green'" [style.color]="applydemographic? 'black': 'white'"
+      (click)="demographic()">Demographic</app-tab><app-tab style="cursor:not-allowed;">Pre-Operative</app-tab>
       <app-tab style="cursor:not-allowed;">Radiology</app-tab>
       <app-tab style="cursor:not-allowed;">Intra Operative</app-tab>
       <app-tab style="cursor:not-allowed;">Post Operative</app-tab>
       <app-tab style="cursor:not-allowed;">Post Operative scores</app-tab>
     </div>
-    <div class="tabs-selection" *ngIf="!disable">
-      <app-tab [style.background-color]="applydemographic? '#bbb': 'green'" [style.color]="applydemographic? 'black': 'white'"
-        (click)="demographic()">Demographic</app-tab>
-      <app-tab [style.background-color]="applypreoperative? '#bbb': 'green'" [style.color]="applypreoperative? 'black': 'white'"
-        (click)="patientPreOperative()">Pre-Operative</app-tab>
-      <app-tab [style.background-color]="applyradiology? '#bbb': 'green'" [style.color]="applyradiology? 'black': 'white'" (click)="radiology()">Radiology</app-tab>
-      <app-tab [style.background-color]="applyintraoperative? '#bbb': 'green'" [style.color]="applyintraoperative? 'black': 'white'"
-        (click)="intraoperative()">Intra Operative</app-tab>
-      <app-tab [style.background-color]="applypostoperative? '#bbb': 'green'" [style.color]="applypostoperative? 'black': 'white'"
-        (click)="postoperative()">Post Operative</app-tab>
-      <app-tab  [style.background-color]="applypostoperativescpre? '#bbb': 'green'" [style.color]="applypostoperativescpre? 'black': 'white'"
-      (click)="postoperativescore()">Post Operative scores</app-tab>
-    </div>
   </div>
 </div>
 <br>
-<app-tab-content *ngIf="patient_demographic">
+<app-tab-content>
   <div class="row" >
     <form #patientForm="ngForm" (ngSubmit)="addPatient(patient)" novalidate>
       <div class="col-md-2"></div>

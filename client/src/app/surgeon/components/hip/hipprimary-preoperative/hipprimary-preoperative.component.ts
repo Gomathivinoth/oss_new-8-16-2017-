@@ -4,11 +4,11 @@ import { Http } from '@angular/http';
 import { SurgeonService } from '../../../../services/surgeon.service';
 
 @Component({
-  selector: 'app-preoperative',
-  templateUrl: './preoperative.component.html',
-  styleUrls: ['./preoperative.component.css']
+  selector: 'app-hipprimary-preoperative',
+  templateUrl: './hipprimary-preoperative.component.html',
+  styleUrls: ['./hipprimary-preoperative.component.css']
 })
-export class PreoperativeComponent implements OnInit {
+export class HipprimaryPreoperativeComponent implements OnInit {
 
   constructor(
     private surgeonService: SurgeonService,
@@ -16,17 +16,21 @@ export class PreoperativeComponent implements OnInit {
     private activatedRoute: ActivatedRoute
   ) { }
 
-
-   patientPreOperative() {
-    this.router.navigate(['surgeon/Hip/hip-primary-preoperative/',this.patient.patientId]);
+  patientPreOperative() {
+    this.router.navigate(['surgeon/Hip/hip-primary-preoperative/', this.patient.patientId]);
   }
 
   radiology() {
-    this.router.navigate(['surgeon/Hip/hip-primary-radiology/',this.patient.patientId]);
+    this.router.navigate(['surgeon/Hip/hip-primary-radiology/', this.patient.patientId]);
   }
-
+  intraoperative() {
+    this.router.navigate(['surgeon/Hip/hip-primary-intraoperative/', this.patient.patientId]);
+  }
   postoperative() {
-    this.router.navigate(['surgeon/Hip/hip-primary-postoperative/',this.patient.patientId]);
+    this.router.navigate(['surgeon/Hip/hip-primary-postoperative/', this.patient.patientId]);
+  }
+  postoperativescore() {
+    this.router.navigate(['surgeon/Hip/hip-primary-postoperativescore/', this.patient.patientId]);
   }
   getinfosurgeon = {
     hospitalId: '',
@@ -205,19 +209,19 @@ export class PreoperativeComponent implements OnInit {
     //statification score start
 
     statification_joint6month: 0,
-    statification_joint12month:0,
-    statification_regular6month:0,
-    statification_regular12month:0,
-    statification_sport6month:0,
-    statification_sport12month:0,
-    statification_meet6month:0,
-    statification_meet12month:0,
-    statification_scale6month:0,
-    statification_scale12month:0,
-    statification_operation6month:0,
-    statification_operation12month:0,
-    statification_recommend6month:0,
-    statification_recommend12month:0,
+    statification_joint12month: 0,
+    statification_regular6month: 0,
+    statification_regular12month: 0,
+    statification_sport6month: 0,
+    statification_sport12month: 0,
+    statification_meet6month: 0,
+    statification_meet12month: 0,
+    statification_scale6month: 0,
+    statification_scale12month: 0,
+    statification_operation6month: 0,
+    statification_operation12month: 0,
+    statification_recommend6month: 0,
+    statification_recommend12month: 0,
     totalstatificationscore: 0
     //statification score end
   }
@@ -467,7 +471,7 @@ export class PreoperativeComponent implements OnInit {
     console.log(score);
     this.surgeonService.surgeon_Patientharrishipscoure(score).subscribe(data => {
       this.surgeonService.surgeon_GetLastPatientId().subscribe(dataPatientId => {
-        this.totalharrishipscore = dataPatientId.message[0].preoperative.harrishipscore.totalharrishipscore;
+        this.totalharrishipscore = dataPatientId.message[0].preoperativescores.harrishipscore.totalharrishipscore;
       });
     });
   }
@@ -736,152 +740,152 @@ export class PreoperativeComponent implements OnInit {
     console.log(score);
     this.surgeonService.surgeon_Patientsf36scoure(score).subscribe(data => {
       this.surgeonService.surgeon_GetLastPatientId().subscribe(dataPatientId => {
-        this.totalsf36score = dataPatientId.message[0].preoperative.presf36score.sf36_physicalscore;
+        this.totalsf36score = dataPatientId.message[0].preoperativescores.presf36score.sf36_physicalscore;
       });
     });
   }
   // sf36 scoring function end
 
-//statification scoring function start
+  //statification scoring function start
 
-statificationscorejoint6Change(event: any) {
+  statificationscorejoint6Change(event: any) {
     this.patient.statification_joint6month = event.target.value;
     this.patient.totalstatificationscore = +this.patient.statification_joint6month + +this.patient.statification_joint12month + +this.patient.statification_regular6month +
-      +this.patient.statification_regular12month+ +this.patient.statification_sport6month + + this.patient.statification_sport12month+
-      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month+ 
-      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month+
-      +this.patient.statification_operation12month + + this.patient.statification_recommend6month+ + this.patient.statification_recommend12month;
+      +this.patient.statification_regular12month + +this.patient.statification_sport6month + + this.patient.statification_sport12month +
+      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month +
+      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month +
+      +this.patient.statification_operation12month + + this.patient.statification_recommend6month + + this.patient.statification_recommend12month;
   }
 
   statificationscorejoint12Change(event: any) {
     this.patient.statification_joint12month = event.target.value;
     this.patient.totalstatificationscore = +this.patient.statification_joint6month + +this.patient.statification_joint12month + +this.patient.statification_regular6month +
-      +this.patient.statification_regular12month+ +this.patient.statification_sport6month + + this.patient.statification_sport12month+
-      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month+ 
-      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month+
-      +this.patient.statification_operation12month + + this.patient.statification_recommend6month+ + this.patient.statification_recommend12month;
+      +this.patient.statification_regular12month + +this.patient.statification_sport6month + + this.patient.statification_sport12month +
+      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month +
+      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month +
+      +this.patient.statification_operation12month + + this.patient.statification_recommend6month + + this.patient.statification_recommend12month;
   }
 
   statificationscoreregular6Change(event: any) {
     this.patient.statification_regular6month = event.target.value;
     this.patient.totalstatificationscore = +this.patient.statification_joint6month + +this.patient.statification_joint12month + +this.patient.statification_regular6month +
-      +this.patient.statification_regular12month+ +this.patient.statification_sport6month + + this.patient.statification_sport12month+
-      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month+ 
-      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month+
-      +this.patient.statification_operation12month + + this.patient.statification_recommend6month+ + this.patient.statification_recommend12month;
+      +this.patient.statification_regular12month + +this.patient.statification_sport6month + + this.patient.statification_sport12month +
+      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month +
+      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month +
+      +this.patient.statification_operation12month + + this.patient.statification_recommend6month + + this.patient.statification_recommend12month;
   }
 
   statificationscoreregular12Change(event: any) {
     this.patient.statification_regular12month = event.target.value;
     this.patient.totalstatificationscore = +this.patient.statification_joint6month + +this.patient.statification_joint12month + +this.patient.statification_regular6month +
-      +this.patient.statification_regular12month+ +this.patient.statification_sport6month + + this.patient.statification_sport12month+
-      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month+ 
-      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month+
-      +this.patient.statification_operation12month + + this.patient.statification_recommend6month+ + this.patient.statification_recommend12month;
+      +this.patient.statification_regular12month + +this.patient.statification_sport6month + + this.patient.statification_sport12month +
+      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month +
+      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month +
+      +this.patient.statification_operation12month + + this.patient.statification_recommend6month + + this.patient.statification_recommend12month;
   }
 
   statificationscoresport6Change(event: any) {
     this.patient.statification_sport6month = event.target.value;
     this.patient.totalstatificationscore = +this.patient.statification_joint6month + +this.patient.statification_joint12month + +this.patient.statification_regular6month +
-      +this.patient.statification_regular12month+ +this.patient.statification_sport6month + + this.patient.statification_sport12month+
-      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month+ 
-      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month+
-      +this.patient.statification_operation12month + + this.patient.statification_recommend6month+ + this.patient.statification_recommend12month;
+      +this.patient.statification_regular12month + +this.patient.statification_sport6month + + this.patient.statification_sport12month +
+      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month +
+      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month +
+      +this.patient.statification_operation12month + + this.patient.statification_recommend6month + + this.patient.statification_recommend12month;
   }
 
   statificationscoresport12Change(event: any) {
     this.patient.statification_sport12month = event.target.value;
     this.patient.totalstatificationscore = +this.patient.statification_joint6month + +this.patient.statification_joint12month + +this.patient.statification_regular6month +
-      +this.patient.statification_regular12month+ +this.patient.statification_sport6month + + this.patient.statification_sport12month+
-      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month+ 
-      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month+
-      +this.patient.statification_operation12month + + this.patient.statification_recommend6month+ + this.patient.statification_recommend12month;
+      +this.patient.statification_regular12month + +this.patient.statification_sport6month + + this.patient.statification_sport12month +
+      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month +
+      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month +
+      +this.patient.statification_operation12month + + this.patient.statification_recommend6month + + this.patient.statification_recommend12month;
   }
 
   statificationscoremeet6Change(event: any) {
     this.patient.statification_meet6month = event.target.value;
     this.patient.totalstatificationscore = +this.patient.statification_joint6month + +this.patient.statification_joint12month + +this.patient.statification_regular6month +
-      +this.patient.statification_regular12month+ +this.patient.statification_sport6month + + this.patient.statification_sport12month+
-      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month+ 
-      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month+
-      +this.patient.statification_operation12month + + this.patient.statification_recommend6month+ + this.patient.statification_recommend12month;
+      +this.patient.statification_regular12month + +this.patient.statification_sport6month + + this.patient.statification_sport12month +
+      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month +
+      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month +
+      +this.patient.statification_operation12month + + this.patient.statification_recommend6month + + this.patient.statification_recommend12month;
   }
 
   statificationscoremeet12Change(event: any) {
     this.patient.statification_meet12month = event.target.value;
     this.patient.totalstatificationscore = +this.patient.statification_joint6month + +this.patient.statification_joint12month + +this.patient.statification_regular6month +
-      +this.patient.statification_regular12month+ +this.patient.statification_sport6month + + this.patient.statification_sport12month+
-      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month+ 
-      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month+
-      +this.patient.statification_operation12month + + this.patient.statification_recommend6month+ + this.patient.statification_recommend12month;
+      +this.patient.statification_regular12month + +this.patient.statification_sport6month + + this.patient.statification_sport12month +
+      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month +
+      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month +
+      +this.patient.statification_operation12month + + this.patient.statification_recommend6month + + this.patient.statification_recommend12month;
   }
 
   statificationscorescale6Change(event: any) {
     this.patient.statification_scale6month = event.target.value;
     this.patient.totalstatificationscore = +this.patient.statification_joint6month + +this.patient.statification_joint12month + +this.patient.statification_regular6month +
-      +this.patient.statification_regular12month+ +this.patient.statification_sport6month + + this.patient.statification_sport12month+
-      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month+ 
-      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month+
-      +this.patient.statification_operation12month + + this.patient.statification_recommend6month+ + this.patient.statification_recommend12month;
+      +this.patient.statification_regular12month + +this.patient.statification_sport6month + + this.patient.statification_sport12month +
+      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month +
+      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month +
+      +this.patient.statification_operation12month + + this.patient.statification_recommend6month + + this.patient.statification_recommend12month;
   }
 
   statificationscorescale12Change(event: any) {
     this.patient.statification_scale12month = event.target.value;
     this.patient.totalstatificationscore = +this.patient.statification_joint6month + +this.patient.statification_joint12month + +this.patient.statification_regular6month +
-      +this.patient.statification_regular12month+ +this.patient.statification_sport6month + + this.patient.statification_sport12month+
-      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month+ 
-      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month+
-      +this.patient.statification_operation12month + + this.patient.statification_recommend6month+ + this.patient.statification_recommend12month;
+      +this.patient.statification_regular12month + +this.patient.statification_sport6month + + this.patient.statification_sport12month +
+      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month +
+      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month +
+      +this.patient.statification_operation12month + + this.patient.statification_recommend6month + + this.patient.statification_recommend12month;
   }
 
   statificationscoreoperation6Change(event: any) {
     this.patient.statification_operation6month = event.target.value;
     this.patient.totalstatificationscore = +this.patient.statification_joint6month + +this.patient.statification_joint12month + +this.patient.statification_regular6month +
-      +this.patient.statification_regular12month+ +this.patient.statification_sport6month + + this.patient.statification_sport12month+
-      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month+ 
-      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month+
-      +this.patient.statification_operation12month + + this.patient.statification_recommend6month+ + this.patient.statification_recommend12month;
+      +this.patient.statification_regular12month + +this.patient.statification_sport6month + + this.patient.statification_sport12month +
+      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month +
+      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month +
+      +this.patient.statification_operation12month + + this.patient.statification_recommend6month + + this.patient.statification_recommend12month;
   }
 
   statificationscoreoperation12Change(event: any) {
     this.patient.statification_operation12month = event.target.value;
     this.patient.totalstatificationscore = +this.patient.statification_joint6month + +this.patient.statification_joint12month + +this.patient.statification_regular6month +
-      +this.patient.statification_regular12month+ +this.patient.statification_sport6month + + this.patient.statification_sport12month+
-      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month+ 
-      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month+
-      +this.patient.statification_operation12month + + this.patient.statification_recommend6month+ + this.patient.statification_recommend12month;
+      +this.patient.statification_regular12month + +this.patient.statification_sport6month + + this.patient.statification_sport12month +
+      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month +
+      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month +
+      +this.patient.statification_operation12month + + this.patient.statification_recommend6month + + this.patient.statification_recommend12month;
   }
 
   statificationscorerecommend6Change(event: any) {
     this.patient.statification_recommend6month = event.target.value;
     this.patient.totalstatificationscore = +this.patient.statification_joint6month + +this.patient.statification_joint12month + +this.patient.statification_regular6month +
-      +this.patient.statification_regular12month+ +this.patient.statification_sport6month + + this.patient.statification_sport12month+
-      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month+ 
-      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month+
-      +this.patient.statification_operation12month + + this.patient.statification_recommend6month+ + this.patient.statification_recommend12month;
+      +this.patient.statification_regular12month + +this.patient.statification_sport6month + + this.patient.statification_sport12month +
+      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month +
+      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month +
+      +this.patient.statification_operation12month + + this.patient.statification_recommend6month + + this.patient.statification_recommend12month;
   }
 
   statificationscorerecommend12Change(event: any) {
     this.patient.statification_recommend12month = event.target.value;
     this.patient.totalstatificationscore = +this.patient.statification_joint6month + +this.patient.statification_joint12month + +this.patient.statification_regular6month +
-      +this.patient.statification_regular12month+ +this.patient.statification_sport6month + + this.patient.statification_sport12month+
-      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month+ 
-      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month+
-      +this.patient.statification_operation12month + + this.patient.statification_recommend6month+ + this.patient.statification_recommend12month;
+      +this.patient.statification_regular12month + +this.patient.statification_sport6month + + this.patient.statification_sport12month +
+      +this.patient.statification_meet6month + +this.patient.statification_meet12month + +this.patient.statification_scale6month +
+      +this.patient.statification_scale12month + +this.patient.statification_operation6month + + this.patient.statification_operation6month +
+      +this.patient.statification_operation12month + + this.patient.statification_recommend6month + + this.patient.statification_recommend12month;
   }
 
-   addstatificationscore(score) {
+  addstatificationscore(score) {
     console.log(score);
     this.surgeonService.surgeon_PatientStatificationscoure(score).subscribe(data => {
       this.surgeonService.surgeon_GetLastPatientId().subscribe(dataPatientId => {
-        this.totalstatificationscore = dataPatientId.message[0].preoperative.statificationscore.totalstatificationscore;
+        this.totalstatificationscore = dataPatientId.message[0].preoperativescores.statificationscore.totalstatificationscore;
       });
     });
   }
 
-  
 
-//statification scoring function end
+
+  //statification scoring function end
   Surgeon_GetHospitalInfo() {
     this.getinfosurgeon.hospitalId = JSON.parse(localStorage.getItem('hospitalId'));
     this.getinfosurgeon.surgeonId = JSON.parse(localStorage.getItem('surgeonId'));
@@ -923,9 +927,9 @@ statificationscorejoint6Change(event: any) {
     });
   }
 
-  addPatientPreoperative(patient){
-    this.surgeonService.surgeon_AddHipPrimaryPreoperative(patient).subscribe(data => { 
-      this.router.navigate(['surgeon/Hip/hip-primary-radiology/',this.patient.patientId]);
+  addPatientPreoperative(patient) {
+    this.surgeonService.surgeon_AddHipPrimaryPreoperative(patient).subscribe(data => {
+      this.router.navigate(['surgeon/Hip/hip-primary-radiology/', this.patient.patientId]);
     });
   }
 
@@ -954,5 +958,4 @@ statificationscorejoint6Change(event: any) {
     this.patient.apparent = this.apparent;
     this.patient.limptrue = this.limptrue;
   }
-
 }

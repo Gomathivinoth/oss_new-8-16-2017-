@@ -17,7 +17,6 @@ export class HipPrimaryComponent implements OnInit {
   disable = true;
   applydemographic;
   applyblue;
-  patient_demographic = true;
   bilateral = false;
   combinationvalue = false;
   demographic() {
@@ -139,7 +138,7 @@ export class HipPrimaryComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.applyblue = true;
+    this.applydemographic = true;
     this.Surgeon_GetHospitalInfo();
     this.patient.hospitalId = JSON.parse(localStorage.getItem('hospitalId'));
     this.patient.surgeonId = JSON.parse(localStorage.getItem('surgeonId'));

@@ -680,6 +680,79 @@ module.exports = (router) => {
         }
     });
 
+    router.post('/surgeon_AddHipPrimaryIntraoperative', (req, res) => {
+        if (!req.body.patientId) {
+            res.json({ success: false, message: 'No patient Id was provided!' });
+        } else {
+            req.body.patientId = mongoose.Types.ObjectId(req.body.patientId);
+            Patient.findOne({ _id: req.body.patientId }, (err, patient) => {
+                if (err) {
+                    res.json({ success: false, message: 'Not a valid patient Id' });
+                } else {
+                    if (!patient) {
+                        res.json({ success: false, message: 'patient Id was not found' });
+                    } else {
+                        // patient.preoperative.push({
+                        const intraoperativeDetails = {
+                            intra_procedure: req.body.intra_procedure,
+                            intra_navigation: req.body.intra_navigation,
+                            intra_drapes: req.body.intra_drapes,
+                            intra_hoods: req.body.intra_hoods,
+                            intra_prophylactic: req.body.intra_prophylactic,
+                            intra_tranexamicoption: req.body.intra_tranexamicoption,
+                            intra_anaesthesia: req.body.intra_anaesthesia,
+                            intra_grade: req.body.intra_grade,
+                            intra_position: req.body.intra_position,
+                            intra_approach: req.body.intra_approach,
+                            intra_softtissue: req.body.intra_softtissue,
+                            intra_STSO: req.body.intra_STSO,
+                            intra_boneGraft: req.body.intra_boneGraft,
+                            intra_impaction: req.body.intra_impaction,
+                            intra_bulk: req.body.intra_bulk,
+                            intra_cement: req.body.intra_cement,
+                            intra_antibiotic: req.body.intra_antibiotic,
+                            intra_viscosity: req.body.intra_viscosity,
+                            intra_uncement: req.body.intra_uncement,
+                            intra_acetabular: req.body.intra_acetabular,
+                            intra_screws: req.body.intra_screws,
+                            intra_bearing: req.body.intra_bearing,
+                            intra_acetabularliner: req.body.intra_acetabularliner,
+                            intra_company: req.body.intra_company,
+                            intra_design: req.body.intra_design,
+                            intra_model: req.body.intra_model,
+                            intra_Size: req.body.intra_Size,
+                            intra_femoralcement: req.body.intra_femoralcement,
+                            intra_femoralantibiotic: req.body.intra_femoralantibiotic,
+                            intra_femoralviscosity: req.body.intra_femoralviscosity,
+                            intra_femoraluncement: req.body.intra_femoraluncement,
+                            intra_femoralbearing: req.body.intra_femoralbearing,
+                            intra_femoralcompany: req.body.intra_femoralcompany,
+                            intra_femoralmodel: req.body.intra_femoralmodel,
+                            intra_femoralSize: req.body.intra_femoralSize,
+                            intra_posteriorclosure: req.body.intra_posteriorclosure,
+                            intra_operativehour: req.body.intra_operativehour,
+                            intra_operativeminute: req.body.intra_operativeminute,
+                            intra_bloodloss: req.body.intra_bloodloss,
+                            intra_drains: req.body.intra_drains,
+                            intra_mechanical: req.body.intra_mechanical,
+                            intra_pharmacological: req.body.intra_pharmacological,
+                            intra_LLD: req.body.intra_LLD,
+                            intra_prophylaxis: req.body.intra_prophylaxis
+                        };
+                        patient.intraoperative = intraoperativeDetails;
+                        patient.save((err) => {
+                            if (err) {
+                                res.json({ success: false, message: err });
+                            } else {
+                                res.json({ success: true, message: 'Patient Updated!' });
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    });
+
 
     router.post('/surgeon_AddPatientPostoperative', (req, res) => {
         if (!req.body.patientId) {
@@ -815,7 +888,7 @@ module.exports = (router) => {
                         if (req.body.scoretype == 'postoperativescore') {
                             patient.postoperativescores.kneescore = kneescoreDetails;
                         } else {
-                            patient.preoperative.prekneescore = kneescoreDetails;
+                            patient.preoperativescores.prekneescore = kneescoreDetails;
                         }
 
                         patient.save((err) => {
@@ -875,7 +948,7 @@ module.exports = (router) => {
                         if (req.body.scoretype == 'postoperativescore') {
                             patient.postoperativescores.womacscore = womacscoreDetails;
                         } else {
-                            patient.preoperative.prewomacscore = womacscoreDetails;
+                            patient.preoperativescores.prewomacscore = womacscoreDetails;
                         }
 
                         patient.save((err) => {
@@ -990,7 +1063,7 @@ module.exports = (router) => {
                         if (req.body.scoretype == 'postoperativescore') {
                             patient.postoperativescores.sf36score = sf36scoreDetails;
                         } else {
-                            patient.preoperative.presf36score = sf36scoreDetails;
+                            patient.preoperativescores.presf36score = sf36scoreDetails;
                         }
 
                         patient.save((err) => {
@@ -1038,7 +1111,7 @@ module.exports = (router) => {
                         if (req.body.scoretype == 'postoperativescore') {
                             patient.postoperativescores.kujalascore = kujalascoreDetails;
                         } else {
-                            patient.preoperative.prekujalascore = kujalascoreDetails;
+                            patient.preoperativescores.prekujalascore = kujalascoreDetails;
                         }
 
                         patient.save((err) => {
@@ -1086,7 +1159,7 @@ module.exports = (router) => {
                         if (req.body.scoretype == 'postoperativescore') {
                             patient.postoperativescores.oxfordscore = OxfordscoreDetails;
                         } else {
-                            patient.preoperative.preoxfordscore = OxfordscoreDetails;
+                            patient.preoperativescores.preoxfordscore = OxfordscoreDetails;
                         }
 
                         patient.save((err) => {
@@ -1134,7 +1207,12 @@ module.exports = (router) => {
                             harriship_adduction: req.body.harriship_adduction,
                             totalharrishipscore: req.body.totalharrishipscore
                         };
-                        patient.preoperative.harrishipscore = HarrishipscoreDetails;
+                        if (req.body.scoretype == 'postoperativescore') {
+                            patient.postoperativescores.harrishipscore = HarrishipscoreDetails;
+                        } else {
+                            patient.preoperativescores.harrishipscore = HarrishipscoreDetails;
+                        }
+                        
                         patient.save((err) => {
                             if (err) {
                                 res.json({ success: false, message: err });
@@ -1182,7 +1260,7 @@ module.exports = (router) => {
                         if (req.body.scoretype == 'postoperativescore') {
                             patient.postoperativescores.statificationscore = StatificationscoreDetails;
                         } else {
-                            patient.preoperative.statificationscore = StatificationscoreDetails;
+                            patient.preoperativescores.statificationscore = StatificationscoreDetails;
                         }
 
                         patient.save((err) => {
@@ -1217,7 +1295,7 @@ module.exports = (router) => {
                             year: req.body.year
                         };
 
-                        patient.postoperativescores = score;
+                        patient.postoperativedetail = score;
 
 
                         patient.save((err) => {

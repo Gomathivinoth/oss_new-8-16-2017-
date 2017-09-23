@@ -1,15 +1,8 @@
 <div class="row">
   <div class="col-md-2"></div>
   <div class="col-md-7">
-    <div class="tabs-selection" *ngIf="disable">
-      <app-tab [style.background-color]="applyblue? '#bbb': 'green'" [style.color]="applyblue? 'black': 'white'" (click)="demographic()">Demographic</app-tab>
-      <app-tab style="cursor:not-allowed;">Pre-Operative</app-tab>
-      <app-tab style="cursor:not-allowed;">Radiology</app-tab>
-      <app-tab style="cursor:not-allowed;">Intra Operative</app-tab>
-      <app-tab style="cursor:not-allowed;">Post Operative</app-tab>
-      <app-tab style="cursor:not-allowed;">Post Operative scores</app-tab>
-    </div>
-    <div class="tabs-selection" *ngIf="!disable">
+    
+    <div class="tabs-selection" >
       <app-tab style="cursor:not-allowed;">Demographic</app-tab>
       <app-tab [style.background-color]="applypreoperative? '#bbb': 'green'" [style.color]="applypreoperative? 'black': 'white'"
         (click)="patientPreOperative()">Pre-Operative</app-tab>
@@ -24,7 +17,7 @@
   </div>
 </div>
 <br>
-<app-tab-content *ngIf="patient_postoperative">
+<app-tab-content >
   <form #postoperativeForm="ngForm" (ngSubmit)="addPatientPostoperative(patient)" novalidate>
     <div class="row">
       <div class="col-md-8"></div>

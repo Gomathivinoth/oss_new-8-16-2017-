@@ -452,7 +452,7 @@ export class KneeprimaryPreoperativeComponent implements OnInit {
     console.log(score);
     this.surgeonService.surgeon_Patientkneescoure(score).subscribe(data => {
       this.surgeonService.surgeon_GetLastPatientId().subscribe(dataPatientId => {
-        this.totalkneescore = dataPatientId.message[0].preoperative.prekneescore.totalkneescore;
+        this.totalkneescore = dataPatientId.message[0].preoperativescores.prekneescore.totalkneescore;
         console.log(this.totalkneescore);
       });
     });
@@ -763,7 +763,7 @@ export class KneeprimaryPreoperativeComponent implements OnInit {
     console.log(score);
     this.surgeonService.surgeon_Patientwomacscoure(score).subscribe(data => {
       this.surgeonService.surgeon_GetLastPatientId().subscribe(dataPatientId => {
-        this.totalwomacscore = dataPatientId.message[0].preoperative.prewomacscore.totalwomacscore;
+        this.totalwomacscore = dataPatientId.message[0].preoperativescores.prewomacscore.totalwomacscore;
         console.log(this.totalkneescore);
       });
     });
@@ -1034,7 +1034,7 @@ export class KneeprimaryPreoperativeComponent implements OnInit {
     console.log(score);
     this.surgeonService.surgeon_Patientsf36scoure(score).subscribe(data => {
       this.surgeonService.surgeon_GetLastPatientId().subscribe(dataPatientId => {
-        this.totalsf36score = dataPatientId.message[0].preoperative.presf36score.sf36_physicalscore;
+        this.totalsf36score = dataPatientId.message[0].preoperativescores.presf36score.sf36_physicalscore;
         console.log(this.totalkneescore);
       });
     });
@@ -1166,7 +1166,7 @@ export class KneeprimaryPreoperativeComponent implements OnInit {
     this.surgeonService.surgeon_Patientkujalascoure(score).subscribe(data => {
       this.surgeonService.surgeon_GetLastPatientId().subscribe(dataPatientId => {
         console.log(dataPatientId);
-        this.totalkujalascore = dataPatientId.message[0].preoperative.prekujalascore.totalkujalascore;
+        this.totalkujalascore = dataPatientId.message[0].preoperativescores.prekujalascore.totalkujalascore;
         console.log(this.totalkneescore);
       });
     });
@@ -1290,7 +1290,7 @@ export class KneeprimaryPreoperativeComponent implements OnInit {
     this.surgeonService.surgeon_Patientoxfordscoure(score).subscribe(data => {
       this.surgeonService.surgeon_GetLastPatientId().subscribe(dataPatientId => {
         console.log(dataPatientId);
-        this.totaloxfordscore = dataPatientId.message[0].preoperative.preoxfordscore.totaloxfordscore;
+        this.totaloxfordscore = dataPatientId.message[0].preoperativescores.preoxfordscore.totaloxfordscore;
       });
     });
   }
