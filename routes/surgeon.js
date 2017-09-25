@@ -516,6 +516,48 @@ module.exports = (router) => {
         }
     });
 
+    router.post('/surgeon_AddHipPrimaryRadiology', (req, res) => {
+        if (!req.body.patientId) {
+            res.json({ success: false, message: 'No patient Id was provided!' });
+        } else {
+            req.body.patientId = mongoose.Types.ObjectId(req.body.patientId);
+            Patient.findOne({ _id: req.body.patientId }, (err, patient) => {
+                if (err) {
+                    res.json({ success: false, message: 'Not a valid patient Id' });
+                } else {
+                    if (!patient) {
+                        res.json({ success: false, message: 'patient Id was not found' });
+                    } else {
+                        // patient.preoperative.push({
+                        const radiologyDetails = {
+                            rad_ficat: req.body.rad_ficat,
+                            rad_grading: req.body.rad_grading,
+                            rad_protrusio: req.body.rad_protrusio,
+                            rad_DDH: req.body.rad_DDH,
+                            rad_grade: req.body.rad_grade,
+                            rat_croweclassification: req.body.rat_croweclassification,
+                            rat_paproskyclassification: req.body.rat_paproskyclassification,
+                            rat_femurclassification: req.body.rat_femurclassification,
+                            rat_morphotype: req.body.rat_morphotype,
+                            rad_osteopenia: req.body.rad_osteopenia,
+                            rad_availabilityct: req.body.rad_availabilityct,
+                            rad_availabilitymri: req.body.rad_availabilitymri
+                        };
+                        patient.radiology = radiologyDetails;
+                        patient.save((err) => {
+                            if (err) {
+                                res.json({ success: false, message: err });
+                            } else {
+                                res.json({ success: true, message: 'Patient Updated!' });
+                            }
+                        });
+                    }
+                }
+            });
+        }
+    });
+
+
 
 
     router.post('/surgeon_AddPatientIntraoperative', (req, res) => {

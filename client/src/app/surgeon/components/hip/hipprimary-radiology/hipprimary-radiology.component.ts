@@ -74,6 +74,8 @@ export class HipprimaryRadiologyComponent implements OnInit {
     rat_morphotype: '',
     rad_LLD:'',
     rad_osteopenia:'',
+    rad_availabilityct:'',
+    rad_availabilitymri:'',
     filename: '',
     filetype: '',
     filesize: ''
@@ -84,7 +86,7 @@ export class HipprimaryRadiologyComponent implements OnInit {
   ];
 
   protrusio: any = [
-    { 'protrusioName': 'Grading of AVN', 'selected': false }
+    { 'protrusioName': 'Protrusio', 'selected': false }
   ];
 
   DDH: any = [
@@ -93,7 +95,7 @@ export class HipprimaryRadiologyComponent implements OnInit {
 
   
 
-  profileChangeEvent(fileInput: any) {
+  radiologyChangeEvent(fileInput: any) {
     this.patient.filetype = fileInput.target.files[0]['type'];
     this.patient.filesize = fileInput.target.files[0]['size'];
     this.patient.filename = fileInput.target.files[0]['name'];
@@ -120,6 +122,12 @@ export class HipprimaryRadiologyComponent implements OnInit {
     this.image.imageId = imageId;;
     this.surgeonService.deleteImage(this.image).subscribe(data => {
       this.imageDetails = data.data;
+    });
+  }
+
+  addPatientRadiology(patient){
+    this.surgeonService.surgeon_AddHipPrimaryRadiology(patient).subscribe(data => {
+      this.router.navigate(['surgeon/Hip/hip-primary-intraoperative/', this.patient.patientId]);
     });
   }
 

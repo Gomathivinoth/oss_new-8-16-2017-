@@ -133,6 +133,13 @@ export class SurgeonService {
     return this.http.post(this.domain + 'surgeon/surgeon_AddPatientRevisionRadiology/', patient, this.options).map(res => res.json());
 
   }
+
+  surgeon_AddHipPrimaryRadiology(patient) {
+    this.createAuthenticationHeaders(); // Create headers
+    return this.http.post(this.domain + 'surgeon/surgeon_AddHipPrimaryRadiology/', patient, this.options).map(res => res.json());
+
+  }
+
   surgeon_AddPatientIntraoperative(patient) {
     this.createAuthenticationHeaders(); // Create headers
     return this.http.post(this.domain + 'surgeon/surgeon_AddPatientIntraoperative/', patient, this.options).map(res => res.json());

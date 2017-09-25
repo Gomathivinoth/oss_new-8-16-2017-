@@ -131,7 +131,27 @@ const patientSchema = new Schema({
         rad_tibialrotation: { type: String },
         rad_availablemrict: { type: String },
         rad_esr: { type: String },
-        rad_crp: { type: String }
+        rad_crp: { type: String },
+        rad_ficat: { type: String },
+        rad_grading: [{
+            gradingName: { type: String },
+            selected: { type: Boolean, default: false }
+        }],
+        rad_protrusio: [{
+            protrusioName: { type: String },
+            selected: { type: Boolean, default: false }
+        }],
+        rad_DDH: [{
+            dDHName: { type: String },
+            selected: { type: Boolean, default: false }
+        }],
+        rad_grade: { type: String },
+        rat_croweclassification: { type: String },
+        rat_paproskyclassification: { type: String },
+        rat_femurclassification: { type: String },
+        rat_morphotype: { type: String },
+        rad_LLD: { type: String },
+        rad_osteopenia: { type: String }
     },
     intraoperative: {
         intra_surgicalplan: { type: String },

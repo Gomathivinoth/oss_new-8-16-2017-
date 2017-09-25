@@ -154,16 +154,17 @@
       </div>
     </div>
     <br>
+    
     <div class="row">
       <div class="col-md-2"></div>
-      
-      <div class="col-md-2" *ngFor="let grade of patient.rad_protrusio">
-        <label class="checkbox-inline"><input type="checkbox"  #refgrade="ngModel" required name="grade" [(ngModel)]="grade.selected">{{grade.protrusioName}}</label>
+     
+      <div class="col-md-2" *ngFor="let protrusio of patient.rad_protrusio">
+        <label class="checkbox-inline"><input type="checkbox"  #refprotrusio="ngModel" required name="protrusio" [(ngModel)]="protrusio.selected">{{protrusio.protrusioName}}</label>
       </div>
       <div *ngIf="joints">
-        <div *ngIf="refgrade.errors && (refgrade.dirty || refgrade.touched)" class="alert alert-danger">
-          <div [hidden]="!refgrade.errors.required">
-            select Grade
+        <div *ngIf="refprotrusio.errors && (refprotrusio.dirty || refprotrusio.touched)" class="alert alert-danger">
+          <div [hidden]="!refprotrusio.errors.required">
+            select protrusio
           </div>
         </div>
       </div>
@@ -192,6 +193,21 @@
         <div *ngIf="regrade.errors && (regrade.dirty || regrade.touched)" class="alert alert-danger">
           <div [hidden]="!regrade.errors.required">
             select grade
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-md-2"></div>
+     
+      <div class="col-md-2" *ngFor="let symptom of patient.rad_DDH">
+        <label class="checkbox-inline"><input type="checkbox"  #refsymptom="ngModel" required name="symptom" [(ngModel)]="symptom.selected">{{symptom.dDHName}}</label>
+      </div>
+      <div *ngIf="joints">
+        <div *ngIf="refsymptom.errors && (refsymptom.dirty || refsymptom.touched)" class="alert alert-danger">
+          <div [hidden]="!refsymptom.errors.required">
+            select dDHName
           </div>
         </div>
       </div>
@@ -474,7 +490,7 @@
       </div>
 
       <div class="col-md-3">
-        <input type="file" class="form-control" (change)="profileChangeEvent($event)" ngModel>
+        <input type="file" class="form-control" (change)="radiologyChangeEvent($event)" ngModel>
       </div>
     </div>
     <div class="row">
@@ -493,7 +509,7 @@
                 <th>Action</th>
               </tr>
               <tbody *ngFor="let image of imageDetails">
-                <tr *ngIf="image.type == 'radiologyimage'">
+                <tr *ngIf="image.type == 'hipprimary_radiologyimage'">
                   <td><img src="http://localhost:3000/uploads/{{image.image}}" alt="Profile Pic" width="80px" height="55px" /></td>
                   <td>{{image.imagename}}</td>
                   <td>{{image.imagetype}}</td>
